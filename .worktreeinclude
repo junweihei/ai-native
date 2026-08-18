@@ -1,0 +1,3 @@
+# Intentionally empty: ignored local files are not copied into managed worktrees.
+# Add only paths that are safe and strictly required for local Worktree setup.
+# Prefer recreating secrets per environment instead of copying .env files.
