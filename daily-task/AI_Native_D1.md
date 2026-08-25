@@ -1,53 +1,74 @@
-# AI Native D1 summary
-AI Native 知识地图 · 节点 01
-生成式 AI 与 Agent 基础
+# AI Native D1：生成式 AI 与 Agent 基础
 
-节点定位：
+## 十、RAG：解决外部知识问题
+
+```text
+用户问题
 理解 AI Native 最底层的智能能力从哪里来，以及 LLM 如何从“生成文本”逐步扩展到“调用工具并完成任务”。
-
-一、这一节点解决什么问题
-
+生成答案
+```
+## 一、这一节点解决什么问题
+## 十一、Tools：解决“只能说，不能做”
 这一节点主要回答 5 个问题：
-
+```text
+用户
 LLM 到底是什么？
-自然语言怎么变成模型可以计算的内容？
+LLM
+```
 LLM 为什么能理解上下文并生成内容？
-Prompt、RAG、Context、Tools 分别解决什么问题？
-LLM 是怎样进一步演变成 Agent 的？
-
-二、核心知识骨架
-
+## 十二、Agent：从生成内容到完成任务
+```text
+            Agent
+    Model  Instructions  Tools
+```
+## 二、核心知识骨架
+## 十三、Agent 和普通 LLM 调用的真正区别
 可以先记这一条主链：
-
-自然语言
-   ↓
-Tokenization
-   ↓
-Embedding
-   ↓
-Transformer
-   ↓
-训练形成 Parameters
-   ↓
-LLM / SLM
-   ↓
-Prompt + Context
-   ↓
+```text
+Prompt
+```text
 Completion
+```
    ↓
-RAG / Tools 扩展能力
+## 十四、Workflow 与 Agent：提前留一个接口
    ↓
-Agent
+```text
+Workflow
    ↓
-Multi-Agent
-
+目标驱动执行。
+```
+   ↓
+## 十五、Multi-Agent
+```text
+         Manager Agent
+    Agent     Agent     Agent
+```
+   ↓
+## 十六、这一节点的概念关系图
+```text
+                   Generative AI
+                          │
+                             ┌────────┴────────┐
+                             ↓                 ↓
+                          Workflow          Agent Loop
+                                          │
+                                          ▼
+                                      Multi-Agent
+```
+```
+## 十七、概念 → 问题映射
 但要注意，这里面其实存在两条不同的链：
-三、第一条链：模型是怎么形成的
+## 十八、需要长期保留的 6 条主线
 
-这是 Training（训练）链。
+学习完 R1 后，我认为真正应该进入长期知识体系的不是几十个名词，而是下面 6 条。
 
-Training Data
-     ↓
+## 十九、与后续 AI Native 知识地图的连接
+
+```text
+节点 01
+            └── Security
+            └── Cost / Performance
+```
 Tokenization
      ↓
 Token ID
@@ -63,8 +84,9 @@ Attention Mechanism
 训练得到 Model
      ↓
 LLM / SLM
+```
 
-1. Training Data
+### 1. Training Data
 
 模型训练使用的大规模文本、代码、图像等数据。
 
@@ -72,7 +94,7 @@ LLM / SLM
 
 AI 从哪里学习语言、知识和模式？
 
-2. Token
+### 2. Token
 
 模型并不直接理解“文字”。
 
@@ -94,7 +116,7 @@ Token 是语言模型处理文本时的基本离散单位。
 
 把自然语言转换为模型能够进一步处理的符号序列。
 
-3. Embedding
+### 3. Embedding
 
 Token 本身只是 ID，不能直接表达语义。
 
@@ -125,7 +147,7 @@ Image Embedding
 
 这里不要把 Embedding 只理解成 Transformer Encoder 的最终产物。
 
-4. Positional Information
+### 4. Positional Information
 
 Transformer 本身并天然理解词语的先后顺序。
 
@@ -142,7 +164,7 @@ Token 基本相同，但顺序不同，含义完全不同。
 
 Positional Information 负责让模型理解 Token 的顺序关系。
 
-5. Attention
+### 5. Attention
 
 这是 Transformer 最关键的机制之一。
 
@@ -168,7 +190,7 @@ Multi-head Attention 则是：
 
 同时从多个关系维度观察上下文。
 
-6. Transformer
+### 6. Transformer
 
 Transformer 是现代主流语言模型的核心神经网络架构。
 
@@ -202,7 +224,7 @@ GPT 类主流生成式 LLM 通常属于：
 
 Decoder-only Transformer。
 
-7. Parameters
+### 7. Parameters
 
 Parameters 是一个非常重要的概念。
 
@@ -230,7 +252,7 @@ Parameters 是一个非常重要的概念。
 
 通过训练，把大量统计规律和模式压缩进神经网络参数。
 
-8. LLM / SLM
+### 8. LLM / SLM
 
 最后形成模型。
 
@@ -246,12 +268,13 @@ Small Language Model，小语言模型。
 
 语言模型是通过大规模数据训练形成的参数化神经网络，它根据当前上下文，对后续 Token 的概率分布进行预测。
 
-四、第二条链：模型是怎么被使用的
+## 四、第二条链：模型是怎么被使用的
 
 这是 Inference（推理）链。
 
 必须和 Training 分开。
 
+```text
 User Input
     ↓
 Prompt
@@ -269,7 +292,8 @@ Token
 继续预测
     ↓
 Completion
-五、Prompt：告诉模型当前要做什么
+```
+## 五、Prompt：告诉模型当前要做什么
 
 Prompt 是：
 
@@ -302,7 +326,7 @@ User Prompt
 指令
 目标
 任务
-六、Context：模型当前真正“看得到”的信息
+## 六、Context：模型当前真正“看得到”的信息
 
 这是以后学习 AI Native 特别重要的概念。
 
@@ -325,7 +349,7 @@ Context
 
 Context Window。
 
-七、Context Window
+## 七、Context Window
 
 模型一次能够处理的信息量是有限的。
 
@@ -353,7 +377,7 @@ Context Engineering。
 
 如何选择最合适的信息，在最合适的时间放进模型上下文。
 
-八、Completion：模型是怎样生成内容的
+## 八、Completion：模型是怎样生成内容的
 
 LLM 并不是一次生成整段回答。
 
@@ -380,7 +404,7 @@ Prompt
 LLM
   ↓
 Completion
-九、LLM 存在哪些天然边界
+## 九、LLM 存在哪些天然边界
 
 只靠一个 LLM 会遇到几个核心问题：
 
@@ -659,23 +683,23 @@ Workflow + Agent。
 
 这部分对后续构建知识地图特别重要。
 
-| 概念             | 它解决什么问题           |
-| -------------- | ----------------- |
-| Tokenization   | 怎么把自然语言变成机器可处理形式  |
-| Embedding      | 怎么用数学表示语言和语义      |
-| Position       | 怎么理解词语顺序          |
-| Attention      | 怎么识别上下文之间的相关关系    |
-| Transformer    | 怎么学习和处理复杂语言关系     |
+| 概念           | 它解决什么问题                   |
+| -------------- | -------------------------------- |
+| Tokenization   | 怎么把自然语言变成机器可处理形式 |
+| Embedding      | 怎么用数学表示语言和语义         |
+| Position       | 怎么理解词语顺序                 |
+| Attention      | 怎么识别上下文之间的相关关系     |
+| Transformer    | 怎么学习和处理复杂语言关系       |
 | Parameters     | 模型训练后“学到的东西”保存在哪里 |
-| LLM            | 怎么获得理解、生成、推理能力    |
-| Prompt         | 怎么告诉模型当前要做什么      |
-| Context        | 模型当前应该知道什么        |
-| Context Window | 模型一次最多能看到多少信息     |
-| RAG            | 怎么获得外部、私有、最新知识    |
-| Tools          | 怎么让 AI 从回答走向行动    |
+| LLM            | 怎么获得理解、生成、推理能力     |
+| Prompt         | 怎么告诉模型当前要做什么         |
+| Context        | 模型当前应该知道什么             |
+| Context Window | 模型一次最多能看到多少信息       |
+| RAG            | 怎么获得外部、私有、最新知识     |
+| Tools          | 怎么让 AI 从回答走向行动         |
 | Agent          | 怎么围绕目标自主完成多步骤任务   |
-| Workflow       | 怎么控制和编排确定性流程      |
-| Multi-Agent    | 怎么通过专业分工处理复杂任务    |
+| Workflow       | 怎么控制和编排确定性流程         |
+| Multi-Agent    | 怎么通过专业分工处理复杂任务     |
 
 
 学习完 R1 后，我认为真正应该进入长期知识体系的不是几十个名词，而是下面 6 条。
