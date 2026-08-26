@@ -1,495 +1,455 @@
-# AI Native D1：生成式 AI 与 Agent 基础
+# AI Native D2 学习总结：判断 Agent 是否适合业务问题
 
-> AI Native 知识地图 · 节点 01
+## 一、核心前提：确定适用度 Fit for Purpose
 
-理解 AI Native 最底层的智能能力从哪里来，以及 LLM 如何从“生成文本”逐步扩展到“调用工具并完成任务”。
+设计 Agent 的第一步不是选择模型和框架，而是判断 AI 能否带来足够的业务价值。
 
-## 一、这一节点解决什么问题
+核心原则：
 
-这一节点主要回答 5 个问题：
+> AI 或 Agent 带来的收益，应足以抵消它增加的架构复杂度、结果不确定性、运行成本和治理要求。
 
-- LLM 到底是什么？
-- 自然语言怎么变成模型可以计算的内容？
-- LLM 为什么能理解上下文并生成内容？
-- Prompt、RAG、Context、Tools 分别解决什么问题？
-- LLM 是怎样进一步演变成 Agent 的？
+需要在两类方案之间有意识地选择：
 
-## 二、核心知识骨架
+### 动态或非结构化方案
 
-可以先记这一条主链：
+由模型根据输入和中间结果进行理解、生成或选择。
 
-```text
-自然语言
-   ↓
-Tokenization
-   ↓
-Embedding
-   ↓
-Transformer
-   ↓
-训练形成 Parameters
-   ↓
-LLM / SLM
-   ↓
-Prompt + Context
-   ↓
-Completion
-   ↓
-RAG / Tools 扩展能力
-   ↓
-Agent
-   ↓
-Multi-Agent
-```
+特点：
 
-但要注意，这里面其实存在两条不同的链。
+- 能处理自然语言和非结构化信息；
+- 可以适应输入变化；
+- 输出可能存在差异；
+- 需要评测、护栏和人工接管。
 
-## 三、第一条链：模型是怎么形成的
+### 确定性或结构化方案
 
-这是 Training（训练）链。
+由代码、规则或固定流程控制执行路径。
 
-```text
-Training Data
-     ↓
-Tokenization
-     ↓
-Token ID
-     ↓
-Embedding + Positional Information
-     ↓
-Transformer
-     ↓
-Attention Mechanism
-     ↓
-不断调整 Parameters
-     ↓
-训练得到 Model
-     ↓
-LLM / SLM
-```
+特点：
 
-### 1. Training Data
+- 路径和输出要求更明确；
+- 更容易测试、审计和控制；
+- 适合合规流程和高精度任务；
+- 规则复杂时，开发和维护成本也可能很高。
 
-模型训练使用的大规模文本、代码、图像等数据。
+确定性不等于100%正确。错误的规则、数据或外部系统仍会导致错误结果。
 
-**解决的问题：** AI 从哪里学习语言、知识和模式？
+真正要判断的是：
 
-### 2. Token
+> 每个任务步骤需要多大灵活性，能够容忍多大偏差，错误后果是否可控。
 
-模型并不直接理解“文字”。文本首先会被拆成 Token：
+## 二、把 Agent 流程拆成三个阶段
 
-```text
-"人工智能正在改变软件工程"
-→
-["人工", "智能", "正在", "改变", "软件", "工程"]
-```
+可以把任务拆成 Input、Transform、Output，再决定每一段采用动态方案还是确定性方案。
 
-实际分词方式会因 tokenizer 不同而不同。
+### 1. Input：系统获得什么输入
 
-**定义：** Token 是语言模型处理文本时的基本离散单位。
+需要明确：
 
-**作用：** 把自然语言转换为模型能够进一步处理的符号序列。
+- 用户提供什么；
+- 输入是文字、语音、图像、文件还是界面操作；
+- 系统是否需要知识库、语义索引或其他 Agent 的信息；
+- 是否需要通过 API、连接器或 MCP 获取数据；
+- 输入的格式、长度、完整性和权限是否符合要求。
 
-### 3. Embedding
+动态输入示例：
 
-Token 本身只是 ID，不能直接表达语义。Embedding 会把它转换成一个高维向量：
+- 自然语言问题；
+- 图像；
+- 知识库；
+- 语义索引；
+- Agent-to-Agent 信息。
 
-```text
-Token
- ↓
-Vector
+确定性输入示例：
 
-狗        → [0.21, -0.34, 0.81 ...]
-小狗      → [0.23, -0.31, 0.79 ...]
-汽车      → [-0.72, 0.42, 0.16 ...]
-```
+- 固定参数的 API；
+- Power Platform Connector；
+- 具有明确输入结构的 MCP Tool；
+- 固定格式的数据库查询。
 
-相似概念在向量空间中通常更接近。
+### 2. Transform：系统怎样处理输入
 
-**定义：** Embedding 是把离散对象映射到连续向量空间中的数学表示。
+可选方案包括：
 
-后续可以继续扩展：Token Embedding、Sentence Embedding、Document Embedding、Image Embedding。
+- 公式、阈值和条件判断；
+- 固定工作流；
+- 模型的一次分类、抽取、总结或生成；
+- Agent 根据中间证据动态选择步骤和工具；
+- 动态与确定性结合的混合流程。
 
-这里不要把 Embedding 只理解成 Transformer Encoder 的最终产物。
+需要判断：
 
-### 4. Positional Information
+- 规则能否完整写出；
+- 步骤是否可以提前规定；
+- 是否只需要一次模型处理；
+- 是否必须根据中间结果改变计划；
+- 是否需要数学计算、多模态或多轮推理；
+- 哪些步骤必须由人确认。
 
-Transformer 本身并不天然理解词语的先后顺序，因此需要加入位置信息。
+### 3. Output：系统产生什么结果
+
+输出可能是：
+
+- 自然语言回答；
+- 图片或生成内容；
+- 固定结构的 JSON；
+- Adaptive Card；
+- 通知或报告；
+- API 或 MCP Tool 执行的业务动作；
+- 审计日志；
+- 无法处理时转交人工。
+
+同一个任务可以混合使用不同机制：
 
 ```text
-狗咬人
-人咬狗
+非结构化用户输入
+→ 模型理解意图
+→ 固定规则校验
+→ 确定性工作流执行
+→ 模型生成说明
+→ 高风险动作由人确认
 ```
 
-Token 基本相同，但顺序不同，含义完全不同。
+### 垃圾进，垃圾出
 
-**作用：** Positional Information 负责让模型理解 Token 的顺序关系。
+Transform 和 Output 只能处理 Input 阶段真正提供的数据。
 
-### 5. Attention
+如果语义索引返回的内容被错误分块、缺少元数据、内容被截断，后续模型再强也难以产生可靠结果。
 
-这是 Transformer 最关键的机制之一。它解决的问题是：当前 Token 应该重点关注上下文中的哪些 Token？
+## 三、6 步构想框架 Envisioning Framework
 
-例如：“小狗听到主人回来后开始大声吠叫。”理解“吠叫”时：
+6 步构想框架用于在开发前，从用户获得 Agent 到最终结果，走完一次端到端生命周期。
+
+### 第1步：用户怎样获得 Agent
+
+对应组件：Catalog。
+
+需要回答：
+
+- Agent 发布在哪里；
+- 用户怎样发现它；
+- 谁可以安装或启用；
+- 如何进行版本和权限管理。
+
+### 第2步：用户怎样与 Agent 交互
+
+对应组件：Client 和 Catalog。
+
+需要回答：
+
+- 用户通过聊天窗口、Teams、网页还是业务系统使用；
+- Agent 是用户主动打开，还是嵌入现有流程；
+- 交互体验是否符合用户已有工作习惯。
+
+### 第3步：用户提供什么输入
+
+对应组件：Chat/App Infrastructure。
+
+输入可能包括：
+
+- Prompt；
+- 语音；
+- 图像；
+- 文件；
+- GUI 操作；
+- 系统事件或触发条件。
+
+需要同时确定输入格式、数据大小和上下文限制。
+
+### 第4步：Agent 需要自主获得什么
+
+对应组件：Tool Calling。
+
+可能包括：
+
+- Grounding Information；
+- 企业数据和元数据；
+- Tool Catalog；
+- Agent-to-Agent 通信；
+- 用户身份验证；
+- 数据与系统访问权限。
+
+这一步决定 Agent 能接触什么知识、工具和外部系统。
+
+### 第5步：推理和流程执行需要什么能力
+
+对应组件：Orchestrator 和 Language Model。
+
+需要判断：
+
+- 是否需要多轮推理；
+- 是否需要确定性响应；
+- 是否涉及数学计算；
+- 是否需要处理图片等多模态输入；
+- 是否包含顺序工作流；
+- Context Window 是否足够；
+- 是否需要 Human in the Loop；
+- 哪些步骤由模型决定，哪些由代码决定。
+
+### 第6步：期望的结果是什么
+
+对应组件：Chat/App Infrastructure。
+
+需要明确：
+
+- 最终是回答、通知还是系统动作；
+- 输出格式是什么；
+- 发送到什么渠道；
+- 是否需要保留审计日志；
+- 用户怎样确认、纠错或提供反馈。
+
+六步形成一条完整链：
 
 ```text
-小狗      权重高
-主人      有关联
-回来      有关联
+发现并获得
+→ 进入并交互
+→ 提供输入
+→ Agent 自主获取信息和工具
+→ 推理与流程执行
+→ 返回结果并留下证据
 ```
 
-**可以简单记：** Attention = 动态计算上下文之间的相关性。
+## 四、核心架构组件 Architecture Components
 
-Multi-head Attention 则是同时从多个关系维度观察上下文。
+Agent 不是一个模型，而是一组协同工作的组件。
 
-### 6. Transformer
+### 1. Client 客户端
 
-Transformer 是现代主流语言模型的核心神经网络架构。
+用户与 Agent 交互的界面。
 
-```text
-Embedding
-    + Position
-    + Attention
-    + Feed Forward Network
-    ↓
-Transformer
-```
+例如：
 
-其作用是在上下文中学习 Token 之间复杂的语言和语义关系。
+- 聊天窗口；
+- Teams；
+- 网页；
+- 移动应用；
+- 企业业务系统。
 
-不要把所有现代 LLM 都理解成“Encoder → Decoder”。常见架构包括 Encoder-only、Decoder-only 和 Encoder-Decoder。GPT 类主流生成式 LLM 通常属于 Decoder-only Transformer。
+### 2. Chat/App/Storage Infrastructure
 
-### 7. Parameters
+支撑消息、应用状态和存储的基础设施。
 
-训练真正做的事情，本质上是：
+负责：
 
-```text
-训练数据
-↓
-模型不断预测
-↓
-计算误差
-↓
-调整 Parameters
-↓
-反复训练
-```
+- 接收和发送消息；
+- 保存会话状态；
+- 存储上下文或任务状态；
+- 支持持续交互。
 
-大量训练中学习到的模式被编码进模型参数。模型不是“把互联网文章全部存进数据库”，而是通过训练，把大量统计规律和模式压缩进神经网络参数。
+### 3. Orchestrator 协调器
 
-### 8. LLM / SLM
+负责组织任务流程和组件协作。
 
-- **LLM：** Large Language Model，大语言模型。
-- **SLM：** Small Language Model，小语言模型。
+可能负责：
 
-**长期定义：** 语言模型是通过大规模数据训练形成的参数化神经网络，它根据当前上下文，对后续 Token 的概率分布进行预测。
-
-## 四、第二条链：模型是怎么被使用的
+- 识别意图；
+- 路由请求；
+- 执行工作流；
+- 选择模型；
+- 选择工具；
+- 判断下一步；
+- 决定停止或转人工。
 
-这是 Inference（推理）链，必须和 Training 分开。
+协调器可以采用：
 
-```text
-User Input
-    ↓
-Prompt
-    ↓
-Tokenization
-    ↓
-Context Window
-    ↓
-LLM
-    ↓
-Next Token Prediction
-    ↓
-Token
-    ↓
-继续预测
-    ↓
-Completion
-```
-
-### 1 Prompt：告诉模型当前要做什么
+- 动态协调：模型根据上下文决定下一步；
+- 确定性协调：代码预先规定路径；
+- 混合协调：动态理解与固定执行相结合。
 
-Prompt 是模型当前推理时获得的输入信息，常见包括：
+### 4. Language Model 语言模型
 
-- System Prompt
-- User Prompt
-- Conversation History
-- Retrieved Knowledge
-- Tool Results
+为系统提供自然语言理解和生成能力。
 
-其中，System Prompt / Instructions 主要定义角色、规则、行为、输出要求和安全约束。User Prompt 是用户当前提出的问题、指令、目标或任务。
+主要负责：
 
-### 2 Context：模型当前真正“看得到”的信息
+- 理解用户输入；
+- 分类、抽取和总结；
+- 生成响应；
+- 为动态协调提供判断能力。
 
-Context 是模型本次推理时可以使用的全部信息。
+模型不直接等于 Agent。Agent 还需要指令、协调、工具、状态和控制机制。
 
-```text
-Context
-├── System Instructions
-├── User Prompt
-├── Conversation History
-├── RAG Results
-├── Tool Results
-├── Memory
-└── 当前任务状态
-```
+### 5. Catalog 目录
 
-这些内容共同进入 Context Window。
+Catalog 是技能、插件、工具、动作或 Agent 的注册与发现目录。
 
-### 3 Context Window
+主要解决：
 
-模型一次能够处理的信息量是有限的：
+- 用户在哪里发现 Agent；
+- Agent 从哪里发现可用工具；
+- 哪些能力已经注册；
+- 谁可以访问和调用这些能力。
 
-```text
-System Prompt + User Prompt + History + RAG + Tool Results + 其他信息
-= 占用 Context Window
-```
+### 6. Tool Calling 工具调用
 
-这会引出后续非常重要的 Context Engineering：如何选择最合适的信息，在最合适的时间放进模型上下文。
+让 Agent 超越自然语言回答，访问外部数据或执行动作。
 
-### 4 Completion：模型是怎样生成内容的
+例如：
 
-LLM 并不是一次生成整段回答，而是不断执行：
+- 查询数据库；
+- 搜索文件；
+- 获取订单；
+- 创建任务；
+- 发送邮件；
+- 提交审批。
 
-```text
-当前 Context
-↓
-预测下一个 Token
-↓
-加入 Context
-↓
-再次预测
-↓
-……
-```
+### 7. OpenAPI-based APIs
 
-最终形成 Completion。最基础的生成式 AI 模型可以抽象成：
+通过标准 API 描述，把外部系统能力暴露给 Agent 或工作流。
 
-```text
-Prompt
-  ↓
-LLM
-  ↓
-Completion
-```
+它主要定义：
 
-## 五、LLM 存在哪些天然边界
+- 可以调用什么操作；
+- 输入参数是什么；
+- 返回结果是什么；
+- 如何认证和处理错误。
 
-只靠一个 LLM 会遇到几个核心问题：
+### 8. Semantic Index 语义索引
 
-```text
-知识可能过时       → 不知道企业内部信息
-上下文有限         → 不能一次知道所有东西
-只能输出 Token     → 不能真正操作外部系统
-生成具有概率性     → 可能出现 Hallucination
-```
+让系统按语义相关性检索企业内容，而不仅依赖关键词匹配。
 
-所以后续技术，本质上都是在补这些能力缺口。
+它并不代表系统真正理解文档，而是利用向量等表示寻找语义上可能相关的内容。
 
-## 六、RAG：解决外部知识问题
+### 9. Parsing and Chunking 解析与分块
 
-RAG（Retrieval-Augmented Generation）的基本过程是：
+把长文档转换成适合检索和模型处理的小片段。
 
-```text
-用户问题
-   ↓
-Retrieval
-   ↓
-找到相关知识
-   ↓
-加入 Context
-   ↓
-LLM
-   ↓
-生成答案
-```
+需要注意：
 
-RAG 不是另外训练一个模型，而是在模型推理前给它补充当前所需知识。它主要解决私有知识、最新知识、企业文档、专业知识和事实依据问题。
+- 分块过大会超出上下文；
+- 分块过小会丢失语义；
+- 缺少标题、来源和权限等元数据会降低结果质量。
 
-RAG 可以提升 Grounding 和事实可靠性，但不能保证完全消除 Hallucination。
+### 10. MCP Server
 
-## 七、Tools：解决“只能说，不能做”
+MCP Server 使用 Model Context Protocol，把工具、资源或提示能力以标准方式提供给模型应用或 Agent。
 
-加入 Tools 后，模型可以判断需要行动，调用外部系统并继续处理返回结果：
+MCP 是连接协议，不等于 Agent，也不天然属于动态或确定性方案。
 
-```text
-用户 → LLM → 判断需要行动 → Tool → 外部系统 → 返回结果 → LLM
-```
-
-**Knowledge Tools** 负责获取信息，例如搜索、数据库查询、文件搜索、企业知识库和 API 查询。
-
-**Action Tools** 负责执行动作，例如发邮件、创建任务、修改数据库、提交审批、操作 ERP 和执行代码。
-
-可以记：RAG 让 AI 知道更多，Tools 让 AI 能做事情。
-
-## 八、Agent：从生成内容到完成任务
-
-Microsoft 入门阶段可以先记：
-
-```text
-Agent = Model + Instructions + Tools
-```
-
-- **Model：** 提供理解和推理能力。
-- **Instructions：** 告诉 Agent 身份、目标和规则。
-- **Tools：** 让 Agent 能够获取信息和执行操作。
-
-## 九、Agent 和普通 LLM 调用的真正区别
-
-普通生成式 AI：
-
-```text
-Prompt → Model → Completion
-```
-
-Agent：
-
-```text
-Goal
- ↓
-Model 判断
- ↓
-调用 Tool
- ↓
-观察结果
- ↓
-继续判断
- ↓
-再次调用 Tool
- ↓
-直到完成 Goal
-```
-
-这个循环以后会进一步学习为 Agent Loop：Observe → Reason → Act → Observe，也就是感知 → 决策 → 行动 → 再感知。
-
-## 十、Workflow 与 Agent：提前留一个接口
-
-Workflow 的执行路径主要由开发者预先定义；Agent 的具体执行过程具有一定动态性。
-
-```text
-Workflow：A → B → C → D
-
-Agent：
-         Tool A
-       ↗
-Goal → Model → Tool C
-       ↘
-         Tool B
-```
-
-可以记：Workflow 是预定义过程，Agent 是目标驱动执行。企业 AI Native 最终往往是 Workflow + Agent。
-
-## 十一、Multi-Agent
-
-当任务非常复杂时，可以让多个 Agent 分工：
-
-```text
-            Manager Agent
-                 │
-        ┌────────┼────────┐
-        ↓        ↓        ↓
-    Research   Coding   Review
-     Agent     Agent     Agent
-```
-
-不同 Agent 有不同 Instructions、Tools 和专业能力，协同完成更复杂任务。
-
-## 十二、这一节点的概念关系图
-
-```text
-                         Generative AI
-                              │
-                              ▼
-                       Language Model
-                              │
-             ┌────────────────┴────────────────┐
-             │                                 │
-          Training                          Inference
-             │                                 │
-       Training Data                         Prompt
-             ↓                                 ↓
-       Tokenization                         Context
-             ↓                                 │
-        Embedding                    ┌─────────┼─────────┐
-             ↓                       ↓         ↓         ↓
-         Position                  History    RAG      Tools
-             ↓                       │         │         │
-        Transformer                  └─────────┼─────────┘
-             ↓                                 ↓
-         Attention                         Context Window
-             ↓                                 ↓
-        Parameters                            LLM
-             ↓                                 ↓
-            LLM                      Next Token Prediction
-                                               ↓
-                                           Completion
-                                               │
-                                               ▼
-                                             Agent
-                                    Model + Instructions + Tools
-                                               │
-                                      ┌────────┴────────┐
-                                      ↓                 ↓
-                                  Workflow          Agent Loop
-                                                        │
-                                                        ▼
-                                                  Multi-Agent
-```
-
-## 十三、概念 → 问题映射
-
-| 概念 | 它解决什么问题 |
-| --- | --- |
-| Tokenization | 怎么把自然语言变成机器可处理形式 |
-| Embedding | 怎么用数学表示语言和语义 |
-| Position | 怎么理解词语顺序 |
-| Attention | 怎么识别上下文之间的相关关系 |
-| Transformer | 怎么学习和处理复杂语言关系 |
-| Parameters | 模型训练后“学到的东西”保存在哪里 |
-| LLM | 怎么获得理解、生成、推理能力 |
-| Prompt | 怎么告诉模型当前要做什么 |
-| Context | 模型当前应该知道什么 |
-| Context Window | 模型一次最多能看到多少信息 |
-| RAG | 怎么获得外部、私有、最新知识 |
-| Tools | 怎么让 AI 从回答走向行动 |
-| Agent | 怎么围绕目标自主完成多步骤任务 |
-| Workflow | 怎么控制和编排确定性流程 |
-| Multi-Agent | 怎么通过专业分工处理复杂任务 |
-
-## 十四、需要长期保留的 6 条主线
-
-学习完 R1 后，真正应该进入长期知识体系的不是几十个名词，而是下面 6 条：
-
-1. **LLM 的本质：** LLM 是通过大规模数据训练形成的参数化神经网络，根据上下文不断预测后续 Token。
-2. **Training 与 Inference 必须分开：** Training 解决模型怎么获得能力，Inference 解决模型怎么使用能力。
-3. **生成式 AI 的基础运行模型：** `Prompt + Context → Model → Completion`
-4. **LLM 存在能力边界：** 模型知识、上下文、行动能力和可靠性都有限，因此需要 RAG、Memory、Tools 等机制进行增强。
-5. **Agent 是一次重要范式升级：** `Model + Instructions + Tools → Agent`，AI 从“生成信息”升级为“围绕目标完成任务”。
-6. **后续 AI Native 的演进主线：** `Model → Context → Tools → Agent → Workflow / Multi-Agent → AI Native Application`
-
-## 十五、与后续 AI Native 知识地图的连接
-
-```text
-节点 01：生成式 AI 与 Agent 基础
-        │
-        ├── 节点 02：Prompt Engineering
-        ├── 节点 03：Context Engineering
-        │       ├── RAG
-        │       ├── Memory
-        │       └── Context Management
-        ├── 节点 04：Tool Use
-        │       ├── Function Calling
-        │       ├── MCP
-        │       └── Skills
-        ├── 节点 05：Agent Engineering
-        │       ├── Agent Loop
-        │       ├── Planning
-        │       ├── Workflow
-        │       └── Multi-Agent
-        └── 节点 06：AI Engineering
-                ├── Evals
-                ├── Guardrails
-                ├── Observability
-                ├── Security
-                └── Cost / Performance
-```
+同一个 MCP Tool 可以：
+
+- 被固定工作流按预设路径调用；
+- 被 Agent 根据中间结果动态选择。
+
+Microsoft 的流程映射表将具有明确结构的 MCP Tools 放在确定性选项中，是在描述该场景下的调用方式，不是说 MCP 本身只能用于确定性流程。
+
+### 11. Proprietary Protocols 专有协议
+
+用于连接特定平台和 Agent 的自有通信协议。
+
+例如 Microsoft Bot Framework 的 Direct Line。
+
+### 12. RAI Responsible AI
+
+RAI 不是最后附加的检查，而是贯穿 Agent 生命周期的治理要求。
+
+包括：
+
+- 安全；
+- 隐私；
+- 公平；
+- 透明；
+- 合规；
+- 权限控制；
+- 人工接管；
+- 行为审计。
+
+## 五、架构讨论检查清单
+
+进入详细设计前，应检查以下维度。
+
+### Acquisition and Governance
+
+- 用户和组织如何获得、部署和管理 Agent；
+- 是否具备治理和变更管理机制；
+- 许可和运行成本是多少；
+- 怎样衡量采用率和投资回报率。
+
+### Entry Points and User Experience
+
+- 用户从哪里进入；
+- 使用什么客户端；
+- 什么事件触发 Agent；
+- 是否融入用户现有工作流程。
+
+### Processing and Data Flow
+
+- 数据从哪里来、流向哪里；
+- 涉及哪些工具和系统；
+- 怎样检索数据；
+- 是否完成威胁建模和安全分析。
+
+### Input and Output Specifications
+
+- 输入的数据类型、大小、长度和格式是什么；
+- Context Window 是否足够；
+- 输出内容、格式和渠道是什么；
+- 用户怎样提供反馈。
+
+### Control and Accountability
+
+- 谁控制下一步；
+- 哪些动作可以自动执行；
+- 哪些动作必须人工确认；
+- 如何记录决策、操作和错误；
+- 出现失败时怎样停止或升级人工。
+
+### Cost and ROI
+
+- AI 是否真正改善业务结果；
+- 模型、许可和基础设施成本是多少；
+- 增加的复杂度是否值得；
+- 是否存在更简单的确定性方案。
+
+## 六、关键名称的浅显解释
+
+| 名称 | 浅显解释 |
+|---|---|
+| Fit for Purpose | 这个任务是否真的值得使用 AI 或 Agent |
+| Dynamic/Unstructured Flow | 模型根据当前信息动态决定处理方式 |
+| Deterministic/Structured Flow | 程序按照预先规定的规则和路径执行 |
+| Hybrid Flow | 模型处理不确定部分，代码控制精确部分 |
+| Input | 系统实际获得的信息 |
+| Transform | 系统怎样处理和改变信息 |
+| Output | 系统最终产生的内容或动作 |
+| Envisioning | 开发前把用户、任务、数据、流程和结果想清楚 |
+| Client | 用户使用 Agent 的入口和界面 |
+| Infrastructure | 支撑消息、状态、存储和运行的基础设施 |
+| Orchestrator | 组织流程并决定把任务交给谁处理 |
+| Language Model | 提供语言理解、判断和生成能力的模型 |
+| Catalog | 可用 Agent、技能、工具和动作的目录 |
+| Tool Calling | 调用外部能力获取信息或执行动作 |
+| Grounding | 给模型提供与当前任务有关的可靠依据 |
+| Semantic Index | 根据语义相关性查找内容的索引 |
+| Parsing | 从文件中解析出文字、结构和元数据 |
+| Chunking | 把长内容拆成适合检索和处理的小块 |
+| MCP | 连接模型应用与外部工具、资源的标准协议 |
+| RAI | 对安全、隐私、公平、透明和合规的系统治理 |
+| Human in the Loop | 在关键步骤让人参与判断或确认 |
+| Audit Log | 记录系统做过什么、为什么做以及结果如何 |
+
+## 七、D2 的机制选择问题
+
+面对一个真实任务时，应依次判断：
+
+1. 业务结果和价值是否明确？
+2. 规则能否完整写出？
+3. 步骤是否可以预先固定？
+4. 是否只需要一次理解、分类或生成？
+5. 是否必须根据中间结果改变下一步？
+6. 是否需要动态选择工具？
+7. 结果允许多大变化？
+8. 错误后果是否可控？
+9. 哪些动作必须人工确认？
+10. Agent 带来的价值是否足以支付复杂度和成本？
+
+## 八、D2 最重要的结论
+
+> 从业务结果出发，把任务拆成 Input、Transform、Output，再用6步构想框架检查用户、输入、工具、推理和结果，最后为每个步骤选择确定性、模型或 Agent 机制。组件越多不代表方案越好；只有当动态判断和工具选择确实产生业务价值时，才值得增加 Agent。
+
+资料来源：
+
+- [Determine fit for purpose](https://learn.microsoft.com/en-us/agents/architecture/determine-fit-for-purpose)
+- [Map agent flows to requirements](https://learn.microsoft.com/en-us/agents/architecture/map-agent-flows)
+- [Envisioning framework](https://learn.microsoft.com/en-us/agents/architecture/envisioning-framework)
+- [Agent architecture components](https://learn.microsoft.com/en-us/agents/architecture/components-of-agent-architecture)
