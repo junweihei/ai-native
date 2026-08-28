@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Native 架构导航与节点学习卡</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --surface: #ffffff;
+      --ink: #172033;
+      --muted: #657085;
+      --line: #dbe2ee;
+      --blue: #2f67d8;
+      --blue-soft: #eaf1ff;
+      --orange: #c96a14;
+      --orange-soft: #fff2e4;
+      --green: #16845b;
+      --green-soft: #e7f7f0;
+      --purple: #7555c7;
+      --purple-soft: #f0ebff;
+      --red: #b84455;
+      --red-soft: #fdecef;
+      --shadow: 0 12px 32px rgba(28, 45, 78, .10);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(47, 103, 216, .10), transparent 28rem),
+        radial-gradient(circle at 90% 12%, rgba(117, 85, 199, .09), transparent 30rem),
+        var(--bg);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 24px;
+      color: #fff;
+      background: rgba(20, 31, 54, .95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 22px rgba(15, 25, 45, .22);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      color: #15213a;
+      background: linear-gradient(135deg, #8fb5ff, #e7efff);
+      font-weight: 900;
+    }
+    .brand strong { display: block; font-size: 15px; }
+    .brand span { display: block; color: #adbad3; font-size: 12px; }
+
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nav a {
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      color: #dbe5f8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .nav a.active, .nav a:hover { color: #12203c; background: #fff; }
+
+    main { max-width: 1500px; margin: 0 auto; padding: 26px; }
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, .7fr);
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    .hero-main, .hero-side, .panel {
+      border: 1px solid rgba(219, 226, 238, .9);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.93);
+      box-shadow: var(--shadow);
+    }
+    .hero-main { padding: 28px; }
+    .hero-main h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 46px); line-height: 1.15; }
+    .hero-main p { max-width: 850px; margin: 0; color: var(--muted); }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .hero-tag { padding: 6px 10px; border-radius: 999px; background: var(--blue-soft); color: #2457bb; font-size: 13px; }
+    .hero-side { display: grid; gap: 10px; padding: 20px; }
+    .stat { display: flex; align-items: baseline; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    .stat:last-child { border-bottom: 0; }
+    .stat b { font-size: 25px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: minmax(170px, .34fr) minmax(520px, 1.5fr) minmax(170px, .34fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .rail {
+      position: sticky;
+      top: 86px;
+      align-self: start;
+      min-height: 620px;
+      padding: 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .rail.security { color: #6f2632; background: linear-gradient(180deg, #fff, var(--red-soft)); border: 1px solid #f2c6cd; }
+    .rail.ops { color: #4d3886; background: linear-gradient(180deg, #fff, var(--purple-soft)); border: 1px solid #d8cdf7; }
+    .rail h2 { margin: 0 0 5px; font-size: 18px; }
+    .rail p { margin: 0 0 14px; color: var(--muted); font-size: 12px; }
+
+    .layers { display: grid; gap: 12px; }
+    .layer {
+      position: relative;
+      padding: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .layer::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: var(--layer-color, var(--blue));
+    }
+    .layer-head { display: flex; justify-content: space-between; gap: 16px; align-items: start; margin-bottom: 12px; }
+    .layer h2 { margin: 0; font-size: 18px; }
+    .layer .question { max-width: 520px; color: var(--muted); font-size: 13px; text-align: right; }
+    .domain { margin-top: 10px; }
+    .domain-title { margin: 0 0 6px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip {
+      appearance: none;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: #25324a;
+      background: #f8faff;
+      font-size: 12px;
+      text-align: left;
+      transition: .16s ease;
+    }
+    .chip:hover, .chip:focus-visible { transform: translateY(-2px); border-color: var(--blue); background: var(--blue-soft); outline: none; box-shadow: 0 6px 16px rgba(47,103,216,.15); }
+    .rail .chip { width: 100%; margin-bottom: 7px; border-color: currentColor; color: inherit; background: rgba(255,255,255,.62); }
+
+    .flow-section { margin-top: 22px; }
+    .section-title { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin: 0 0 12px; }
+    .section-title h2 { margin: 0; font-size: 23px; }
+    .section-title p { margin: 0; color: var(--muted); font-size: 13px; }
+    .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .flow-card { padding: 18px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .flow-card:nth-child(1) { border-top: 5px solid var(--blue); }
+    .flow-card:nth-child(2) { border-top: 5px solid var(--orange); }
+    .flow-card:nth-child(3) { border-top: 5px solid var(--green); }
+    .flow-card h3 { margin: 0 0 4px; }
+    .flow-card p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+    .step { padding: 6px 8px; border-radius: 8px; background: #f4f7fb; font-size: 12px; }
+    .arrow { color: #9aa6b8; }
+
+    .panel { padding: 22px; }
+    .tree-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .search { flex: 1; min-width: 240px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+    .subtle-button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+    .subtle-button:hover { border-color: var(--blue); color: var(--blue); }
+
+    .tree details { margin: 6px 0 6px 20px; }
+    .tree > details { margin-left: 0; }
+    .tree summary { list-style: none; cursor: pointer; }
+    .tree summary::-webkit-details-marker { display: none; }
+    .tree-row { display: inline-flex; align-items: center; gap: 8px; padding: 6px 9px; border-radius: 9px; }
+    .tree-row:hover { background: var(--blue-soft); }
+    .twisty { width: 17px; color: var(--muted); text-align: center; }
+    details[open] > summary .twisty { transform: rotate(90deg); }
+    .type-badge { padding: 2px 6px; border-radius: 999px; color: var(--muted); background: #eef2f7; font-size: 10px; }
+    .tree-link { border: 0; padding: 0; color: inherit; background: transparent; font-weight: 600; }
+
+    .card-shell { display: grid; grid-template-columns: minmax(240px, .45fr) minmax(0, 1.55fr); gap: 18px; }
+    .card-index { max-height: calc(100vh - 130px); overflow: auto; position: sticky; top: 86px; align-self: start; }
+    .card-index h2 { margin-top: 0; }
+    .index-list { display: grid; gap: 7px; }
+    .index-item { padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; text-align: left; }
+    .index-item.active, .index-item:hover { border-color: var(--blue); background: var(--blue-soft); }
+    .index-item small { display: block; margin-top: 2px; color: var(--muted); }
+
+    .learning-card { min-height: 680px; }
+    .breadcrumb { color: var(--muted); font-size: 12px; }
+    .learning-card h1 { margin: 7px 0 2px; line-height: 1.25; }
+    .learning-card .node-type { color: var(--blue); font-size: 13px; font-weight: 700; }
+    .four-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+    .question-card { padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: #fafcff; }
+    .question-card label { display: block; margin-bottom: 7px; font-weight: 800; }
+    .question-card textarea { width: 100%; min-height: 145px; resize: vertical; padding: 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fff; }
+    .question-card textarea:focus { outline: 2px solid rgba(47,103,216,.18); border-color: var(--blue); }
+    .question-card small { display: block; margin-top: 7px; color: var(--muted); }
+    .card-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    .primary-button { padding: 10px 14px; border: 0; border-radius: 10px; color: #fff; background: var(--blue); }
+    .danger-button { padding: 10px 14px; border: 1px solid #efc2c9; border-radius: 10px; color: var(--red); background: var(--red-soft); }
+    .save-status { align-self: center; color: var(--green); font-size: 13px; }
+
+    .empty { padding: 50px 20px; text-align: center; color: var(--muted); }
+    footer { max-width: 1500px; margin: 0 auto; padding: 8px 26px 34px; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 1050px) {
+      .architecture { grid-template-columns: 1fr; }
+      .rail { position: static; min-height: auto; }
+      .flow-grid { grid-template-columns: 1fr; }
+      .card-shell { grid-template-columns: 1fr; }
+      .card-index { position: static; max-height: 360px; }
+    }
+    @media (max-width: 760px) {
+      .topbar { align-items: flex-start; flex-direction: column; padding: 12px 16px; }
+      main { padding: 16px; }
+      .hero { grid-template-columns: 1fr; }
+      .layer-head { flex-direction: column; }
+      .layer .question { text-align: left; }
+      .four-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div><strong>AI Native 架构导航</strong><span>六层功能架构 · 三条运行流 · 两类横向保障</span></div>
+    </div>
+    <nav class="nav" aria-label="主导航">
+      <a href="#architecture" data-view-link="architecture">完整架构图</a>
+      <a href="#tree" data-view-link="tree">知识导航树</a>
+      <a href="#cards" data-view-link="cards">节点学习卡</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="view-architecture" class="view">
+      <div class="hero">
+        <div class="hero-main">
+          <h1>从业务目标，到可验证的 AI Native 系统</h1>
+          <p>点击任何节点打开学习卡。六层描述系统的静态能力，三条流描述运行与改进过程，两类横向保障约束所有层。</p>
+          <div class="hero-tags"><span class="hero-tag">静态：六层功能</span><span class="hero-tag">动态：三条运行流</span><span class="hero-tag">约束：两类横向保障</span></div>
+        </div>
+        <div class="hero-side">
+          <div class="stat"><span>功能架构</span><b>6 层</b></div>
+          <div class="stat"><span>跨层运行</span><b>3 流</b></div>
+          <div class="stat"><span>横向保障</span><b>2 类</b></div>
+          <div class="stat"><span>可下钻节点</span><b id="node-count">—</b></div>
+        </div>
+      </div>
+
+      <div class="architecture">
+        <aside id="security-rail" class="rail security"></aside>
+        <div id="layers" class="layers"></div>
+        <aside id="ops-rail" class="rail ops"></aside>
+      </div>
+
+      <section class="flow-section">
+        <div class="section-title"><h2>三条跨层运行流</h2><p>它们不是新组件，而是观察同一个系统的三种动态视角。</p></div>
+        <div id="flow-grid" class="flow-grid"></div>
+      </section>
+    </section>
+
+    <section id="view-tree" class="view">
+      <div class="panel">
+        <div class="section-title"><h2>AI Native 知识导航树</h2><p>严格区分执行范式、设计模式、实现组件与控制机制。</p></div>
+        <div class="tree-toolbar">
+          <input id="tree-search" class="search" type="search" placeholder="搜索节点，例如：Routing、RAG、MCP、Evals">
+          <button id="expand-all" class="subtle-button">全部展开</button>
+          <button id="collapse-all" class="subtle-button">全部折叠</button>
+        </div>
+        <div id="tree" class="tree"></div>
+      </div>
+    </section>
+
+    <section id="view-cards" class="view">
+      <div class="card-shell">
+        <aside class="panel card-index">
+          <h2>节点目录</h2>
+          <input id="card-search" class="search" type="search" placeholder="筛选学习卡">
+          <div id="card-index-list" class="index-list" style="margin-top:12px"></div>
+        </aside>
+        <article id="learning-card" class="panel learning-card"></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>本页为本地学习工具。填写内容保存在当前浏览器的 localStorage；复制或导出 Markdown 后再纳入正式学习成果。</footer>
+
+  <script>
+    const N = (id, label, type, children = [], meta = {}) => ({ id, label, type, children, ...meta });
+
+    const taxonomy = [
+      N('functional', '六层功能架构', '架构视角', [
+        N('layer_business', '第1层：业务与体验层', '功能层', [
+          N('business_definition', '业务定义', '能力域', [
+            N('users_roles', '用户与角色', '核心组件'), N('business_problem', '业务问题', '核心组件'), N('business_goal', '业务目标', '核心组件'), N('success_criteria', '成功标准', '核心组件')
+          ]),
+          N('scenario_interaction', '场景与交互', '能力域', [
+            N('use_case', '应用场景', '核心组件'), N('client', '客户端', '核心组件'), N('chat_ui', '聊天界面', '核心组件'), N('business_entry', '业务系统入口', '核心组件')
+          ]),
+          N('user_outcome', '用户结果', '能力域', [
+            N('content_output', '内容输出', '结果类型'), N('decision_support', '建议与决策辅助', '结果类型'), N('system_action', '系统动作', '结果类型'), N('user_confirmation', '用户确认与反馈', '结果类型')
+          ])
+        ], { question: '为谁解决什么问题，通过什么入口交付什么结果？', color: '#2f67d8' }),
+
+        N('layer_orchestration', '第2层：任务协调与控制层', '功能层', [
+          N('execution_paradigm', '执行范式', '概念类别', [
+            N('deterministic_rule', '确定性规则', '执行范式'), N('workflow', 'Workflow', '执行范式'), N('agent', 'Agent', '执行范式'), N('hybrid', 'Hybrid', '执行范式')
+          ]),
+          N('workflow_patterns', 'Workflow Patterns', '概念类别', [
+            N('prompt_chaining', 'Prompt Chaining', '设计模式'), N('routing_pattern', 'Routing', '设计模式'),
+            N('parallelization', 'Parallelization', '设计模式', [N('sectioning', 'Sectioning', '模式变体'), N('voting', 'Voting', '模式变体')]),
+            N('orchestrator_workers', 'Orchestrator-Workers', '设计模式'), N('evaluator_optimizer', 'Evaluator-Optimizer', '设计模式')
+          ]),
+          N('orchestration_components', '协调角色与执行组件', '概念类别', [
+            N('router_component', 'Router / Classifier', '实现组件'), N('planner', 'Planner', '实现组件'), N('orchestrator', 'Orchestrator', '实现组件'), N('worker', 'Worker / Executor', '实现组件'), N('generator', 'Generator', '实现组件'), N('evaluator', 'Evaluator', '实现组件'), N('aggregator', 'Aggregator', '实现组件'), N('state_manager', 'State Manager', '实现组件')
+          ]),
+          N('runtime_controls', '运行控制机制', '概念类别', [
+            N('gate_validation', 'Gate / Validation', '控制机制'), N('checkpoint', 'Checkpoint', '控制机制'), N('stop_condition', 'Stop Condition', '控制机制'), N('timeout_retry', 'Timeout / Retry', '控制机制'), N('error_recovery', 'Error Recovery', '控制机制'), N('budget_limit', 'Budget Limit', '控制机制'), N('human_approval', 'Human Approval', '控制机制'), N('handoff', 'Handoff', '控制机制')
+          ])
+        ], { question: '由谁决定下一步，任务怎样停止、恢复和转交？', color: '#c96a14' }),
+
+        N('layer_context', '第3层：上下文、记忆与知识层', '功能层', [
+          N('instructions_context', '指令与当前上下文', '能力域', [
+            N('system_instructions', 'System Instructions', '核心组件'), N('user_prompt', 'User Prompt', '核心组件'), N('tool_definitions', 'Tool Definitions', '核心组件'), N('message_history', 'Message History', '核心组件'), N('tool_results', 'Tool Results', '核心组件')
+          ]),
+          N('session_memory', '会话状态与记忆', '能力域', [
+            N('session', 'Session', '核心组件'), N('working_state', 'Working State', '核心组件'), N('short_memory', 'Short-term Memory', '核心组件'), N('long_memory', 'Long-term Memory', '核心组件')
+          ]),
+          N('knowledge_rag', '知识工程与 RAG', '能力域', [
+            N('knowledge_ingestion', '知识摄取', '处理阶段', [N('parsing', 'Parsing', '处理步骤'), N('chunking', 'Chunking', '处理步骤'), N('metadata', 'Metadata', '数据结构'), N('permission_tag', 'Permission Tag', '安全元数据'), N('embedding_indexing', 'Embedding / Indexing', '处理步骤')]),
+            N('retrieval', '检索', '处理阶段', [N('query_transform', 'Query Transformation', '处理步骤'), N('search', 'Search', '处理步骤'), N('permission_filter', 'Permission Filter', '处理步骤'), N('reranking', 'Reranking', '处理步骤')]),
+            N('context_augmentation', '上下文增强', '处理阶段', [N('context_selection', 'Context Selection', '处理步骤'), N('context_assembly', 'Context Assembly', '处理步骤'), N('citation_grounding', 'Citation / Grounding', '处理步骤')])
+          ])
+        ], { question: '模型当前能看到什么，依据什么进行判断？', color: '#16845b' }),
+
+        N('layer_model', '第4层：模型与智能能力层', '功能层', [
+          N('model_types', '模型类型', '概念类别', [N('llm', 'LLM', '模型类型'), N('multimodal_model', 'Multimodal Model', '模型类型'), N('embedding_model', 'Embedding Model', '模型类型'), N('reranker_model', 'Reranker', '模型类型')]),
+          N('model_tasks', '模型任务', '概念类别', [N('classification', '分类', '模型任务'), N('extraction', '抽取', '模型任务'), N('summarization', '总结', '模型任务'), N('generation', '生成', '模型任务'), N('structured_output', '结构化输出', '模型任务'), N('reasoning_planning', '推理与规划', '模型任务')]),
+          N('model_strategy', '模型使用策略', '概念类别', [N('model_selection', 'Model Selection', '使用策略'), N('model_routing', 'Model Routing', '使用策略'), N('model_fallback', 'Fallback', '使用策略'), N('model_versioning', '版本与参数管理', '使用策略')])
+        ], { question: '哪种模型为当前任务提供什么能力？', color: '#7555c7' }),
+
+        N('layer_tools', '第5层：工具与系统集成层', '功能层', [
+          N('agent_capabilities', 'Agent 可见能力', '能力域', [N('tool', 'Tool', '核心组件'), N('skill', 'Skill', '核心组件'), N('tool_catalog', 'Tool / Skill Catalog', '核心组件')]),
+          N('call_contracts', '调用契约与协议', '能力域', [N('function_calling', 'Function Calling', '调用机制'), N('tool_schema', 'Tool Schema', '调用契约'), N('mcp_client', 'MCP Client', '协议组件'), N('mcp_server', 'MCP Server', '协议组件')]),
+          N('enterprise_integration', '企业集成设施', '能力域', [N('api', 'API', '接口'), N('adapter', 'Adapter', '集成组件'), N('api_gateway', 'API Gateway', '集成组件'), N('event_integration', 'Event / Message Integration', '集成机制')]),
+          N('external_targets', '外部资源与行动目标', '能力域', [N('database', 'Database', '外部资源'), N('file_system', 'File System', '外部资源'), N('search_service', 'Search Service', '外部资源'), N('saas', 'SaaS', '外部系统'), N('enterprise_system', 'Enterprise Systems', '外部系统')])
+        ], { question: '系统怎样获取外部信息并影响现实环境？', color: '#b84455' }),
+
+        N('layer_runtime', '第6层：运行时与平台基础设施层', '功能层', [
+          N('runtimes', '运行时', '能力域', [N('agent_runtime', 'Agent Runtime', '运行组件'), N('model_runtime', 'Model Runtime', '运行组件')]),
+          N('state_communication', '状态与通信', '能力域', [N('session_store', 'Session Store', '基础设施'), N('state_store', 'State Store', '基础设施'), N('message_queue', 'Message Queue', '基础设施'), N('persistent_storage', 'Persistent Storage', '基础设施')]),
+          N('execution_environment', '执行环境', '能力域', [N('compute', 'Compute', '基础设施'), N('network', 'Network', '基础设施'), N('sandbox', 'Sandbox', '基础设施'), N('container', 'Container', '基础设施')]),
+          N('platform_operations', '平台运行', '能力域', [N('config_secrets', 'Configuration / Secrets', '运营能力'), N('deployment', 'Deployment', '运营能力'), N('scaling', 'Scaling', '运营能力'), N('resilience', 'Resilience', '运营能力'), N('disaster_recovery', 'Disaster Recovery', '运营能力')])
+        ], { question: '系统在哪里运行，怎样保证稳定、可扩展和可恢复？', color: '#42526e' })
+      ]),
+
+      N('flows', '三条跨层运行流', '架构视角', [
+        N('flow_context', '上下文与信息流', '跨层运行流', [N('info_acquisition', '信息获取', '流转阶段'), N('context_curate', 'Context 选择与组装', '流转阶段'), N('model_inference', '模型推理', '流转阶段'), N('tool_result_return', 'Tool Result 回流', '流转阶段'), N('state_update', '状态更新', '流转阶段'), N('final_output', '最终输出', '流转阶段')], { question: '系统当前知道什么，信息怎样进入模型并形成输出？' }),
+        N('flow_execution', '任务执行与决策流', '跨层运行流', [N('receive_goal', '接收目标', '流转阶段'), N('choose_paradigm', '选择执行范式', '流转阶段'), N('decompose_route_plan', '拆解、路由或规划', '流转阶段'), N('execute_observe', '执行与观察', '流转阶段'), N('next_decision', '下一步决策', '流转阶段'), N('complete_stop_handoff', '完成、停止或接管', '流转阶段')], { question: '谁决定下一步，任务怎样从目标走向完成？' }),
+        N('flow_improvement', '评测与改进流', '跨层运行流', [N('collect_trace', '收集结果与轨迹', '流转阶段'), N('auto_human_eval', '自动评测与人工反馈', '流转阶段'), N('failure_classification', '失败分类', '流转阶段'), N('root_cause', '根因定位', '流转阶段'), N('component_change', '修改对应组件', '流转阶段'), N('regression_compare', '回归测试与版本比较', '流转阶段')], { question: '怎样证明有效，并把失败转化为下一版改进？' })
+      ]),
+
+      N('safeguards', '两类横向保障', '架构视角', [
+        N('security_governance', '安全、身份与治理', '横向保障', [
+          N('identity_system', '身份体系', '保障域', [N('user_identity', 'User Identity', '保障组件'), N('agent_identity', 'Agent Identity', '保障组件'), N('workload_identity', 'Workload Identity', '保障组件')]),
+          N('access_control', '访问控制', '保障域', [N('authentication', 'Authentication', '保障机制'), N('authorization', 'Authorization', '保障机制'), N('least_privilege', 'Least Privilege', '保障原则'), N('permission_propagation', 'Permission Propagation', '保障机制')]),
+          N('security_control', '安全控制', '保障域', [N('data_secret_protection', 'Data / Secret Protection', '保障机制'), N('prompt_injection_defense', 'Prompt Injection Defense', '保障机制'), N('tool_safety', 'Tool Safety', '保障机制'), N('security_sandbox', 'Security Sandbox', '保障机制')]),
+          N('governance_requirements', '治理要求', '保障域', [N('policy', 'Policy', '治理机制'), N('approval', 'Approval', '治理机制'), N('compliance', 'Compliance', '治理要求'), N('responsible_ai', 'Responsible AI', '治理要求')])
+        ], { question: '谁可以做什么，怎样限制风险并满足治理要求？' }),
+        N('observability_ops', '可观测性、审计与运营', '横向保障', [
+          N('telemetry_evidence', '遥测证据', '保障域', [N('logging', 'Logging', '观测能力'), N('tracing', 'Tracing', '观测能力'), N('metrics', 'Metrics', '观测能力'), N('audit', 'Audit', '审计能力')]),
+          N('eval_foundation', '评测基础', '保障域', [N('eval_dataset', 'Eval Dataset', '评测资产'), N('evaluator_infra', 'Evaluator Infrastructure', '评测能力'), N('version_lineage', 'Version Lineage', '证据能力'), N('reproducibility', 'Reproducibility', '证据能力')]),
+          N('operations_management', '运营管理', '保障域', [N('slo_reliability', 'SLO / Reliability', '运营能力'), N('cost_latency', 'Cost / Latency', '运营能力'), N('alerting', 'Alerting', '运营能力'), N('incident_response', 'Incident Response', '运营能力'), N('capacity_management', 'Capacity Management', '运营能力')])
+        ], { question: '怎样看见系统行为、证明结果并持续运营？' })
+      ])
+    ];
+
+    const allNodes = [];
+    const nodeById = new Map();
+    function indexNodes(nodes, path = []) {
+      nodes.forEach(node => {
+        node.path = [...path, node.label];
+        allNodes.push(node);
+        nodeById.set(node.id, node);
+        indexNodes(node.children || [], node.path);
+      });
+    }
+    indexNodes(taxonomy);
+
+    const learnableNodes = allNodes.filter(n => n.id !== 'functional' && n.id !== 'flows' && n.id !== 'safeguards');
+    const layers = taxonomy[0].children;
+    const flows = taxonomy[1].children;
+    const safeguards = taxonomy[2].children;
+
+    const esc = s => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    const nodeButton = node => `<button class="chip" data-node="${esc(node.id)}" title="打开 ${esc(node.label)} 学习卡">${esc(node.label)}</button>`;
+
+    function renderArchitecture() {
+      document.getElementById('node-count').textContent = learnableNodes.length;
+      document.getElementById('layers').innerHTML = layers.map(layer => `
+        <section class="layer" style="--layer-color:${layer.color}">
+          <div class="layer-head"><h2>${esc(layer.label)}</h2><div class="question">${esc(layer.question || '')}</div></div>
+          ${layer.children.map(domain => `<div class="domain"><div class="domain-title">${esc(domain.label)} · ${esc(domain.type)}</div><div class="chips">${domain.children.map(nodeButton).join('')}</div></div>`).join('')}
+        </section>`).join('');
+
+      const rail = (node, target, intro) => {
+        document.getElementById(target).innerHTML = `<h2>${esc(node.label)}</h2><p>${esc(intro)}</p>${node.children.map(domain => `<div class="domain-title">${esc(domain.label)}</div>${domain.children.map(nodeButton).join('')}`).join('')}`;
+      };
+      rail(safeguards[0], 'security-rail', '贯穿六层的身份、权限、安全与治理约束');
+      rail(safeguards[1], 'ops-rail', '贯穿六层的证据、评测、审计与持续运营');
+
+      document.getElementById('flow-grid').innerHTML = flows.map(flow => `<article class="flow-card"><h3><button class="tree-link" data-node="${flow.id}">${esc(flow.label)}</button></h3><p>${esc(flow.question || '')}</p><div class="flow-steps">${flow.children.map((s,i) => `${i ? '<span class="arrow">→</span>' : ''}<button class="chip step" data-node="${s.id}">${esc(s.label)}</button>`).join('')}</div></article>`).join('');
+    }
+
+    function renderTreeNode(node, depth = 0) {
+      const children = node.children || [];
+      if (!children.length) return `<div class="tree-row" data-tree-label="${esc(node.label.toLowerCase())}" style="margin-left:${depth * 20}px"><span class="twisty">•</span><button class="tree-link" data-node="${node.id}">${esc(node.label)}</button><span class="type-badge">${esc(node.type)}</span></div>`;
+      return `<details open data-tree-label="${esc((node.label + ' ' + flattenLabels(node)).toLowerCase())}"><summary><span class="tree-row"><span class="twisty">›</span><button class="tree-link" data-node="${node.id}">${esc(node.label)}</button><span class="type-badge">${esc(node.type)}</span></span></summary>${children.map(c => renderTreeNode(c, depth + 1)).join('')}</details>`;
+    }
+    function flattenLabels(node) { return [node.label, ...(node.children || []).flatMap(c => flattenLabels(c))].join(' '); }
+    function renderTree() { document.getElementById('tree').innerHTML = taxonomy.map(n => renderTreeNode(n)).join(''); }
+
+    let selectedId = 'layer_business';
+    const fieldMeta = {
+      what: ['它是什么？', '用自己的话定义它，并说明它属于范式、模式、组件、机制、流程还是保障能力。'],
+      problem: ['解决什么问题？', '写清楚没有它会出现什么限制、错误、成本或风险。'],
+      usage: ['什么时候使用或不使用？', '同时写适用条件、不适用条件、替代方案和主要权衡。'],
+      proof: ['怎样证明它有效？', '给出可以观察的证据、指标、测试样例、失败阈值或人工验收方法。']
+    };
+    const storageKey = id => `ai-native-card:${id}`;
+    function readCard(id) { try { return JSON.parse(localStorage.getItem(storageKey(id)) || '{}'); } catch { return {}; } }
+
+    function cardMarkdown(node, data) {
+      return `# ${node.label} 学习卡\n\n- 节点类型：${node.type}\n- 导航路径：${node.path.join(' > ')}\n\n## 它是什么？\n\n${data.what || '____'}\n\n## 解决什么问题？\n\n${data.problem || '____'}\n\n## 什么时候使用或不使用？\n\n${data.usage || '____'}\n\n## 怎样证明它有效？\n\n${data.proof || '____'}\n`;
+    }
+
+    function renderCard(id) {
+      const node = nodeById.get(id) || nodeById.get('layer_business');
+      selectedId = node.id;
+      const data = readCard(node.id);
+      document.getElementById('learning-card').innerHTML = `
+        <div class="breadcrumb">${node.path.map(esc).join(' › ')}</div>
+        <h1>${esc(node.label)}</h1>
+        <div class="node-type">${esc(node.type)}</div>
+        <div class="four-grid">
+          ${Object.entries(fieldMeta).map(([key, meta]) => `<section class="question-card"><label for="field-${key}">${meta[0]}</label><textarea id="field-${key}" data-field="${key}" placeholder="${esc(meta[1])}">${esc(data[key] || '')}</textarea><small>${esc(meta[1])}</small></section>`).join('')}
+        </div>
+        <div class="card-actions">
+          <button id="save-card" class="primary-button">保存到本地</button>
+          <button id="copy-card" class="subtle-button">复制 Markdown</button>
+          <button id="reset-card" class="danger-button">清空本节点</button>
+          <span id="save-status" class="save-status"></span>
+        </div>`;
+      renderCardIndex(document.getElementById('card-search')?.value || '');
+    }
+
+    function currentCardData() {
+      const result = {};
+      document.querySelectorAll('[data-field]').forEach(el => result[el.dataset.field] = el.value.trim());
+      return result;
+    }
+
+    function renderCardIndex(query = '') {
+      const q = query.trim().toLowerCase();
+      const nodes = learnableNodes.filter(n => !q || (n.label + ' ' + n.type + ' ' + n.path.join(' ')).toLowerCase().includes(q));
+      document.getElementById('card-index-list').innerHTML = nodes.length ? nodes.map(n => `<button class="index-item ${n.id === selectedId ? 'active' : ''}" data-node="${n.id}">${esc(n.label)}<small>${esc(n.type)} · ${esc(n.path.slice(-2,-1)[0] || '')}</small></button>`).join('') : '<div class="empty">没有匹配节点</div>';
+    }
+
+    function showView(view, nodeId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('[data-view-link]').forEach(a => a.classList.toggle('active', a.dataset.viewLink === view));
+      const target = document.getElementById(`view-${view}`) || document.getElementById('view-architecture');
+      target.classList.add('active');
+      if (view === 'cards') renderCard(nodeId || selectedId);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function route() {
+      const raw = location.hash.replace(/^#/, '') || 'architecture';
+      const [view, nodeId] = raw.split('/');
+      showView(['architecture','tree','cards'].includes(view) ? view : 'architecture', nodeId);
+    }
+
+    document.addEventListener('click', async e => {
+      const nodeTarget = e.target.closest('[data-node]');
+      if (nodeTarget) { e.preventDefault(); location.hash = `cards/${nodeTarget.dataset.node}`; return; }
+      if (e.target.id === 'expand-all') document.querySelectorAll('#tree details').forEach(d => d.open = true);
+      if (e.target.id === 'collapse-all') document.querySelectorAll('#tree details').forEach(d => d.open = false);
+      if (e.target.id === 'save-card') {
+        localStorage.setItem(storageKey(selectedId), JSON.stringify(currentCardData()));
+        const s = document.getElementById('save-status'); s.textContent = '已保存'; setTimeout(() => s.textContent = '', 1800);
+      }
+      if (e.target.id === 'copy-card') {
+        const text = cardMarkdown(nodeById.get(selectedId), currentCardData());
+        await navigator.clipboard.writeText(text);
+        const s = document.getElementById('save-status'); s.textContent = 'Markdown 已复制'; setTimeout(() => s.textContent = '', 1800);
+      }
+      if (e.target.id === 'reset-card' && confirm('确认清空这个节点的四问内容？')) {
+        localStorage.removeItem(storageKey(selectedId)); renderCard(selectedId);
+      }
+    });
+
+    document.getElementById('tree-search').addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('#tree [data-tree-label]').forEach(el => { el.style.display = !q || el.dataset.treeLabel.includes(q) ? '' : 'none'; });
+      if (q) document.querySelectorAll('#tree details').forEach(d => d.open = true);
+    });
+    document.getElementById('card-search').addEventListener('input', e => renderCardIndex(e.target.value));
+    window.addEventListener('hashchange', route);
+
+    renderArchitecture();
+    renderTree();
+    renderCardIndex();
+    route();
+  </script>
+</body>
+</html>

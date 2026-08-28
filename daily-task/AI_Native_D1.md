@@ -1,3 +1,19 @@
+---
+id: S-M01-D01
+title: AI Native D1 学习会话
+type: session
+status: completed
+task_status_at_end: completed
+created: 2026-08-25
+updated: 2026-08-28
+goal: G6M
+milestone: M01
+week: M01-W01
+task_id: M01-D01
+produces:
+  - 01-map/AI_Native_知识地图_V0.1.md
+---
+
 # AI Native D1：生成式 AI 与 Agent 基础
 
 > AI Native 知识地图 · 节点 01

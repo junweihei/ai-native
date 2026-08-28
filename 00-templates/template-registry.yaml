@@ -1,0 +1,158 @@
+version: V0.1
+status: active
+source_of_truth: 00-templates
+specification: ../AI_Native_Learning_OS_统一模板规范_V0.1.md
+execution_rules: ../AI_Native_Learning_OS_学习执行规则_V0.1.md
+
+web_mapping:
+  identity_field: template_id
+  task_field: task_id
+  status_field: status
+  artifact_field: artifact_id
+  evidence_field: evidence_for
+  output_field: output_path
+  required_status_values:
+    - draft
+    - active
+    - not_started
+    - learning
+    - review_pending
+    - completed
+    - verified
+    - blocked
+    - archived
+
+submission_contract:
+  required_fields:
+    - template_id
+    - template_version
+    - type
+    - status
+    - updated
+  task_bound_required_fields:
+    - task_id
+  artifact_required_fields:
+    - artifact_id
+    - output_path
+    - evidence_for
+  submitted_status: review_pending
+  accepted_status: completed
+  independently_verified_status: verified
+
+templates:
+  - template_id: tpl-task-daily-v0.1
+    name: 每日任务卡
+    category: task
+    type: task
+    path: 01-task/每日任务卡模板.md
+    use_when: 新的每日任务进入正式执行队列
+    default_output_dir: daily-task
+    filename_pattern: "{{task_id}}_{{title}}.md"
+
+  - template_id: tpl-task-remediation-v0.1
+    name: 补强任务卡
+    category: task
+    type: task
+    path: 01-task/补强任务卡模板.md
+    use_when: 周门禁、测试或复盘触发一个短时补强任务
+    default_output_dir: daily-task
+    filename_pattern: "{{remediation_id}}_补强_{{title}}.md"
+
+  - template_id: tpl-session-daily-v0.1
+    name: 每日学习会话
+    category: learning
+    type: session
+    path: 02-learning/每日学习会话模板.md
+    use_when: 记录一次真实学习过程和续接点
+    default_output_dir: daily-task
+    filename_pattern: "AI_Native_{{task_id}}_{{date}}.md"
+
+  - template_id: tpl-learning-node-v0.1
+    name: 知识节点学习
+    category: learning
+    type: node
+    path: 02-learning/知识节点学习模板.md
+    use_when: 一个知识节点需要长期维护、比较边界或跨月复用
+    default_output_dir: 01-map
+    filename_pattern: "{{node_name}}_学习卡_V0.1.md"
+
+  - template_id: tpl-learning-case-v0.1
+    name: 案例拆解
+    category: learning
+    type: artifact
+    path: 02-learning/案例拆解模板.md
+    use_when: 拆解优秀案例、普通案例或反例
+    default_output_dir: 02-cases
+    filename_pattern: "{{case_type}}_{{case_name}}.md"
+
+  - template_id: tpl-learning-practice-v0.1
+    name: 专项练习
+    category: learning
+    type: artifact
+    path: 02-learning/专项练习模板.md
+    use_when: 针对一个已证实弱点进行独立练习、反馈和再做
+    default_output_dir: 03-practice
+    filename_pattern: "专项练习_{{weakness_short_name}}_{{date}}.md"
+
+  - template_id: tpl-learning-real-task-v0.1
+    name: 真实任务应用
+    category: learning
+    type: artifact
+    path: 02-learning/真实任务应用模板.md
+    use_when: 把知识应用到真实问题并形成可验收方案
+    default_output_dir: 04-use
+    filename_pattern: "{{task_name}}_V{{artifact_version}}.md"
+
+  - template_id: tpl-evidence-artifact-v0.1
+    name: 成果证据声明
+    category: evidence
+    type: evidence
+    path: 03-evidence/成果证据声明模板.md
+    use_when: 正式成果需要声明证明对象、独立范围和验收结果
+    default_output_dir: same_as_artifact
+    filename_pattern: append_to_artifact
+
+  - template_id: tpl-evidence-closed-book-v0.1
+    name: 闭卷验证
+    category: evidence
+    type: evidence
+    path: 03-evidence/闭卷验证模板.md
+    use_when: 验证离开资料是否仍能画、讲、判断或重写
+    default_output_dir: 05-evidence
+    filename_pattern: "闭卷验证_{{task_id}}_{{date}}.md"
+
+  - template_id: tpl-evidence-eval-v0.1
+    name: Eval 记录
+    category: evidence
+    type: evidence
+    path: 03-evidence/Eval记录模板.md
+    use_when: 使用测试集、指标、基线或用户反馈验证项目结果
+    default_output_dir: 05-evidence
+    filename_pattern: "Eval_{{artifact_id}}_{{date}}.md"
+
+  - template_id: tpl-review-daily-v0.1
+    name: 日收尾
+    category: review
+    type: review
+    path: 04-review/日收尾模板.md
+    use_when: 每次学习结束时记录结果、状态和续接点
+    default_output_dir: append_to_session
+    filename_pattern: append_to_session
+
+  - template_id: tpl-review-weekly-v0.1
+    name: 周复盘
+    category: review
+    type: review
+    path: 04-review/周复盘模板.md
+    use_when: 周阶段结束或周门禁评估
+    default_output_dir: 05-evidence
+    filename_pattern: "{{week}}_周复盘.md"
+
+  - template_id: tpl-review-monthly-v0.1
+    name: 月度验收
+    category: review
+    type: review
+    path: 04-review/月度验收模板.md
+    use_when: 月度里程碑验收并向下月反馈
+    default_output_dir: 05-evidence
+    filename_pattern: "{{milestone}}_月度验收.md"

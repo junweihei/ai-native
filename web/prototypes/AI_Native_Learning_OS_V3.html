@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Native Learning OS · V3</title>
+  <style>
+    :root{
+      --bg:#07101f;--bg2:#0a1427;--panel:#0d1a2f;--panel2:#111f36;--line:#223553;
+      --text:#e8f1ff;--muted:#8ea3c4;--cyan:#4ee7ff;--blue:#6d8cff;--violet:#a57aff;
+      --green:#5de3ad;--amber:#ffc96b;--red:#ff7c91;--paper:#f5f7fb;--ink:#172033;
+      --shadow:0 22px 60px rgba(0,0,0,.28);--radius:18px;--rail:88px;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:
+      radial-gradient(circle at 12% 0%,rgba(78,231,255,.09),transparent 28%),
+      radial-gradient(circle at 88% 18%,rgba(165,122,255,.09),transparent 30%),
+      linear-gradient(180deg,#07101f 0%,#081222 100%);color:var(--text);
+      font:14px/1.6 Inter,"Microsoft YaHei",system-ui,sans-serif;overflow:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:
+      linear-gradient(rgba(109,140,255,.12) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(109,140,255,.12) 1px,transparent 1px);background-size:42px 42px}
+    button,input,textarea,select{font:inherit} button{color:inherit}
+    .app{height:100%;display:grid;grid-template-columns:var(--rail) minmax(0,1fr);position:relative}
+
+    /* 全局导航只负责产品模块，不承载知识树 */
+    .app-rail{border-right:1px solid rgba(110,145,198,.18);background:rgba(6,14,27,.88);backdrop-filter:blur(18px);
+      display:flex;flex-direction:column;align-items:center;padding:18px 10px;z-index:5}
+    .brand{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;margin-bottom:24px;font-weight:900;
+      letter-spacing:-1px;background:linear-gradient(145deg,rgba(78,231,255,.25),rgba(109,140,255,.22));
+      border:1px solid rgba(78,231,255,.45);box-shadow:0 0 30px rgba(78,231,255,.14)}
+    .brand span{background:linear-gradient(90deg,var(--cyan),#fff);-webkit-background-clip:text;color:transparent}
+    .rail-nav{display:grid;gap:9px;width:100%}
+    .rail-btn{border:0;background:transparent;border-radius:14px;padding:10px 4px;color:var(--muted);cursor:pointer;
+      display:grid;gap:4px;place-items:center;transition:.2s}
+    .rail-btn:hover{background:rgba(255,255,255,.05);color:var(--text)}
+    .rail-btn.active{background:linear-gradient(145deg,rgba(78,231,255,.16),rgba(109,140,255,.12));color:var(--cyan);
+      box-shadow:inset 0 0 0 1px rgba(78,231,255,.2)}
+    .rail-icon{font-size:18px;line-height:1}.rail-label{font-size:11px;letter-spacing:.04em}
+    .rail-foot{margin-top:auto;color:#617596;font-size:10px;text-align:center}
+
+    .shell{min-width:0;height:100%;display:grid;grid-template-rows:74px minmax(0,1fr)}
+    .topbar{border-bottom:1px solid rgba(110,145,198,.18);background:rgba(8,17,32,.76);backdrop-filter:blur(18px);
+      display:flex;align-items:center;gap:18px;padding:0 26px;z-index:4}
+    .location{min-width:230px}.eyebrow{font-size:10px;letter-spacing:.16em;color:var(--cyan);font-weight:800;text-transform:uppercase}
+    .location h1{margin:2px 0 0;font-size:18px;line-height:1.25}.location small{color:var(--muted)}
+    .top-spacer{flex:1}.source-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--muted);white-space:nowrap}
+    .source-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber)}
+    .source-dot.ok{background:var(--green);box-shadow:0 0 12px var(--green)}
+    .btn{border:1px solid var(--line);background:#101e34;border-radius:11px;padding:9px 13px;cursor:pointer;transition:.2s}
+    .btn:hover{border-color:#3a5d8d;transform:translateY(-1px)}
+    .btn.primary{border-color:rgba(78,231,255,.45);background:linear-gradient(135deg,rgba(78,231,255,.18),rgba(109,140,255,.18));color:#dffbff}
+    .btn.ghost{background:transparent}.btn.small{padding:6px 9px;font-size:12px}.btn.danger{color:#ffc2cc;border-color:rgba(255,124,145,.35)}
+    .mobile-menu{display:none}
+
+    .workspace{position:relative;min-height:0}.view{display:none;height:100%;overflow:auto;padding:24px 26px 38px}
+    .view.active{display:block}.page{max-width:1480px;margin:0 auto}
+    .page-head{display:flex;align-items:flex-end;gap:20px;margin-bottom:20px}.page-head>div:first-child{flex:1}
+    .page-head h2{font-size:27px;margin:3px 0 4px;letter-spacing:-.03em}.page-head p{margin:0;color:var(--muted);max-width:760px}
+    .panel{border:1px solid rgba(84,119,169,.25);border-radius:var(--radius);background:linear-gradient(160deg,rgba(16,31,54,.93),rgba(10,22,41,.92));box-shadow:var(--shadow)}
+    .panel-pad{padding:20px}.subtle{color:var(--muted)}.cyan{color:var(--cyan)}.green{color:var(--green)}.amber{color:var(--amber)}
+    .kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800}
+    .tag{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:#a9bddb;font-size:11px}
+    .tag.cyan{border-color:rgba(78,231,255,.3);background:rgba(78,231,255,.07)}
+
+    /* 今日学习 */
+    .hero{padding:30px;position:relative;overflow:hidden;min-height:230px;display:grid;grid-template-columns:1.4fr .8fr;gap:24px}
+    .hero:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(78,231,255,.16);border-radius:50%;right:-120px;top:-175px;box-shadow:0 0 80px rgba(78,231,255,.08)}
+    .hero h2{font-size:34px;line-height:1.15;margin:10px 0}.hero p{color:#aebfda;max-width:650px}
+    .focus-card{align-self:stretch;border:1px solid rgba(78,231,255,.25);border-radius:16px;background:rgba(6,16,31,.55);padding:18px;position:relative;z-index:1}
+    .focus-card h3{font-size:20px;margin:7px 0}.focus-path{font-size:12px;color:var(--muted);margin-bottom:14px}
+    .dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:16px;margin-top:16px}
+    .metric{padding:18px}.metric strong{display:block;font-size:28px;line-height:1.2;margin-top:8px}.metric small{color:var(--muted)}
+    .section-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:16px}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.section-title h3{margin:0;font-size:17px}
+    .task-list,.recent-list{display:grid;gap:10px}.task,.recent{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(84,119,169,.2);border-radius:12px;background:rgba(255,255,255,.018)}
+    .task-index{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(109,140,255,.15);color:#b8c5ff;font-weight:800}
+    .task-main,.recent-main{flex:1;min-width:0}.task-main b,.recent-main b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task-main small,.recent-main small{color:var(--muted)}
+
+    /* 知识地图：完整树仅存在于这个页面 */
+    .map-layout{height:calc(100vh - 152px);min-height:650px;display:grid;grid-template-columns:310px minmax(520px,1fr) 290px;gap:15px}
+    .tree-panel,.map-main,.node-summary{min-height:0;overflow:auto}
+    .tree-panel{padding:15px}.tree-root{padding:15px;border-radius:14px;background:linear-gradient(135deg,rgba(78,231,255,.13),rgba(109,140,255,.1));border:1px solid rgba(78,231,255,.24);margin-bottom:12px}
+    .tree-root b{font-size:15px}.tree-root small{display:block;color:var(--muted)}
+    .tree{display:grid;gap:4px}.tree-row{position:relative}
+    .tree-row[data-level="1"]{margin-top:9px}
+    .tree-row[data-level="2"],.tree-row[data-level="3"],.tree-row[data-level="4"]{margin-left:16px;border-left:1px solid #263a59;padding-left:10px}
+    .tree-row[data-level="2"]:before,.tree-row[data-level="3"]:before,.tree-row[data-level="4"]:before{content:"";position:absolute;left:0;top:19px;width:9px;border-top:1px solid #263a59}
+    .tree-item{width:100%;border:0;background:transparent;color:#bac9df;text-align:left;border-radius:10px;padding:8px 9px;display:flex;align-items:center;gap:8px;cursor:pointer}
+    .tree-item:hover{background:rgba(255,255,255,.045)}.tree-item.active{background:rgba(78,231,255,.11);color:#e8fcff;box-shadow:inset 2px 0 var(--cyan)}
+    .tree-row[data-level="1"]>.tree-item{font-weight:850;color:#f0f5ff;background:rgba(109,140,255,.07)}
+    .tree-row[data-level="2"]>.tree-item{font-weight:700;color:#c8d7ed}
+    .tree-row[data-level="3"]>.tree-item{font-size:13px;color:#9eb3d1}
+    .tree-row[data-level="4"]>.tree-item{font-size:12px;color:#8da1bf}
+    .chev{width:13px;color:#6f85a7;transition:.2s}.tree-row.collapsed>.tree-children{display:none}.tree-row.collapsed>.tree-item .chev{transform:rotate(-90deg)}
+    .level-chip{margin-left:auto;font-size:9px;border:1px solid #2d4569;border-radius:5px;padding:1px 5px;color:#7289ab;text-transform:uppercase}
+    .node-dot{width:7px;height:7px;border-radius:50%;background:#536987;flex:0 0 auto}.node-dot.learning{background:var(--amber)}.node-dot.verified{background:var(--green)}
+    .map-main{padding:22px}.architecture-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.architecture-head h3{margin:2px 0;font-size:21px}.architecture-head p{margin:0;color:var(--muted)}
+    .architecture-board{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:12px}
+    .layers{display:grid;gap:9px}.layer-card{border:1px solid rgba(90,127,180,.27);background:linear-gradient(90deg,rgba(15,31,54,.9),rgba(12,24,43,.72));border-radius:13px;padding:13px 15px;cursor:pointer;transition:.2s;display:grid;grid-template-columns:44px 190px minmax(0,1fr);align-items:center;gap:12px}
+    .layer-card:hover{border-color:rgba(78,231,255,.4);transform:translateX(3px)}.layer-num{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:rgba(109,140,255,.14);color:#becaff;font-weight:900}.layer-name b{display:block}.layer-name small{color:var(--muted)}
+    .component-chips{display:flex;gap:5px;flex-wrap:wrap}.component-chips span{font-size:10px;color:#91a7c8;border:1px solid #263c5c;border-radius:999px;padding:2px 6px}
+    .flow-stack{display:grid;gap:9px}.flow-card{padding:13px;border-radius:13px;border:1px solid rgba(78,231,255,.2);background:rgba(78,231,255,.045);min-height:77px}.flow-card b{display:block;color:#c9f9ff}.flow-card small{color:var(--muted)}
+    .guardrails{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:2px}.guard-card{padding:12px 15px;border:1px solid rgba(165,122,255,.22);border-radius:12px;background:rgba(165,122,255,.055)}.guard-card b{color:#dfd1ff}.guard-card small{display:block;color:var(--muted)}
+    .node-summary{padding:18px}.node-summary h3{font-size:20px;margin:8px 0}.summary-path{font-size:11px;color:var(--cyan);margin-bottom:16px}.summary-block{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.summary-block h4{margin:0 0 7px;font-size:12px;color:#a9bddb;text-transform:uppercase;letter-spacing:.08em}.summary-block p{color:var(--muted);margin:0}.status-line{display:flex;gap:7px;flex-wrap:wrap}
+
+    /* 节点学习是详情工作台，不在全局导航中 */
+    .node-view{padding:0!important;overflow:hidden!important}.node-shell{height:100%;display:grid;grid-template-rows:58px minmax(0,1fr)}
+    .node-head{padding:0 25px;border-bottom:1px solid rgba(84,119,169,.2);display:flex;align-items:center;gap:12px;background:rgba(8,17,32,.78)}
+    .back-btn{border:0;background:transparent;color:var(--cyan);cursor:pointer;padding:7px}.crumbs{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.crumbs b{color:#dfeaff}
+    .node-head-spacer{flex:1}.node-workspace{min-height:0;overflow:auto;padding:22px 26px 40px}.node-workspace-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}
+    .learning-paper{background:var(--paper);color:var(--ink);border-radius:20px;box-shadow:0 24px 65px rgba(0,0,0,.32);overflow:hidden}
+    .paper-head{padding:27px 30px 20px;border-bottom:1px solid #dfe5ef;background:linear-gradient(130deg,#fff,#f2f7ff)}.paper-head .kicker{color:#60759a}.paper-head h2{margin:4px 0 6px;font-size:29px}.paper-head p{margin:0;color:#64728a}
+    .question-grid{padding:22px 30px 30px;display:grid;gap:15px}.question{border:1px solid #dce3ee;border-radius:15px;overflow:hidden;background:#fff}.question-title{padding:12px 15px;background:#f0f5fb;display:flex;align-items:center;gap:10px;font-weight:800}.qnum{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#172b4d;color:#fff;font-size:12px}.question textarea{width:100%;min-height:122px;border:0;resize:vertical;padding:14px 15px;color:#26354e;background:#fff;outline:0;line-height:1.7}.question textarea:focus{box-shadow:inset 0 0 0 2px rgba(34,125,255,.18)}
+    .node-aside{display:grid;gap:12px;align-content:start}.aside-card{padding:16px}.aside-card h3{font-size:14px;margin:0 0 11px}.branch-box{border-left:2px solid #2a4265;padding-left:12px;display:grid;gap:7px;color:#91a7c6}.branch-box .current{color:var(--cyan);font-weight:800}.evidence-item{padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid #243958;margin-top:7px}.evidence-item small{color:var(--muted)}
+    .field-label{display:block;font-size:11px;color:var(--muted);margin:11px 0 5px}.field{width:100%;border:1px solid #2b4264;border-radius:10px;background:#091528;color:var(--text);padding:9px 10px}.node-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.next-prev{display:flex;gap:8px}.next-prev .btn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* 学习档案 */
+    .tabs{display:flex;gap:7px;padding:5px;border:1px solid var(--line);border-radius:13px;background:rgba(5,13,25,.42);width:max-content}.tab{border:0;background:transparent;color:var(--muted);padding:8px 14px;border-radius:9px;cursor:pointer}.tab.active{background:#162741;color:var(--text)}
+    .archive-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:15px}.search{min-width:260px;border:1px solid var(--line);background:#091528;color:var(--text);border-radius:11px;padding:10px 12px}.filter{border:1px solid var(--line);background:#0e1b30;color:var(--text);border-radius:11px;padding:10px}
+    .artifact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.artifact{padding:17px;min-height:170px;display:flex;flex-direction:column}.artifact h3{margin:8px 0 5px;font-size:16px}.artifact p{color:var(--muted);margin:0;font-size:12px}.artifact-foot{margin-top:auto;padding-top:15px;display:flex;justify-content:space-between;gap:8px;color:#748bab;font-size:11px}
+    .timeline{max-width:930px;margin:0 auto;position:relative;padding-left:25px}.timeline:before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:linear-gradient(var(--cyan),rgba(109,140,255,.2))}.timeline-item{position:relative;margin-bottom:13px;padding:16px 18px}.timeline-item:before{content:"";position:absolute;left:-22px;top:22px;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 15px rgba(78,231,255,.5)}.timeline-item time{font-size:11px;color:var(--cyan)}.timeline-item h3{margin:3px 0}.timeline-item p{margin:0;color:var(--muted)}
+    .empty{border:1px dashed #304765;border-radius:15px;padding:34px;text-align:center;color:var(--muted)}
+
+    /* 复盘 */
+    .review-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px}.progress-ring{width:170px;height:170px;border-radius:50%;margin:14px auto;display:grid;place-items:center;background:conic-gradient(var(--green) 0 18%,var(--cyan) 18% 37%,#263955 37% 100%);position:relative}.progress-ring:after{content:"";position:absolute;inset:15px;border-radius:50%;background:#0d1a2f}.progress-ring strong{position:relative;z-index:1;font-size:31px}.legend{display:flex;justify-content:center;gap:18px;color:var(--muted);font-size:11px}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}.gap-list{display:grid;gap:9px}.gap-item{padding:13px;border:1px solid #263b5b;border-radius:12px;display:flex;gap:12px;align-items:center}.gap-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,201,107,.12);color:var(--amber);display:grid;place-items:center}.gap-item div:nth-child(2){flex:1}.gap-item small{display:block;color:var(--muted)}
+    .review-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.principle{padding:15px;border-left:3px solid var(--cyan);background:rgba(78,231,255,.035);border-radius:0 12px 12px 0;margin-top:9px}.principle b{display:block}.principle small{color:var(--muted)}
+
+    .toast{position:fixed;right:24px;bottom:24px;background:#10243f;border:1px solid rgba(78,231,255,.35);border-radius:12px;padding:12px 15px;box-shadow:var(--shadow);z-index:20;transform:translateY(30px);opacity:0;pointer-events:none;transition:.25s}.toast.show{transform:none;opacity:1}
+    #folderInput{display:none}
+
+    @media(max-width:1180px){.map-layout{grid-template-columns:280px minmax(470px,1fr)}.node-summary{display:none}.artifact-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:860px){body{overflow:auto}.app{display:block}.app-rail{position:fixed;left:0;right:0;bottom:0;height:70px;border:0;border-top:1px solid var(--line);display:flex;flex-direction:row;padding:7px 12px;z-index:30}.brand,.rail-foot{display:none}.rail-nav{display:grid;grid-template-columns:repeat(4,1fr)}.rail-btn{padding:5px}.shell{height:auto;min-height:100vh;grid-template-rows:64px auto;padding-bottom:70px}.topbar{padding:0 14px}.location{min-width:0}.location small,.source-pill{display:none}.view{height:auto;min-height:calc(100vh - 134px);padding:18px 14px}.map-layout{height:auto;display:block}.tree-panel{margin-bottom:12px;max-height:420px}.map-main{min-height:640px}.architecture-board{grid-template-columns:1fr}.flow-stack{grid-template-columns:repeat(3,1fr)}.guardrails{grid-column:auto}.layer-card{grid-template-columns:38px 1fr}.component-chips{grid-column:2}.hero{grid-template-columns:1fr;padding:22px}.dashboard-grid,.section-grid,.review-grid,.review-bottom{grid-template-columns:1fr}.node-view{min-height:calc(100vh - 134px)!important}.node-shell{height:auto;min-height:100%}.node-workspace-inner{grid-template-columns:1fr}.artifact-grid{grid-template-columns:1fr}.archive-toolbar{flex-wrap:wrap}.search{min-width:100%;width:100%}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="app-rail" aria-label="全局产品导航">
+    <div class="brand"><span>AI</span></div>
+    <nav class="rail-nav">
+      <button class="rail-btn active" data-view="home"><span class="rail-icon">◉</span><span class="rail-label">今日学习</span></button>
+      <button class="rail-btn" data-view="map"><span class="rail-icon">◇</span><span class="rail-label">知识地图</span></button>
+      <button class="rail-btn" data-view="archive"><span class="rail-icon">▤</span><span class="rail-label">学习档案</span></button>
+      <button class="rail-btn" data-view="review"><span class="rail-icon">◎</span><span class="rail-label">复盘进展</span></button>
+    </nav>
+    <div class="rail-foot">LOCAL<br>FIRST</div>
+  </aside>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="location"><div class="eyebrow">Personal Learning System</div><h1 id="pageTitle">今日学习</h1><small id="pageSubtitle">聚焦下一步，而不是展示全部知识</small></div>
+      <div class="top-spacer"></div>
+      <div class="source-pill"><i id="sourceDot" class="source-dot"></i><span id="sourceText">Markdown 尚未连接</span></div>
+      <button class="btn primary" id="connectBtn">连接学习目录</button>
+      <button class="btn ghost" id="folderFallbackBtn">导入目录</button>
+      <input id="folderInput" type="file" webkitdirectory multiple accept=".md,text/markdown">
+    </header>
+
+    <section class="workspace">
+      <div class="view active" id="view-home">
+        <div class="page">
+          <section class="panel hero">
+            <div><div class="eyebrow">TODAY · LEARN → PRACTICE → PROVE</div><h2>今天只推进一个<br><span class="cyan">可被验证的知识节点</span></h2><p>学习系统不以收藏多少资料为目标，而以“能否解释、选择、实践并提供证据”为完成标准。</p><button class="btn primary" id="continueBtn">继续当前节点 →</button></div>
+            <div class="focus-card"><div class="kicker">Current Focus</div><h3 id="focusTitle">Routing：固定分流</h3><div class="focus-path" id="focusPath">六层功能架构 / 任务执行与协调层 / Workflow Patterns</div><div class="status-line"><span class="tag cyan">学习中</span><span class="tag">四问卡 0/4</span><span class="tag">证据 0</span></div></div>
+          </section>
+          <div class="dashboard-grid">
+            <section class="panel metric"><span class="kicker">已建立知识节点</span><strong id="metricNodes">0</strong><small>来自当前知识体系</small></section>
+            <section class="panel metric"><span class="kicker">学习成果</span><strong id="metricFiles">0</strong><small>以 Markdown 为准</small></section>
+            <section class="panel metric"><span class="kicker">已验证节点</span><strong id="metricVerified">0</strong><small>具有实践或测试证据</small></section>
+          </div>
+          <div class="section-grid">
+            <section class="panel panel-pad"><div class="section-title"><h3>今日学习路径</h3><span class="tag">专注模式</span></div><div class="task-list">
+              <div class="task"><span class="task-index">1</span><div class="task-main"><b>用自己的话完成四问学习卡</b><small>定义、问题、边界和验证方式</small></div><span class="tag cyan">当前</span></div>
+              <div class="task"><span class="task-index">2</span><div class="task-main"><b>添加一个真实案例或反例</b><small>把概念和实际决策连接起来</small></div><span class="tag">待开始</span></div>
+              <div class="task"><span class="task-index">3</span><div class="task-main"><b>形成可复查的学习证据</b><small>测试、输出、对比或实际任务结果</small></div><span class="tag">待开始</span></div>
+            </div></section>
+            <section class="panel panel-pad"><div class="section-title"><h3>最近成果</h3><button class="btn small ghost" data-go="archive">查看档案</button></div><div class="recent-list" id="recentList"><div class="empty">连接学习目录后显示 Markdown 成果</div></div></section>
+          </div>
+        </div>
+      </div>
+
+      <div class="view" id="view-map">
+        <div class="page" style="max-width:none">
+          <div class="page-head"><div><div class="eyebrow">KNOWLEDGE SYSTEM</div><h2>知识地图</h2><p>完整知识树只在这里出现。展开体系、定位节点，再进入专注的节点学习工作台。</p></div><span class="tag">四级可视层级</span></div>
+          <div class="map-layout">
+            <aside class="panel tree-panel"><div class="tree-root"><div class="kicker">ROOT · L0</div><b>AI Native</b><small>体系导航，不是术语清单</small></div><div class="tree" id="knowledgeTree"></div></aside>
+            <section class="panel map-main">
+              <div class="architecture-head"><div><div class="kicker">SYSTEM VIEW</div><h3>六层架构 · 三条流 · 两类保障</h3><p>层表示功能职责，流表示跨层运行，保障表示全局约束。</p></div><button class="btn small" id="expandTreeBtn">展开全部</button></div>
+              <div class="architecture-board">
+                <div class="layers" id="layerBoard"></div>
+                <div class="flow-stack" id="flowBoard"></div>
+                <div class="guardrails" id="guardBoard"></div>
+              </div>
+            </section>
+            <aside class="panel node-summary" id="nodeSummary"></aside>
+          </div>
+        </div>
+      </div>
+
+      <div class="view node-view" id="view-node">
+        <div class="node-shell">
+          <header class="node-head"><button class="back-btn" id="backToMap">← 返回知识地图</button><span class="crumbs" id="nodeBreadcrumb">AI Native / …</span><div class="node-head-spacer"></div><span class="tag cyan">节点学习工作台</span></header>
+          <div class="node-workspace"><div class="node-workspace-inner">
+            <article class="learning-paper">
+              <header class="paper-head"><div class="kicker">NODE LEARNING CARD</div><h2 id="nodeTitle">Routing：固定分流</h2><p id="nodeIntro">根据输入类型选择预设路径，使不同任务进入最合适的处理流程。</p></header>
+              <div class="question-grid" id="questionGrid"></div>
+            </article>
+            <aside class="node-aside">
+              <section class="panel aside-card"><h3>当前知识分支</h3><div class="branch-box" id="branchBox"></div></section>
+              <section class="panel aside-card"><h3>学习状态与证据</h3><label class="field-label" for="nodeStatus">掌握状态</label><select class="field" id="nodeStatus"><option value="unstarted">未开始</option><option value="learning">学习中</option><option value="understood">已理解</option><option value="practiced">已实践</option><option value="verified">已验证</option></select><div id="relatedEvidence"></div><div class="node-actions"><button class="btn small" id="saveDraftBtn">保存草稿</button><button class="btn small primary" id="exportNodeBtn">导出 Markdown</button></div><button class="btn small" id="writeNodeBtn" style="width:100%;margin-top:7px">写回学习目录</button></section>
+              <section class="panel aside-card"><h3>验证标准</h3><div class="evidence-item"><b>解释</b><small>能用自己的话说明本质</small></div><div class="evidence-item"><b>选择</b><small>能判断何时用与不用</small></div><div class="evidence-item"><b>实践</b><small>有案例、练习或真实任务</small></div><div class="evidence-item"><b>证据</b><small>结果可以被再次检查</small></div></section>
+              <div class="next-prev"><button class="btn small" id="prevNodeBtn">← 上一节点</button><button class="btn small" id="nextNodeBtn">下一节点 →</button></div>
+            </aside>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="view" id="view-archive">
+        <div class="page">
+          <div class="page-head"><div><div class="eyebrow">LEARNING RECORDS</div><h2>学习档案</h2><p>成果和时间线是同一批 Markdown 的两种查看方式，不再作为两个一级产品模块。</p></div><div class="tabs"><button class="tab active" data-archive-tab="artifacts">成果视图</button><button class="tab" data-archive-tab="timeline">时间视图</button></div></div>
+          <div id="archive-artifacts"><div class="archive-toolbar"><input class="search" id="artifactSearch" placeholder="搜索标题、路径或内容"><select class="filter" id="artifactFilter"><option value="all">全部成果</option><option value="record">学习记录</option><option value="map">知识地图</option><option value="case">案例拆解</option><option value="practice">练习测试</option><option value="evidence">证据复盘</option></select><span class="tag" id="artifactCount">0 个 Markdown</span></div><div class="artifact-grid" id="artifactGrid"></div></div>
+          <div id="archive-timeline" hidden><div class="timeline" id="timelineList"></div></div>
+        </div>
+      </div>
+
+      <div class="view" id="view-review">
+        <div class="page">
+          <div class="page-head"><div><div class="eyebrow">REFLECTION & PROGRESS</div><h2>复盘与进展</h2><p>从“看过多少”转向“哪些知识已经得到验证，哪些仍缺少实践证据”。</p></div><button class="btn" data-go="map">回到知识地图</button></div>
+          <div class="review-grid">
+            <section class="panel panel-pad"><div class="section-title"><h3>知识掌握结构</h3><span class="tag">按节点状态</span></div><div class="progress-ring"><strong id="progressPercent">0%</strong></div><div class="legend"><span><i style="background:var(--green)"></i>已验证</span><span><i style="background:var(--cyan)"></i>学习中</span><span><i style="background:#263955"></i>未开始</span></div></section>
+            <section class="panel panel-pad"><div class="section-title"><h3>当前证据缺口</h3><span class="tag amber">优先处理</span></div><div class="gap-list" id="gapList"></div></section>
+          </div>
+          <div class="review-bottom">
+            <section class="panel panel-pad"><h3 style="margin-top:0">下一阶段建议</h3><div class="principle"><b>先补实践，再扩展知识面</b><small>理解但没有案例的节点，优先级高于新术语。</small></div><div class="principle"><b>每个主题至少形成一个反例</b><small>能说明“不应该使用”才算掌握边界。</small></div><div class="principle"><b>让证据链接回知识节点</b><small>总结、案例和测试不应成为孤立文件。</small></div></section>
+            <section class="panel panel-pad"><h3 style="margin-top:0">数据原则</h3><div class="evidence-item"><b>Markdown 是唯一可信来源</b><small>浏览器不替代工程文件。</small></div><div class="evidence-item"><b>本地存储只保存临时状态</b><small>草稿、筛选和界面偏好可以随时重建。</small></div><div class="evidence-item"><b>数据库按真实需求引入</b><small>同步、协作或复杂检索出现前不增加后端。</small></div></section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA={
+  sections:[
+    {id:'architecture',title:'六层功能架构',kind:'体系',children:[
+      {id:'business',title:'第1层 · 业务与交互层',kind:'层',desc:'把用户目标转化为可执行任务，并把系统结果送回业务场景。',nodes:['业务目标与成功标准','用户与任务入口','客户端与交互界面','人机协作与确认','业务结果度量']},
+      {id:'execution',title:'第2层 · 任务执行与协调层',kind:'层',desc:'决定任务路径、角色分工、执行循环和停止方式。',groups:[
+        {title:'执行范式',nodes:['Workflow','Agent']},
+        {title:'Workflow Patterns',nodes:['Prompt Chaining','Routing','Parallelization','Orchestrator-Workers','Evaluator-Optimizer']},
+        {title:'实现组件',nodes:['Planner','Router','Orchestrator','Worker','Evaluator']},
+        {title:'控制机制',nodes:['停止条件','重试与超时','人工确认','状态机']}
+      ]},
+      {id:'context',title:'第3层 · 上下文与知识层',kind:'层',desc:'为模型组织完成当前任务所需的指令、状态、知识和记忆。',nodes:['Prompt 与 Instructions','Context Engineering','会话状态','RAG','语义索引','Memory']},
+      {id:'model',title:'第4层 · 模型能力层',kind:'层',desc:'提供分类、抽取、生成、推理和多模态等基础智能能力。',nodes:['模型选择','分类与抽取','生成与推理','结构化输出','多模态能力','模型评估']},
+      {id:'tools',title:'第5层 · 工具与系统连接层',kind:'层',desc:'让模型从生成文本扩展到读取环境、调用系统和执行动作。',nodes:['Tools 与 Function Calling','API','MCP','数据库与文件','搜索与检索','企业业务系统','ACI 工具设计']},
+      {id:'runtime',title:'第6层 · 运行与基础设施层',kind:'层',desc:'保证系统可以安全、稳定、可观测并以可控成本运行。',nodes:['身份与权限','密钥管理','存储与消息','日志与追踪','监控与告警','部署与伸缩','成本管理']}
+    ]},
+    {id:'flows',title:'三条跨层运行流',kind:'体系',children:[
+      {id:'data-flow',title:'数据流',kind:'流',desc:'输入、上下文、工具结果和输出如何在系统中流动。',nodes:['输入规范化','上下文组装','工具结果回填','输出交付']},
+      {id:'control-flow',title:'控制流',kind:'流',desc:'谁决定下一步、何时分支、循环、停止或升级给人工。',nodes:['路径选择','任务调度','循环与停止','异常升级']},
+      {id:'feedback-flow',title:'反馈流',kind:'流',desc:'环境、用户和评估结果如何反向改变执行过程。',nodes:['环境反馈','用户反馈','评估反馈','策略更新']}
+    ]},
+    {id:'guardrails',title:'两类横向保障',kind:'体系',children:[
+      {id:'safety',title:'安全与治理',kind:'保障',desc:'约束系统能做什么、谁能做以及如何留下审计记录。',nodes:['身份权限','数据安全','护栏策略','审计与合规']},
+      {id:'quality',title:'质量与可观测性',kind:'保障',desc:'持续判断系统是否正确、有效、稳定且值得投入。',nodes:['Evals','Tracing','监控告警','成本与性能']}
+    ]}
+  ]
+};
+
+const descriptions={
+  'Workflow':'LLM 与工具沿预定义代码路径执行，强调可预测性和一致性。',
+  'Agent':'模型根据目标与环境反馈动态决定步骤和工具，强调适应性。',
+  'Prompt Chaining':'把任务拆成固定的连续步骤，每一步处理上一步输出。',
+  'Routing':'根据输入类型选择预设路径，使不同任务进入合适流程。',
+  'Parallelization':'同时执行相互独立的子任务，或多次执行后投票聚合。',
+  'Orchestrator-Workers':'由编排器动态拆解任务、分配工作者并汇总结果。',
+  'Evaluator-Optimizer':'生成器与评估器形成反馈循环，持续优化输出。',
+  'Planner':'根据目标形成计划或下一步行动建议的实现组件。',
+  'Router':'对输入或状态进行分类，并选择后续处理路径的实现组件。',
+  'Orchestrator':'协调多个任务、工作者、工具和结果聚合的实现组件。',
+  'RAG':'在生成前检索外部知识，并将相关内容加入模型上下文。',
+  'MCP':'标准化模型应用与外部工具、数据源之间的连接方式。',
+  'Evals':'用明确数据集、标准和指标持续判断系统质量。'
+};
+
+const state={
+  view:'home',selectedId:'routing',selectedTitle:'Routing',selectedPath:['六层功能架构','第2层 · 任务执行与协调层','Workflow Patterns'],
+  files:[],rootHandle:null,statuses:JSON.parse(localStorage.getItem('aiNative.statuses.v3')||'{}'),leafNodes:[],archiveTab:'artifacts'
+};
+const titles={home:['今日学习','聚焦下一步，而不是展示全部知识'],map:['知识地图','体系导航与节点定位'],archive:['学习档案','同一批 Markdown 的成果视图与时间视图'],review:['复盘与进展','用证据判断掌握程度'],node:['节点学习','在一个节点上完成理解、实践与验证']};
+const questions=[['它是什么？','用自己的话定义它，并说明它在整个 AI Native 系统中的位置。'],['解决什么问题？','描述它面对的具体矛盾，以及不使用它会发生什么。'],['什么时候使用或不使用？','写出适用条件、代价、边界和至少一个反例。'],['怎样证明它有效？','给出可以复查的案例、测试、指标或真实任务结果。']];
+
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g,'-').replace(/^-|-$/g,'')||'node'}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2400)}
+function nodeStatus(id){return state.statuses[id]||'unstarted'}
+function statusLabel(v){return ({unstarted:'未开始',learning:'学习中',understood:'已理解',practiced:'已实践',verified:'已验证'})[v]||v}
+function setStatus(id,v){state.statuses[id]=v;localStorage.setItem('aiNative.statuses.v3',JSON.stringify(state.statuses));renderMetrics();renderReview()}
+
+function collectLeaves(){state.leafNodes=[];DATA.sections.forEach(section=>section.children.forEach(area=>{
+  const groups=area.groups||[{title:area.title,nodes:area.nodes||[]}];
+  groups.forEach(group=>(group.nodes||[]).forEach(title=>state.leafNodes.push({id:slug(title),title,desc:descriptions[title]||`理解 ${title} 的定义、问题边界、使用条件与有效性证据。`,path:[section.title,area.title,group.title]})))
+}))}
+
+function treeNode({title,level,kind,children,id}){
+  const row=document.createElement('div');row.className='tree-row'+(level<3?'':' collapsed');row.dataset.level=level;
+  const btn=document.createElement('button');btn.className='tree-item';
+  const has=children&&children.length;btn.innerHTML=`<span class="chev">${has?'⌄':'·'}</span>${has?'':'<i class="node-dot '+nodeStatus(id)+'"></i>'}<span>${esc(title)}</span><small class="level-chip">${esc(kind||('L'+level))}</small>`;
+  row.appendChild(btn);if(has){const box=document.createElement('div');box.className='tree-children';children.forEach(c=>box.appendChild(treeNode(c)));row.appendChild(box);btn.onclick=()=>row.classList.toggle('collapsed')}else{btn.dataset.nodeId=id;btn.onclick=()=>selectNode(id,false)}return row;
+}
+function buildTreeModel(){return DATA.sections.map(section=>({title:section.title,kind:'体系',level:1,children:section.children.map(area=>({title:area.title,kind:area.kind,level:2,children:(area.groups||[{title:'核心组件',nodes:area.nodes||[]}]).map(group=>({title:group.title,kind:'主题',level:3,children:(group.nodes||[]).map(title=>({title,kind:'节点',level:4,id:slug(title)}))}))}))}))}
+function renderTree(){const root=document.getElementById('knowledgeTree');root.innerHTML='';buildTreeModel().forEach(n=>root.appendChild(treeNode(n)));highlightTree()}
+function highlightTree(){document.querySelectorAll('.tree-item').forEach(x=>x.classList.toggle('active',x.dataset.nodeId===state.selectedId));document.querySelectorAll(`.tree-item[data-node-id="${CSS.escape(state.selectedId)}"]`).forEach(x=>{let p=x.parentElement;while(p&&p.id!=='knowledgeTree'){p.classList.remove('collapsed');p=p.parentElement}})}
+
+function renderArchitecture(){
+  const layers=DATA.sections[0].children;document.getElementById('layerBoard').innerHTML=layers.map((l,i)=>`<article class="layer-card" data-area="${l.id}"><span class="layer-num">0${i+1}</span><span class="layer-name"><b>${esc(l.title.replace(/^第\d层 · /,''))}</b><small>${esc(l.desc.slice(0,18))}…</small></span><span class="component-chips">${(l.nodes||(l.groups||[]).flatMap(g=>g.nodes)).slice(0,7).map(x=>`<span>${esc(x)}</span>`).join('')}</span></article>`).join('');
+  const flows=DATA.sections[1].children;document.getElementById('flowBoard').innerHTML=flows.map(x=>`<article class="flow-card"><b>${esc(x.title)} ↓</b><small>${esc(x.desc)}</small></article>`).join('');
+  const guards=DATA.sections[2].children;document.getElementById('guardBoard').innerHTML=guards.map(x=>`<article class="guard-card"><b>${esc(x.title)}</b><small>${esc(x.desc)}</small></article>`).join('');
+  document.querySelectorAll('.layer-card').forEach((card,i)=>card.onclick=()=>{const first=(layers[i].nodes||(layers[i].groups||[]).flatMap(g=>g.nodes))[0];selectNode(slug(first),false)});
+}
+function selectNode(id,open=true){const n=state.leafNodes.find(x=>x.id===id)||state.leafNodes[0];if(!n)return;state.selectedId=n.id;state.selectedTitle=n.title;state.selectedPath=n.path;localStorage.setItem('aiNative.currentNode.v3',n.id);highlightTree();renderSummary();renderNode();renderHome();if(open)showView('node')}
+function renderSummary(){const n=state.leafNodes.find(x=>x.id===state.selectedId);if(!n)return;const related=relatedFiles(n);document.getElementById('nodeSummary').innerHTML=`<div class="kicker">SELECTED NODE</div><h3>${esc(n.title)}</h3><div class="summary-path">${n.path.map(esc).join(' / ')}</div><p class="subtle">${esc(n.desc)}</p><div class="summary-block"><h4>学习状态</h4><div class="status-line"><span class="tag cyan">${statusLabel(nodeStatus(n.id))}</span><span class="tag">关联成果 ${related.length}</span></div></div><div class="summary-block"><h4>为什么学习</h4><p>掌握定义、适用边界和验证方法，再决定是否进入实践。</p></div><div class="summary-block"><button class="btn primary" id="openNodeFromSummary" style="width:100%">进入节点学习 →</button></div>`;document.getElementById('openNodeFromSummary').onclick=()=>showView('node')}
+
+function showView(view){state.view=view;document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById('view-'+view).classList.add('active');document.querySelectorAll('.rail-btn').forEach(x=>x.classList.toggle('active',x.dataset.view===view||(view==='node'&&x.dataset.view==='map')));const t=titles[view];document.getElementById('pageTitle').textContent=t[0];document.getElementById('pageSubtitle').textContent=t[1];if(view==='archive')renderArchive();if(view==='review')renderReview()}
+
+function renderNode(){const n=state.leafNodes.find(x=>x.id===state.selectedId);if(!n)return;document.getElementById('nodeTitle').textContent=n.title;document.getElementById('nodeIntro').textContent=n.desc;document.getElementById('nodeBreadcrumb').innerHTML=n.path.map(esc).join(' / ')+' / <b>'+esc(n.title)+'</b>';document.getElementById('branchBox').innerHTML=n.path.map((x,i)=>`<span>${'&nbsp;'.repeat(i*2)}${esc(x)}</span>`).join('')+`<span class="current">${'&nbsp;'.repeat(n.path.length*2)}↳ ${esc(n.title)}</span>`;
+  const draft=JSON.parse(localStorage.getItem('aiNative.draft.v3.'+n.id)||'{}');document.getElementById('questionGrid').innerHTML=questions.map((q,i)=>`<section class="question"><div class="question-title"><span class="qnum">0${i+1}</span>${q[0]}</div><textarea data-q="${i}" placeholder="${esc(q[1])}">${esc(draft[i]||'')}</textarea></section>`).join('');
+  document.getElementById('nodeStatus').value=nodeStatus(n.id);const related=relatedFiles(n);document.getElementById('relatedEvidence').innerHTML=related.length?related.slice(0,4).map(f=>`<div class="evidence-item"><b>${esc(f.title)}</b><small>${esc(f.path)}</small></div>`).join(''):'<div class="evidence-item"><b>暂无关联成果</b><small>导入目录后按标题与内容自动关联</small></div>';
+  const idx=state.leafNodes.findIndex(x=>x.id===n.id);document.getElementById('prevNodeBtn').disabled=idx<=0;document.getElementById('nextNodeBtn').disabled=idx>=state.leafNodes.length-1;document.getElementById('prevNodeBtn').textContent=idx>0?'← '+state.leafNodes[idx-1].title:'← 已是第一个';document.getElementById('nextNodeBtn').textContent=idx<state.leafNodes.length-1?state.leafNodes[idx+1].title+' →':'已是最后一个 →';
+}
+function draftData(){const out={};document.querySelectorAll('#questionGrid textarea').forEach(x=>out[x.dataset.q]=x.value.trim());return out}
+function saveDraft(){const d=draftData();localStorage.setItem('aiNative.draft.v3.'+state.selectedId,JSON.stringify(d));toast('节点草稿已保存在当前浏览器')}
+function nodeMarkdown(){const n=state.leafNodes.find(x=>x.id===state.selectedId),d=draftData(),today=new Date().toISOString().slice(0,10);return `---\nid: ${n.id}\ntitle: ${n.title}\ntype: learning-card\nnode: ${n.path.join(' / ')}\nstatus: ${nodeStatus(n.id)}\nupdated: ${today}\n---\n\n# ${n.title}\n\n> ${n.desc}\n\n## 它是什么？\n\n${d[0]||''}\n\n## 解决什么问题？\n\n${d[1]||''}\n\n## 什么时候使用或不使用？\n\n${d[2]||''}\n\n## 怎样证明它有效？\n\n${d[3]||''}\n`}
+function download(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/markdown;charset=utf-8'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+
+async function scanHandle(handle,prefix=''){const arr=[];for await(const [name,entry] of handle.entries()){const path=prefix?prefix+'/'+name:name;if(entry.kind==='directory')arr.push(...await scanHandle(entry,path));else if(name.toLowerCase().endsWith('.md')){const file=await entry.getFile();arr.push(parseFile(path,await file.text(),file.lastModified))}}return arr}
+function parseFile(path,content,lastModified=Date.now()){const fmTitle=(content.match(/^---[\s\S]*?\ntitle:\s*([^\n]+)[\s\S]*?---/m)||[])[1];const h1=(content.match(/^#\s+(.+)$/m)||[])[1];const date=(content.match(/(?:updated|date|created):\s*(\d{4}-\d{2}-\d{2})/i)||[])[1]||new Date(lastModified).toISOString().slice(0,10);return{path,name:path.split('/').pop(),title:(fmTitle||h1||path.split('/').pop().replace(/\.md$/i,'')).trim(),content,date,type:classify(path)}}
+function classify(path){const p=path.replace(/\\/g,'/').toLowerCase();if(p.includes('daily-task'))return'record';if(p.includes('01-map'))return'map';if(p.includes('02-cases'))return'case';if(p.includes('03-practice'))return'practice';if(p.includes('05-evidence'))return'evidence';return'other'}
+async function connectDirectory(){if(!window.showDirectoryPicker){document.getElementById('folderInput').click();return}try{state.rootHandle=await showDirectoryPicker({mode:'readwrite'});state.files=await scanHandle(state.rootHandle);afterImport()}catch(e){if(e.name!=='AbortError')toast('目录连接失败：'+e.message)}}
+function afterImport(){document.getElementById('sourceDot').classList.add('ok');document.getElementById('sourceText').textContent=`已连接 ${state.files.length} 个 Markdown`;renderMetrics();renderHome();renderArchive();renderNode();renderSummary();toast(`已建立 ${state.files.length} 个学习文件索引`)}
+async function writeNode(){if(!state.rootHandle){toast('请先使用“连接学习目录”授权写入');return}try{let dir=state.rootHandle;for(const part of ['01-map','learning-cards'])dir=await dir.getDirectoryHandle(part,{create:true});const safe=state.selectedTitle.replace(/[\\/:*?"<>|]/g,'_');const fh=await dir.getFileHandle(`学习卡_${safe}.md`,{create:true});const w=await fh.createWritable();await w.write(nodeMarkdown());await w.close();toast('已写回 01-map/learning-cards');state.files=await scanHandle(state.rootHandle);afterImport()}catch(e){toast('写回失败，可先导出 Markdown：'+e.message)}}
+function relatedFiles(n){const keys=[n.title,...n.title.split(/[\s：:-]+/)].filter(x=>x.length>1).map(x=>x.toLowerCase());return state.files.filter(f=>keys.some(k=>(f.title+' '+f.content).toLowerCase().includes(k)))}
+
+function renderMetrics(){document.getElementById('metricNodes').textContent=state.leafNodes.length;document.getElementById('metricFiles').textContent=state.files.length;document.getElementById('metricVerified').textContent=Object.values(state.statuses).filter(x=>x==='verified').length}
+function renderHome(){const n=state.leafNodes.find(x=>x.id===state.selectedId);if(n){document.getElementById('focusTitle').textContent=n.title;document.getElementById('focusPath').textContent=n.path.join(' / ')}const list=document.getElementById('recentList');list.innerHTML=state.files.length?state.files.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4).map(f=>`<div class="recent"><div class="recent-main"><b>${esc(f.title)}</b><small>${esc(f.path)}</small></div><span class="tag">${esc(f.date)}</span></div>`).join(''):'<div class="empty">连接学习目录后显示 Markdown 成果</div>'}
+function typeLabel(t){return({record:'学习记录',map:'知识地图',case:'案例拆解',practice:'练习测试',evidence:'证据复盘',other:'其他'})[t]}
+function renderArchive(){const term=(document.getElementById('artifactSearch').value||'').toLowerCase(),filter=document.getElementById('artifactFilter').value;const files=state.files.filter(f=>(filter==='all'||f.type===filter)&&(!term||(f.title+' '+f.path+' '+f.content).toLowerCase().includes(term)));document.getElementById('artifactCount').textContent=`${files.length} 个 Markdown`;document.getElementById('artifactGrid').innerHTML=files.length?files.map(f=>`<article class="panel artifact"><div><span class="tag cyan">${typeLabel(f.type)}</span></div><h3>${esc(f.title)}</h3><p>${esc((f.content.replace(/^---[\s\S]*?---/,'').replace(/[#>*`\[\]]/g,' ').replace(/\s+/g,' ').trim()||'暂无内容摘要').slice(0,105))}…</p><div class="artifact-foot"><span>${esc(f.path)}</span><time>${esc(f.date)}</time></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">没有匹配的 Markdown。连接学习目录或调整筛选条件。</div>';document.getElementById('timelineList').innerHTML=state.files.length?state.files.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(f=>`<article class="panel timeline-item"><time>${esc(f.date)} · ${typeLabel(f.type)}</time><h3>${esc(f.title)}</h3><p>${esc(f.path)}</p></article>`).join(''):'<div class="empty">连接目录后，时间视图会从 Markdown 日期自动生成。</div>'}
+function renderReview(){const total=state.leafNodes.length,verified=Object.values(state.statuses).filter(x=>x==='verified').length,active=Object.values(state.statuses).filter(x=>x!=='unstarted'&&x!=='verified').length,pct=total?Math.round(verified/total*100):0;document.getElementById('progressPercent').textContent=pct+'%';document.querySelector('.progress-ring').style.background=`conic-gradient(var(--green) 0 ${pct}%,var(--cyan) ${pct}% ${Math.min(100,pct+Math.round(active/Math.max(total,1)*100))}%,#263955 0)`;const gaps=state.leafNodes.filter(n=>['learning','understood','practiced'].includes(nodeStatus(n.id))).slice(0,6);document.getElementById('gapList').innerHTML=gaps.length?gaps.map(n=>`<div class="gap-item"><span class="gap-icon">!</span><div><b>${esc(n.title)}</b><small>${nodeStatus(n.id)==='learning'?'四问学习卡尚未完成':nodeStatus(n.id)==='understood'?'已经理解，但缺少实践':'已有实践，需要补充验证证据'}</small></div><button class="btn small" data-node="${n.id}">继续</button></div>`).join(''):'<div class="empty">把节点状态更新为“学习中”，这里会自动形成证据缺口清单。</div>';document.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>selectNode(b.dataset.node,true))}
+
+document.querySelectorAll('.rail-btn').forEach(b=>b.onclick=()=>showView(b.dataset.view));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>showView(b.dataset.go));document.getElementById('continueBtn').onclick=()=>showView('node');document.getElementById('backToMap').onclick=()=>showView('map');document.getElementById('connectBtn').onclick=connectDirectory;document.getElementById('folderFallbackBtn').onclick=()=>document.getElementById('folderInput').click();document.getElementById('folderInput').onchange=async e=>{state.files=[];for(const file of e.target.files)if(file.name.toLowerCase().endsWith('.md'))state.files.push(parseFile(file.webkitRelativePath||file.name,await file.text(),file.lastModified));afterImport()};
+document.getElementById('saveDraftBtn').onclick=saveDraft;document.getElementById('exportNodeBtn').onclick=()=>{saveDraft();download(`学习卡_${state.selectedTitle}.md`,nodeMarkdown());toast('Markdown 已导出')};document.getElementById('writeNodeBtn').onclick=writeNode;document.getElementById('nodeStatus').onchange=e=>{setStatus(state.selectedId,e.target.value);renderTree();renderSummary();toast('节点状态已更新')};
+document.getElementById('prevNodeBtn').onclick=()=>{const i=state.leafNodes.findIndex(x=>x.id===state.selectedId);if(i>0)selectNode(state.leafNodes[i-1].id,true)};document.getElementById('nextNodeBtn').onclick=()=>{const i=state.leafNodes.findIndex(x=>x.id===state.selectedId);if(i<state.leafNodes.length-1)selectNode(state.leafNodes[i+1].id,true)};
+document.getElementById('artifactSearch').oninput=renderArchive;document.getElementById('artifactFilter').onchange=renderArchive;document.querySelectorAll('[data-archive-tab]').forEach(b=>b.onclick=()=>{state.archiveTab=b.dataset.archiveTab;document.querySelectorAll('[data-archive-tab]').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('archive-artifacts').hidden=state.archiveTab!=='artifacts';document.getElementById('archive-timeline').hidden=state.archiveTab!=='timeline'});
+document.getElementById('expandTreeBtn').onclick=e=>{const rows=[...document.querySelectorAll('.tree-row')];const expand=rows.some(x=>x.classList.contains('collapsed'));rows.forEach(x=>x.classList.toggle('collapsed',!expand&&Number(x.dataset.level)>=3));e.target.textContent=expand?'收起深层':'展开全部'};
+
+collectLeaves();const saved=localStorage.getItem('aiNative.currentNode.v3');if(saved&&state.leafNodes.some(x=>x.id===saved))state.selectedId=saved;renderTree();renderArchitecture();selectNode(state.selectedId,false);renderMetrics();renderArchive();renderReview();showView('home');
+</script>
+</body>
+</html>

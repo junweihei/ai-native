@@ -14,6 +14,9 @@ required_files=(
   .gitignore
   .codex/README.md
   docs/multi-device-workflow.md
+  config/learning-content.json
+  00-templates/template-registry.yaml
+  tools/content_index/validate_learning_content.py
 )
 
 for file in "${required_files[@]}"; do
@@ -40,4 +43,16 @@ while IFS= read -r file; do
   fi
 done <<< "$tracked_files"
 
-echo 'Repository baseline check passed.'
+if command -v python3 >/dev/null 2>&1; then
+  python_cmd=(python3)
+elif command -v python >/dev/null 2>&1; then
+  python_cmd=(python)
+else
+  echo 'Python 3 is required to validate Learning OS content.' >&2
+  exit 1
+fi
+
+"${python_cmd[@]}" tools/content_index/validate_learning_content.py
+"${python_cmd[@]}" -m unittest discover -s tools/content_index/tests -v
+
+echo 'Repository baseline and Learning OS content checks passed.'

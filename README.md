@@ -1,10 +1,36 @@
-# ai-native
+# 个人 AI Native Learning OS
 
-面向 AI-native 实践的长期演进项目。当前仓库先建立可跨设备、可并行、可交接的协作基线，具体产品形态与技术栈将在后续迭代中确定。
+本仓库服务于一个明确目标：在六个月内系统掌握 AI Native，并通过知识地图、案例、练习、真实任务和验证证据证明能力已经形成。Markdown 是唯一权威内容源；Word 用于阅读和发布；未来网页只投影这些数据，不反向维护另一套内容。
 
-## 第一个月学习入口
+## 当前学习状态
 
-第一个月执行包已经按“图—拆—练—用—证—迭代”组织。先阅读 [第1月完整执行指导手册 V2.0](第1月_完整执行指导手册_V2.0.md)，执行时从 [第1月_开始这里.md](第1月_开始这里.md) 进入，每天只完成一个任务并把证据保存在 `01-map/` 到 `05-evidence/` 对应目录。
+- 第 1 月正在执行。
+- D1 已完成。
+- D2、D3 学习中。
+- 当前阶段只稳定学习数据、目录契约和校验机制，不重做网页。
+
+## 权威入口
+
+1. [六个月系统学习与实践总纲 V2.0](AI_Native_六个月系统学习与实践总纲_V2.0.md)：六个月目标、能力路线和阶段门禁。
+2. [Learning OS 产品与学习运行模型 V0.1](个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：整个学习系统如何运行。
+3. [第 1 月开始这里](第1月_开始这里.md)：当前执行入口。
+4. [第 1 月 Learning OS 运行映射 V0.1](第1月_Learning_OS_运行映射_V0.1.md)：计划、任务、成果和证据的对应关系。
+5. [学习执行规则 V0.1](AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
+6. [统一模板规范 V0.1](AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
+
+## 数据与网页关系
+
+正式数据链路是：
+
+```text
+Markdown 学习资产
+→ Frontmatter 元数据
+→ 内容校验
+→ learning-index.json
+→ Learning OS 网页
+```
+
+网页 V3 已冻结为参考原型，位于 `web/prototypes/`；早期原型位于 `archive/web-prototypes/`。下一阶段优化网站时，应读取统一索引，不再在 HTML 中硬编码学习计划和状态。
 
 ## 协作架构
 
@@ -15,20 +41,26 @@
 
 > 核心规则：Local 是前台，Worktree 是本机后台，Cloud 是远程后台，GitHub 是唯一交接中心。
 
-## 当前仓库基线
+## 当前仓库结构
 
 ```text
 .
-├─ .codex/                 # Codex Local/Worktree 初始化入口和配置说明
-├─ .github/                # PR 模板与基础仓库检查
-├─ .worktreeinclude        # Worktree 本地忽略文件复制白名单（默认空）
-├─ docs/                   # 多端协同操作说明
-├─ scripts/                # 跨平台初始化与健康检查
-├─ AGENTS.md               # Local、Worktree、Cloud 共用的代理指令
-├─ .gitignore              # 密钥、依赖和本地产物隔离
-└─ README.md
+├─ 00-templates/           # 每日任务、学习、证据和复盘模板
+├─ 01-map/                # 知识地图与节点成果
+├─ 02-cases/              # 案例拆解
+├─ 03-practice/           # 判定练习、首测、复测和错因
+├─ 04-use/                # 真实任务应用
+├─ 05-evidence/           # 闭卷、迁移、Eval 和复盘证据
+├─ daily-task/            # 每日学习会话与续接记录
+├─ config/                # 内容边界和状态契约
+├─ tools/content_index/   # 内容校验、索引生成和测试
+├─ web/prototypes/        # 冻结的当前网页参考原型
+├─ archive/web-prototypes/# 更早网页原型
+├─ docs/                  # 多端协同说明
+├─ scripts/               # 初始化与完整仓库检查
+├─ .github/               # PR 与自动检查
+└─ .codex/                # Codex 项目环境说明
 ```
-
 ## 首次使用
 
 ### Windows

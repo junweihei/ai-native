@@ -1,3 +1,19 @@
+---
+id: ART-M01-D01-knowledge-map-v0-1
+title: AI Native 知识地图 V0.1
+version: V0.1
+type: artifact
+artifact_type: knowledge_map
+status: completed
+created: 2026-08-19
+updated: 2026-08-28
+goal: G6M
+milestone: M01
+task_id: M01-D01
+evidence_for:
+  - M01-C01
+---
+
 # AI Native 知识地图 V0.1：起点认知图
 
 日期：2026-08-24

@@ -1,3 +1,19 @@
+---
+id: S-M01-D03
+title: AI Native D3 学习会话
+type: session
+status: completed
+task_status_at_end: learning
+created: 2026-08-26
+updated: 2026-08-28
+goal: G6M
+milestone: M01
+week: M01-W01
+task_id: M01-D03
+produces:
+  - 01-map/四种机制边界草稿_D3.md
+---
+
 # AI Native D3 学习总结：Workflow、Agent 与任务路径设计
 
 日期：2026-08-26  

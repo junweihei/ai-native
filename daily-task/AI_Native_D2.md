@@ -1,3 +1,19 @@
+---
+id: S-M01-D02
+title: AI Native D2 学习会话
+type: session
+status: completed
+task_status_at_end: learning
+created: 2026-08-26
+updated: 2026-08-28
+goal: G6M
+milestone: M01
+week: M01-W01
+task_id: M01-D02
+produces:
+  - 01-map/任务适用性判断_D2.md
+---
+
 # AI Native D2 学习总结：判断 Agent 是否适合业务问题
 
 ## 一、核心前提：确定适用度 Fit for Purpose

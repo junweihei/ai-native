@@ -57,3 +57,9 @@ logs/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Office temporary lock files
+~$*.docx
+
+# Generated Learning OS website data (rebuilt from Markdown)
+web/public/data/learning-index.json
