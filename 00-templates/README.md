@@ -7,8 +7,8 @@ type: guide
 created: 2026-08-28
 updated: 2026-08-28
 governed_by:
-  - ../AI_Native_Learning_OS_学习执行规则_V0.1.md
-  - ../AI_Native_Learning_OS_统一模板规范_V0.1.md
+  - ../content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md
+  - ../content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md
 registry: template-registry.yaml
 ---
 
@@ -51,12 +51,12 @@ template-registry.yaml = 网页和工具怎样找到模板
 模板目录只保存空模板，正式学习结果仍进入：
 
 ```text
-daily-task/  每日学习会话
-01-map/      知识地图和架构成果
-02-cases/    案例拆解
-03-practice/ 练习、测试和错因
-04-use/      真实任务与项目成果
-05-evidence/ 闭卷、迁移和复盘证据
+content/sessions/  每日学习会话
+content/knowledge/      知识地图和架构成果
+content/cases/    案例拆解
+content/practice/ 练习、测试和错因
+content/projects/      真实任务与项目成果
+content/evidence/ 闭卷、迁移和复盘证据
 ```
 
 ## 二、每天怎样选择模板
@@ -64,15 +64,15 @@ daily-task/  每日学习会话
 | 今天的主要活动 | 主要模板 | 默认交付目录 |
 |---|---|---|
 | 执行已有计划任务 | 已有运行映射；需要时用每日任务卡 | 由运行映射指定 |
-| 记录一次学习过程 | 每日学习会话 | `daily-task/` |
-| 学习一个长期知识节点 | 知识节点学习 | `01-map/nodes/`，目录不存在时先放 `01-map/` |
-| 拆解一个案例 | 案例拆解 | `02-cases/` |
-| 针对一个弱点练习 | 专项练习 | `03-practice/` |
-| 应用到真实问题 | 真实任务应用 | `04-use/` |
+| 记录一次学习过程 | 每日学习会话 | `content/sessions/` |
+| 学习一个长期知识节点 | 知识节点学习 | `content/knowledge/nodes/`，目录不存在时先放 `content/knowledge/` |
+| 拆解一个案例 | 案例拆解 | `content/cases/` |
+| 针对一个弱点练习 | 专项练习 | `content/practice/` |
+| 应用到真实问题 | 真实任务应用 | `content/projects/` |
 | 提交正式成果 | 成果证据声明 | 写入成果文件末尾，通常不单建文件 |
-| 闭卷、测试、迁移 | 闭卷验证或 Eval 记录 | `05-evidence/` 或项目对应目录 |
+| 闭卷、测试、迁移 | 闭卷验证或 Eval 记录 | `content/evidence/` 或项目对应目录 |
 | 当天收尾 | 日收尾 | 默认追加到会话记录，不单建文件 |
-| 周/月调整计划 | 周复盘或月度验收 | `05-evidence/` |
+| 周/月调整计划 | 周复盘或月度验收 | `content/evidence/` |
 
 ## 三、每天的创建与提交流程
 
@@ -107,9 +107,9 @@ daily-task/  每日学习会话
 
 | 任务 | 直接填写 | 可选支持记录 | 提交条件 |
 |---|---|---|---|
-| D2 | `../01-map/任务适用性判断_D2.md` | `每日学习会话模板.md` | 8 个判断完成并满足 2/2/2 分布 |
-| D3 | `../01-map/四种机制边界草稿_D3.md` | `每日学习会话模板.md` | 四类边界、控制权和 8 个例子完成 |
-| D4 | `../01-map/系统结构与三条流草稿_D4.md` | `每日学习会话模板.md` | 组件归类有理由，三条流有起止 |
+| D2 | `../content/knowledge/任务适用性判断_D2.md` | `每日学习会话模板.md` | 8 个判断完成并满足 2/2/2 分布 |
+| D3 | `../content/knowledge/四种机制边界草稿_D3.md` | `每日学习会话模板.md` | 四类边界、控制权和 8 个例子完成 |
+| D4 | `../content/knowledge/系统结构与三条流草稿_D4.md` | `每日学习会话模板.md` | 组件归类有理由，三条流有起止 |
 
 模板库主要服务后续新任务；已有专用成果表优先使用，避免重复交付。
 

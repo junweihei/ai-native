@@ -5,6 +5,12 @@
 - This repository is in its bootstrap phase; the product scope and application stack are not selected yet.
 - Do not introduce a framework, runtime, database, model provider, or production dependency unless the task explicitly requires it.
 - GitHub is the single source of truth. Local, Worktree, and Cloud must operate on commits from this repository.
+- The content directory contract is V1.0 and is documented in `content/README.md`.
+- Keep authoritative learning Markdown under `content/`; do not recreate `01-map/`, `02-cases/`, `03-practice/`, `04-use/`, `05-evidence/`, or `daily-task/`.
+- Treat Markdown as the source of truth, `exports/word/` as generated publication output, and `archive/` as non-active history.
+- Website code must consume the generated index instead of hard-coding content paths or maintaining a second learning status.
+- Update `config/learning-content.json`, template paths, tests, and documentation in the same change whenever the content contract changes.
+
 
 ## Setup and checks
 

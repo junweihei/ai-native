@@ -7,12 +7,14 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
+from urllib.parse import unquote, urlparse
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = REPO_ROOT / "config" / "learning-content.json"
 FRONTMATTER_BOUNDARY = "---"
 PLACEHOLDER_RE = re.compile(r"\{\{[^{}]+\}\}")
+MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 
 
 @dataclass(frozen=True)
@@ -115,11 +117,14 @@ def discover_markdown(
             discovered.add(path.resolve())
 
     excluded = set(config.get("excluded_directories", []))
+    excluded_filenames = set(config.get("excluded_filenames", []))
     for relative in config.get("content_roots", []):
         root = repo_root / relative
         if not root.is_dir():
             continue
         for path in root.rglob("*.md"):
+            if path.name in excluded_filenames:
+                continue
             relative_parts = path.relative_to(repo_root).parts
             if any(part in excluded for part in relative_parts):
                 continue
@@ -142,17 +147,17 @@ def read_document(path: Path, repo_root: Path = REPO_ROOT) -> MarkdownDocument:
 
 def infer_category(relative_path: str) -> str:
     path = relative_path.replace("\\", "/")
-    if path.startswith("daily-task/"):
+    if path.startswith("content/sessions/"):
         return "session"
-    if path.startswith("01-map/"):
+    if path.startswith("content/knowledge/"):
         return "knowledge"
-    if path.startswith("02-cases/"):
+    if path.startswith("content/cases/"):
         return "case"
-    if path.startswith("03-practice/"):
+    if path.startswith("content/practice/"):
         return "practice"
-    if path.startswith("04-use/"):
+    if path.startswith("content/projects/"):
         return "project"
-    if path.startswith("05-evidence/"):
+    if path.startswith("content/evidence/"):
         return "evidence"
     if "运行映射" in path or "总纲" in path or "开始这里" in path:
         return "plan"
@@ -233,6 +238,27 @@ def parse_template_registry(path: Path) -> list[dict[str, str]]:
 
 def unresolved_placeholders(text: str) -> list[str]:
     return sorted(set(PLACEHOLDER_RE.findall(text)))
+
+
+def local_markdown_links(text: str) -> list[str]:
+    """Return repository-local Markdown link targets without anchors."""
+
+    targets: list[str] = []
+    for match in MARKDOWN_LINK_RE.finditer(text):
+        raw = match.group(1).strip()
+        if raw.startswith("<") and ">" in raw:
+            raw = raw[1 : raw.index(">")]
+        else:
+            raw = raw.split(maxsplit=1)[0]
+        if not raw or raw.startswith("#") or "{{" in raw:
+            continue
+        parsed = urlparse(raw)
+        if parsed.scheme or raw.startswith("//"):
+            continue
+        target = unquote(raw.split("#", 1)[0].split("?", 1)[0])
+        if target:
+            targets.append(target)
+    return targets
 
 
 def unique_preserving_order(values: Iterable[str]) -> list[str]:

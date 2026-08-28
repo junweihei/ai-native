@@ -11,7 +11,7 @@ milestone: M01
 week: M01-W01
 task_id: M01-D01
 produces:
-  - 01-map/AI_Native_知识地图_V0.1.md
+  - content/knowledge/AI_Native_知识地图_V0.1.md
 ---
 
 # AI Native D1：生成式 AI 与 Agent 基础

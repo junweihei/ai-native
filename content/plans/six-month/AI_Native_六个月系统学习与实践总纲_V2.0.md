@@ -11,15 +11,15 @@ type: goal-and-roadmap
 duration: 6-months
 owner: personal-ai-native-learning
 governed_by:
-  - 个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
+  - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
 month_01_execution_guide:
-  - 第1月_完整执行指导手册_V2.0.md
+  - content/plans/month-01/第1月_完整执行指导手册_V2.0.md
 derived_outputs:
-  - AI_Native_六个月系统学习与实践总纲_V2.0.docx
+  - exports/word/AI_Native_六个月系统学习与实践总纲_V2.0.docx
 supersedes_as_canonical:
-  - AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx
-  - AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx
-  - AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx
+  - archive/legacy-plans/AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx
+  - archive/legacy-plans/AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx
+  - archive/legacy-plans/AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx
 ---
 
 # AI Native 六个月系统学习与实践总纲 V2.0
@@ -54,13 +54,13 @@ Git = 版本、差异、审查与跨设备同步机制
 
 ```text
 第1层：Learning OS 上位运行共识
-└── 个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
+└── content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
 
 第2层：六个月战略总纲
-└── AI_Native_六个月系统学习与实践总纲_V2.0.md（本文件）
+└── content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md（本文件）
 
 第3层：月度执行手册
-├── 第1月_完整执行指导手册_V2.0.md（正文版本 V2.1）
+├── content/plans/month-01/第1月_完整执行指导手册_V2.0.md（正文版本 V2.1）
 ├── 第2月_完整执行指导手册_*.md
 └── ……
 
@@ -334,9 +334,9 @@ Git = 版本、差异、审查与跨设备同步机制
 
 第一个月的具体 20 天任务、官方资源、时间、产出和验收全部以以下文件为准：
 
-- `第1月_开始这里.md`
-- `第1月_完整执行指导手册_V2.0.md`，正文版本 V2.1
-- `第1月_每日学习资源与产出路径.md`
+- `content/plans/month-01/第1月_开始这里.md`
+- `content/plans/month-01/第1月_完整执行指导手册_V2.0.md`，正文版本 V2.1
+- `content/plans/month-01/第1月_每日学习资源与产出路径.md`
 
 本总纲不重复 D1—D20，避免产生第二套任务规则。
 

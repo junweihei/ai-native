@@ -1,41 +1,41 @@
 {
   "schema_version": "V0.1",
   "content_roots": [
-    "01-map",
-    "02-cases",
-    "03-practice",
-    "04-use",
-    "05-evidence",
-    "daily-task"
+    "content/knowledge",
+    "content/cases",
+    "content/practice",
+    "content/projects",
+    "content/evidence",
+    "content/sessions"
   ],
   "root_documents": [
-    "AI_Native_六个月系统学习与实践总纲_V2.0.md",
-    "个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
-    "个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",
-    "AI_Native_Learning_OS_学习执行规则_V0.1.md",
-    "AI_Native_Learning_OS_统一模板规范_V0.1.md",
-    "第1月_开始这里.md",
-    "第1月_完整执行指导手册_V2.0.md",
-    "第1月_每日学习资源与产出路径.md",
-    "第1月_Learning_OS_运行映射_V0.1.md"
+    "content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md",
+    "content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
+    "content/system/个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",
+    "content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md",
+    "content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md",
+    "content/plans/month-01/第1月_开始这里.md",
+    "content/plans/month-01/第1月_完整执行指导手册_V2.0.md",
+    "content/plans/month-01/第1月_每日学习资源与产出路径.md",
+    "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md"
   ],
   "required_frontmatter_paths": [
-    "AI_Native_六个月系统学习与实践总纲_V2.0.md",
-    "个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
-    "个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",
-    "AI_Native_Learning_OS_学习执行规则_V0.1.md",
-    "AI_Native_Learning_OS_统一模板规范_V0.1.md",
-    "第1月_开始这里.md",
-    "第1月_完整执行指导手册_V2.0.md",
-    "第1月_每日学习资源与产出路径.md",
-    "第1月_Learning_OS_运行映射_V0.1.md",
-    "01-map/AI_Native_知识地图_V0.1.md",
-    "01-map/任务适用性判断_D2.md",
-    "01-map/四种机制边界草稿_D3.md",
-    "01-map/系统结构与三条流草稿_D4.md",
-    "daily-task/AI_Native_D1.md",
-    "daily-task/AI_Native_D2.md",
-    "daily-task/AI_Native_D3.md"
+    "content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md",
+    "content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
+    "content/system/个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",
+    "content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md",
+    "content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md",
+    "content/plans/month-01/第1月_开始这里.md",
+    "content/plans/month-01/第1月_完整执行指导手册_V2.0.md",
+    "content/plans/month-01/第1月_每日学习资源与产出路径.md",
+    "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md",
+    "content/knowledge/AI_Native_知识地图_V0.1.md",
+    "content/knowledge/任务适用性判断_D2.md",
+    "content/knowledge/四种机制边界草稿_D3.md",
+    "content/knowledge/系统结构与三条流草稿_D4.md",
+    "content/sessions/AI_Native_D1.md",
+    "content/sessions/AI_Native_D2.md",
+    "content/sessions/AI_Native_D3.md"
   ],
   "required_frontmatter_fields": [
     "id",
@@ -57,6 +57,17 @@
   ],
   "template_registry": "00-templates/template-registry.yaml",
   "generated_index": "web/public/data/learning-index.json",
+  "link_check_paths": [
+    "README.md",
+    "content/README.md",
+    "00-templates/README.md",
+    "web/README.md",
+    "tools/content_index/README.md",
+    "docs/operations/content-directory-migration-v1.0.md"
+  ],
+  "excluded_filenames": [
+    "README.md"
+  ],
   "excluded_directories": [
     ".git",
     ".codex",

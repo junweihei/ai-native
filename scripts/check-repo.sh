@@ -13,7 +13,7 @@ required_files=(
   AGENTS.md
   .gitignore
   .codex/README.md
-  docs/multi-device-workflow.md
+  docs/operations/multi-device-workflow.md
   config/learning-content.json
   00-templates/template-registry.yaml
   tools/content_index/validate_learning_content.py

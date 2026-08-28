@@ -9,14 +9,14 @@ source_of_truth: markdown
 created: 2026-08-28
 updated: 2026-08-28
 governed_by:
-  - 个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
-  - AI_Native_六个月系统学习与实践总纲_V2.0.md
+  - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
+  - content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md
 validated_against:
-  - 第1月_完整执行指导手册_V2.0.md
-  - 第1月_每日学习资源与产出路径.md
-  - 第1月_Learning_OS_运行映射_V0.1.md
+  - content/plans/month-01/第1月_完整执行指导手册_V2.0.md
+  - content/plans/month-01/第1月_每日学习资源与产出路径.md
+  - content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md
 implemented_by:
-  - AI_Native_Learning_OS_统一模板规范_V0.1.md
+  - content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md
   - 00-templates/template-registry.yaml
 ---
 

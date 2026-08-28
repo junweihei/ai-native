@@ -13,8 +13,8 @@ from docx.shared import Inches, Pt, RGBColor
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "第1月_完整执行指导手册_V2.0.md"
-OUTPUT = ROOT / "AI_Native_第1月完整执行指导手册_V2.0.docx"
+SOURCE = ROOT / "content/plans/month-01/第1月_完整执行指导手册_V2.0.md"
+OUTPUT = ROOT / "exports/word/AI_Native_第1月完整执行指导手册_V2.0.docx"
 
 INK = "17324D"
 BLUE = "2E74B5"
@@ -417,7 +417,7 @@ def add_contents(doc):
     left.set(qn("w:color"), BLUE)
     pbdr.append(left)
     ppr.append(pbdr)
-    add_inline(call, "执行入口：工程根目录的“第1月_开始这里.md”。完整成果必须保存在 01-map 到 05-evidence，不能只留在聊天记录里。", bold=True, color=INK)
+    add_inline(call, "执行入口：工程根目录的“content/plans/month-01/第1月_开始这里.md”。完整成果必须保存在 content 下对应的知识、案例、练习、项目和证据目录，不能只留在聊天记录里。", bold=True, color=INK)
 
     p = doc.add_paragraph("目录", style="Heading 2")
     sections = [

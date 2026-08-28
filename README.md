@@ -11,12 +11,12 @@
 
 ## 权威入口
 
-1. [六个月系统学习与实践总纲 V2.0](AI_Native_六个月系统学习与实践总纲_V2.0.md)：六个月目标、能力路线和阶段门禁。
-2. [Learning OS 产品与学习运行模型 V0.1](个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：整个学习系统如何运行。
-3. [第 1 月开始这里](第1月_开始这里.md)：当前执行入口。
-4. [第 1 月 Learning OS 运行映射 V0.1](第1月_Learning_OS_运行映射_V0.1.md)：计划、任务、成果和证据的对应关系。
-5. [学习执行规则 V0.1](AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
-6. [统一模板规范 V0.1](AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
+1. [六个月系统学习与实践总纲 V2.0](content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md)：六个月目标、能力路线和阶段门禁。
+2. [Learning OS 产品与学习运行模型 V0.1](content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：整个学习系统如何运行。
+3. [第 1 月开始这里](content/plans/month-01/第1月_开始这里.md)：当前执行入口。
+4. [第 1 月 Learning OS 运行映射 V0.1](content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md)：计划、任务、成果和证据的对应关系。
+5. [学习执行规则 V0.1](content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
+6. [统一模板规范 V0.1](content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
 
 ## 数据与网页关系
 
@@ -43,24 +43,32 @@ Markdown 学习资产
 
 ## 当前仓库结构
 
+目录契约版本：V1.0。正式学习内容只能进入 `content/`；网站通过生成索引读取内容，不直接把文件路径硬编码进页面。
+
 ```text
 .
-├─ 00-templates/           # 每日任务、学习、证据和复盘模板
-├─ 01-map/                # 知识地图与节点成果
-├─ 02-cases/              # 案例拆解
-├─ 03-practice/           # 判定练习、首测、复测和错因
-├─ 04-use/                # 真实任务应用
-├─ 05-evidence/           # 闭卷、迁移、Eval 和复盘证据
-├─ daily-task/            # 每日学习会话与续接记录
-├─ config/                # 内容边界和状态契约
-├─ tools/content_index/   # 内容校验、索引生成和测试
-├─ web/prototypes/        # 冻结的当前网页参考原型
-├─ archive/web-prototypes/# 更早网页原型
-├─ docs/                  # 多端协同说明
-├─ scripts/               # 初始化与完整仓库检查
-├─ .github/               # PR 与自动检查
-└─ .codex/                # Codex 项目环境说明
+├─ content/
+│  ├─ system/              # Learning OS 上位共识、规则、规范与资产盘点
+│  ├─ plans/
+│  │  ├─ six-month/       # 六个月权威总纲
+│  │  └─ month-01/        # 第一个月入口、手册、资源与运行映射
+│  ├─ knowledge/           # 知识地图和节点成果
+│  ├─ cases/               # 案例拆解
+│  ├─ practice/            # 练习、首测、复测和错因
+│  ├─ projects/            # 真实任务和项目成果
+│  ├─ evidence/            # 闭卷、迁移、Eval 和复盘证据
+│  └─ sessions/            # 每日学习会话与续接记录
+├─ 00-templates/           # 任务、学习、证据和复盘模板
+├─ config/                 # 内容边界和状态契约
+├─ tools/content_index/    # 内容校验、索引生成和测试
+├─ web/                    # 网站边界、冻结原型和生成数据
+├─ docs/operations/        # Codex、多设备和工程操作说明
+├─ scripts/                # 初始化、检查和文档生成入口
+├─ exports/word/           # 从 Markdown 生成的 Word 发布版
+└─ archive/                # 历史规划、原始资料、旧模板和旧网页
 ```
+
+详细内容职责见 [content/README.md](content/README.md)，迁移记录见 [目录迁移 V1.0](docs/operations/content-directory-migration-v1.0.md)。
 ## 首次使用
 
 ### Windows
@@ -88,7 +96,7 @@ bash ./scripts/check-repo.sh
 5. Cloud 只从已推送的分支或提交启动，完成后创建 PR，不直接合并 `main`。
 6. 需要本机浏览器、桌面软件、内网或设备时，使用 Handoff 回到 Local 验证。
 
-详细操作与验收清单见 [多端协同工作流](docs/multi-device-workflow.md)。
+详细操作与验收清单见 [多端协同工作流](docs/operations/multi-device-workflow.md)。
 
 ## Codex 桌面应用设置
 
@@ -103,9 +111,4 @@ bash ./scripts/check-repo.sh
 
 ## 下一阶段
 
-确定首个产品目标和技术栈后，需要同步更新：
-
-- `AGENTS.md` 中的项目结构、安装、启动、测试和构建命令；
-- `scripts/setup.*` 的依赖安装策略；
-- GitHub Actions 中的真实 lint、test 和 build 步骤；
-- `.env.example`，仅记录变量名和非敏感示例值。
+目录和内容契约稳定后，下一阶段进入 Learning OS 网站设计与实现。网站必须从 `web/public/data/learning-index.json` 读取内容；选择技术栈时，再同步更新 `AGENTS.md`、`scripts/setup.*`、测试、构建命令和环境变量示例。

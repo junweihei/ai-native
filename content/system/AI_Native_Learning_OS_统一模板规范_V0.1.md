@@ -9,15 +9,15 @@ source_of_truth: markdown
 created: 2026-08-28
 updated: 2026-08-28
 implements:
-  - AI_Native_Learning_OS_学习执行规则_V0.1.md
+  - content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md
 validated_with:
   - M01-D02
   - M01-D03
   - M01-D04
 preserves:
   - 00-templates/02-learning/知识节点学习模板.md
-  - 03-practice/专项练习记录.md
-  - 05-evidence/第1月复盘.md
+  - content/practice/专项练习记录.md
+  - content/evidence/第1月复盘.md
 operational_library:
   - 00-templates/template-registry.yaml
 ---
@@ -519,7 +519,7 @@ evidence_for:
 - 是否继续当前主项目：继续 / 调整后继续 / 暂不继续
 ~~~~
 
-第一个月继续使用 `05-evidence/第1月复盘.md` 和 `下一弱点与第2月改进计划.md`，不需要替换；上面模板用于后续月份保持字段一致。
+第一个月继续使用 `content/evidence/第1月复盘.md` 和 `下一弱点与第2月改进计划.md`，不需要替换；上面模板用于后续月份保持字段一致。
 
 ---
 
@@ -612,7 +612,7 @@ A 任务卡
 
 ## 十、V0.1 落地方式
 
-1. D2 继续填写现有 `01-map/任务适用性判断_D2.md`，不新建重复任务卡。
+1. D2 继续填写现有 `content/knowledge/任务适用性判断_D2.md`，不新建重复任务卡。
 2. D2 补链结束时，按 B 模板的最小收尾记录结果和下一步。
 3. D3 使用现有边界草稿，并遵守先闭卷、后校正的开放规则。
 4. D4 验证不同类型的架构任务是否仍可使用同一状态与证据语言。

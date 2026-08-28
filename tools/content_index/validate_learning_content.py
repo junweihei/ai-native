@@ -16,6 +16,7 @@ from tools.content_index.common import (  # noqa: E402
     REPO_ROOT,
     discover_markdown,
     load_config,
+    local_markdown_links,
     parse_template_registry,
     read_document,
     unresolved_placeholders,
@@ -37,7 +38,8 @@ def collect_issues(repo_root: Path, config: dict[str, Any]) -> list[Issue]:
     allowed_statuses = set(config.get("allowed_statuses", []))
     ids: list[tuple[str, str]] = []
 
-    for path in discover_markdown(repo_root, config):
+    content_paths = discover_markdown(repo_root, config)
+    for path in content_paths:
         document = read_document(path, repo_root)
         metadata = document.metadata
 
@@ -86,6 +88,36 @@ def collect_issues(repo_root: Path, config: dict[str, Any]) -> list[Issue]:
                     "正式内容残留模板占位符: " + ", ".join(placeholders[:5]),
                 )
             )
+
+
+    link_sources = set(content_paths)
+    for relative in config.get("link_check_paths", []):
+        candidate = repo_root / relative
+        if not candidate.is_file():
+            issues.append(Issue("error", "missing-link-source", relative, "链接检查文件不存在"))
+        else:
+            link_sources.add(candidate.resolve())
+
+    repo_root_resolved = repo_root.resolve()
+    for source in sorted(link_sources):
+        source_relative = source.relative_to(repo_root_resolved).as_posix()
+        for target in local_markdown_links(source.read_text(encoding="utf-8")):
+            if target.startswith("/"):
+                destination = repo_root_resolved / target.lstrip("/")
+            else:
+                destination = source.parent / target
+            destination = destination.resolve()
+            try:
+                destination.relative_to(repo_root_resolved)
+            except ValueError:
+                issues.append(
+                    Issue("error", "link-outside-repository", source_relative, f"链接超出仓库: {target}")
+                )
+                continue
+            if not destination.exists():
+                issues.append(
+                    Issue("error", "broken-local-link", source_relative, f"本地链接不存在: {target}")
+                )
 
     counts = Counter(document_id for document_id, _ in ids)
     for document_id, count in counts.items():

@@ -1,4 +1,4 @@
-# 01-map：AI Native 知识地图
+# content/knowledge：AI Native 知识地图
 
 用于保存第一个月逐步迭代的领域地图。
 

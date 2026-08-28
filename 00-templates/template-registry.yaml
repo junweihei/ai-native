@@ -1,8 +1,8 @@
 version: V0.1
 status: active
 source_of_truth: 00-templates
-specification: ../AI_Native_Learning_OS_统一模板规范_V0.1.md
-execution_rules: ../AI_Native_Learning_OS_学习执行规则_V0.1.md
+specification: ../content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md
+execution_rules: ../content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md
 
 web_mapping:
   identity_field: template_id
@@ -46,7 +46,7 @@ templates:
     type: task
     path: 01-task/每日任务卡模板.md
     use_when: 新的每日任务进入正式执行队列
-    default_output_dir: daily-task
+    default_output_dir: content/sessions
     filename_pattern: "{{task_id}}_{{title}}.md"
 
   - template_id: tpl-task-remediation-v0.1
@@ -55,7 +55,7 @@ templates:
     type: task
     path: 01-task/补强任务卡模板.md
     use_when: 周门禁、测试或复盘触发一个短时补强任务
-    default_output_dir: daily-task
+    default_output_dir: content/sessions
     filename_pattern: "{{remediation_id}}_补强_{{title}}.md"
 
   - template_id: tpl-session-daily-v0.1
@@ -64,7 +64,7 @@ templates:
     type: session
     path: 02-learning/每日学习会话模板.md
     use_when: 记录一次真实学习过程和续接点
-    default_output_dir: daily-task
+    default_output_dir: content/sessions
     filename_pattern: "AI_Native_{{task_id}}_{{date}}.md"
 
   - template_id: tpl-learning-node-v0.1
@@ -73,7 +73,7 @@ templates:
     type: node
     path: 02-learning/知识节点学习模板.md
     use_when: 一个知识节点需要长期维护、比较边界或跨月复用
-    default_output_dir: 01-map
+    default_output_dir: content/knowledge
     filename_pattern: "{{node_name}}_学习卡_V0.1.md"
 
   - template_id: tpl-learning-case-v0.1
@@ -82,7 +82,7 @@ templates:
     type: artifact
     path: 02-learning/案例拆解模板.md
     use_when: 拆解优秀案例、普通案例或反例
-    default_output_dir: 02-cases
+    default_output_dir: content/cases
     filename_pattern: "{{case_type}}_{{case_name}}.md"
 
   - template_id: tpl-learning-practice-v0.1
@@ -91,7 +91,7 @@ templates:
     type: artifact
     path: 02-learning/专项练习模板.md
     use_when: 针对一个已证实弱点进行独立练习、反馈和再做
-    default_output_dir: 03-practice
+    default_output_dir: content/practice
     filename_pattern: "专项练习_{{weakness_short_name}}_{{date}}.md"
 
   - template_id: tpl-learning-real-task-v0.1
@@ -100,7 +100,7 @@ templates:
     type: artifact
     path: 02-learning/真实任务应用模板.md
     use_when: 把知识应用到真实问题并形成可验收方案
-    default_output_dir: 04-use
+    default_output_dir: content/projects
     filename_pattern: "{{task_name}}_V{{artifact_version}}.md"
 
   - template_id: tpl-evidence-artifact-v0.1
@@ -118,7 +118,7 @@ templates:
     type: evidence
     path: 03-evidence/闭卷验证模板.md
     use_when: 验证离开资料是否仍能画、讲、判断或重写
-    default_output_dir: 05-evidence
+    default_output_dir: content/evidence
     filename_pattern: "闭卷验证_{{task_id}}_{{date}}.md"
 
   - template_id: tpl-evidence-eval-v0.1
@@ -127,7 +127,7 @@ templates:
     type: evidence
     path: 03-evidence/Eval记录模板.md
     use_when: 使用测试集、指标、基线或用户反馈验证项目结果
-    default_output_dir: 05-evidence
+    default_output_dir: content/evidence
     filename_pattern: "Eval_{{artifact_id}}_{{date}}.md"
 
   - template_id: tpl-review-daily-v0.1
@@ -145,7 +145,7 @@ templates:
     type: review
     path: 04-review/周复盘模板.md
     use_when: 周阶段结束或周门禁评估
-    default_output_dir: 05-evidence
+    default_output_dir: content/evidence
     filename_pattern: "{{week}}_周复盘.md"
 
   - template_id: tpl-review-monthly-v0.1
@@ -154,5 +154,5 @@ templates:
     type: review
     path: 04-review/月度验收模板.md
     use_when: 月度里程碑验收并向下月反馈
-    default_output_dir: 05-evidence
+    default_output_dir: content/evidence
     filename_pattern: "{{milestone}}_月度验收.md"

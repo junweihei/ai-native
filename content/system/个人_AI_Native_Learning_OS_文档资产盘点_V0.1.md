@@ -34,18 +34,18 @@ source_commit: a29f4252481d181d954a3d8d51abec0e746774fb
 
 - 六个月学习规划。
 - 第一个月计划、入口、执行指导手册和每日资源路径。
-- `01-map/` 知识地图和结构草稿。
-- `daily-task/` 每日学习总结。
-- `02-cases/` 案例拆解。
-- `03-practice/` 判定练习、首测、复测和错因分析。
-- `04-use/` 真实任务应用。
-- `05-evidence/` 闭卷证据、迁移测试和复盘。
+- `content/knowledge/` 知识地图和结构草稿。
+- `content/sessions/` 每日学习总结。
+- `content/cases/` 案例拆解。
+- `content/practice/` 判定练习、首测、复测和错因分析。
+- `content/projects/` 真实任务应用。
+- `content/evidence/` 闭卷证据、迁移测试和复盘。
 - 与学习运行直接有关的根目录 Word 文档。
 
 ### 3. 未纳入学习资产统计
 
 - `.codex/`、`.github/`、`scripts/` 等工程协作与检查文件。
-- `Codex本地与云端协同操作手册.docx` 和 `docs/multi-device-workflow.md`：属于工程协作基础设施，不是 AI Native 学习内容。
+- `archive/source-documents/Codex本地与云端协同操作手册.docx` 和 `docs/operations/multi-device-workflow.md`：属于工程协作基础设施，不是 AI Native 学习内容。
 - Learning OS 的 HTML 界面原型：属于产品原型，不是学习成果。
 
 ### 4. 当前限制
@@ -64,11 +64,11 @@ source_commit: a29f4252481d181d954a3d8d51abec0e746774fb
 
 ```text
 README.md
-→ 第1月_开始这里.md
-→ 第1月_完整执行指导手册_V2.0.md（正文版本 V2.1）
-→ 第1月_每日学习资源与产出路径.md
+→ content/plans/month-01/第1月_开始这里.md
+→ content/plans/month-01/第1月_完整执行指导手册_V2.0.md（正文版本 V2.1）
+→ content/plans/month-01/第1月_每日学习资源与产出路径.md
 → D1—D20 每日任务
-→ 01-map 至 05-evidence 指定成果
+→ content 下各类学习成果目录
 ```
 
 执行手册已经明确：
@@ -86,9 +86,9 @@ README.md
 
 仓库中已经存在三篇内容完整的每日学习总结：
 
-- `daily-task/AI_Native_D1.md`
-- `daily-task/AI_Native_D2.md`
-- `daily-task/AI_Native_D3.md`
+- `content/sessions/AI_Native_D1.md`
+- `content/sessions/AI_Native_D2.md`
+- `content/sessions/AI_Native_D3.md`
 
 但是执行手册要求的指定成果中：
 
@@ -96,7 +96,7 @@ README.md
 - D2 的 `任务适用性判断_D2.md` 仍为空表。
 - D3 的 `四种机制边界草稿_D3.md` 仍为空表。
 - D4 及之后的绝大部分指定成果仍是未填写模板。
-- `第1月_开始这里.md` 的 20 天任务看板全部仍为 `[ ]`。
+- `content/plans/month-01/第1月_开始这里.md` 的 20 天任务看板全部仍为 `[ ]`。
 
 这说明：
 
@@ -116,9 +116,9 @@ README.md
 
 GitHub `main` 同时存在三份六个月规划：
 
-1. `AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx`
-2. `AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx`
-3. `AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx`
+1. `archive/legacy-plans/AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx`
+2. `archive/legacy-plans/AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx`
+3. `archive/legacy-plans/AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx`
 
 它们的名称表明侧重点不同，不能仅以版本号判断其中一份必然替代另外两份。
 
@@ -126,11 +126,11 @@ GitHub `main` 同时存在三份六个月规划：
 
 ### 5. 第一个月计划版本关系基本清楚
 
-- 当前权威入口：`第1月_开始这里.md`。
-- 当前权威执行规则：`第1月_完整执行指导手册_V2.0.md`，正文标题为 V2.1。
-- 当前权威每日资源映射：`第1月_每日学习资源与产出路径.md`，内容已按 V2.1 核验。
-- `AI_Native_第1月可落地任务包_V1.2.docx` 更像前序规划资产，是否正式归档仍需确认。
-- `AI_Native_第1月完整执行指导手册_V2.0.docx` 应视为 Word 发布版或导出版；Markdown 版更适合作为 Learning OS 的机器可读权威来源。
+- 当前权威入口：`content/plans/month-01/第1月_开始这里.md`。
+- 当前权威执行规则：`content/plans/month-01/第1月_完整执行指导手册_V2.0.md`，正文标题为 V2.1。
+- 当前权威每日资源映射：`content/plans/month-01/第1月_每日学习资源与产出路径.md`，内容已按 V2.1 核验。
+- `archive/legacy-plans/AI_Native_第1月可落地任务包_V1.2.docx` 更像前序规划资产，是否正式归档仍需确认。
+- `exports/word/AI_Native_第1月完整执行指导手册_V2.0.docx` 应视为 Word 发布版或导出版；Markdown 版更适合作为 Learning OS 的机器可读权威来源。
 
 ---
 
@@ -176,14 +176,14 @@ GitHub `main` 同时存在三份六个月规划：
 | 文件 | 系统职责 | 当前判断 | 权威性/版本关系 | 后续动作 |
 |---|---|---|---|---|
 | `README.md` | 学习入口、工程协作入口 | 有效 | 明确指向第一个月当前执行链 | 保留；后续增加 Learning OS 总入口 |
-| `AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx` | 六个月目标与路线候选 | 正文待提取 | 与另外两份六个月规划并存 | 不删除；进入权威版本确认 |
-| `AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx` | 企业级架构与落地路线候选 | 正文待提取 | 版本号较高，但名称和目标不同，不能自动视为唯一最新版 | 不删除；进入权威版本确认 |
-| `AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx` | “图拆练用证迭代”六个月路线候选 | 正文待提取 | 与当前第一个月执行方法最相似，但尚无权威声明 | 不删除；进入权威版本确认 |
-| `AI_Native_第1月可落地任务包_V1.2.docx` | 第一个月前序任务包 | 可能为历史规划资产 | 现有 V2.1 Markdown 手册已经提供更完整执行链 | 对比后决定标记为历史版本或附录 |
-| `AI_Native_第1月完整执行指导手册_V2.0.docx` | 第一个月 Word 发布版 | 正文待与 Markdown 对比 | 很可能与 Markdown 手册同源 | 明确“Markdown 为源、Word 为导出”或反向关系 |
-| `第1月_完整执行指导手册_V2.0.md` | 第一个月权威执行规则 | 有效且内容完整 | 文件名 V2.0；正文明确为 V2.1，并说明为保持链接稳定而不改名 | 建议作为当前机器可读权威版本 |
-| `第1月_开始这里.md` | 第一个月每日入口和 20 天看板 | 有效 | 明确依赖 V2.1 手册和每日资源路径 | 保留；后续让状态由实际证据驱动 |
-| `第1月_每日学习资源与产出路径.md` | 每日资源、成果和验收映射 | 有效且内容完整 | 已于 2026-08-21 按 V2.1 核验 | 保留，作为第一个月运行映射核心来源 |
+| `archive/legacy-plans/AI_Native_学习方向_V1.0_图拆练用六个月研究规划.docx` | 六个月目标与路线候选 | 正文待提取 | 与另外两份六个月规划并存 | 不删除；进入权威版本确认 |
+| `archive/legacy-plans/AI_Native_学习方向_V1.1_企业级解决方案架构与落地六个月规划.docx` | 企业级架构与落地路线候选 | 正文待提取 | 版本号较高，但名称和目标不同，不能自动视为唯一最新版 | 不删除；进入权威版本确认 |
+| `archive/legacy-plans/AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx` | “图拆练用证迭代”六个月路线候选 | 正文待提取 | 与当前第一个月执行方法最相似，但尚无权威声明 | 不删除；进入权威版本确认 |
+| `archive/legacy-plans/AI_Native_第1月可落地任务包_V1.2.docx` | 第一个月前序任务包 | 可能为历史规划资产 | 现有 V2.1 Markdown 手册已经提供更完整执行链 | 对比后决定标记为历史版本或附录 |
+| `exports/word/AI_Native_第1月完整执行指导手册_V2.0.docx` | 第一个月 Word 发布版 | 正文待与 Markdown 对比 | 很可能与 Markdown 手册同源 | 明确“Markdown 为源、Word 为导出”或反向关系 |
+| `content/plans/month-01/第1月_完整执行指导手册_V2.0.md` | 第一个月权威执行规则 | 有效且内容完整 | 文件名 V2.0；正文明确为 V2.1，并说明为保持链接稳定而不改名 | 建议作为当前机器可读权威版本 |
+| `content/plans/month-01/第1月_开始这里.md` | 第一个月每日入口和 20 天看板 | 有效 | 明确依赖 V2.1 手册和每日资源路径 | 保留；后续让状态由实际证据驱动 |
+| `content/plans/month-01/第1月_每日学习资源与产出路径.md` | 每日资源、成果和验收映射 | 有效且内容完整 | 已于 2026-08-21 按 V2.1 核验 | 保留，作为第一个月运行映射核心来源 |
 
 ### 计划类结论
 
@@ -198,14 +198,14 @@ GitHub `main` 同时存在三份六个月规划：
 
 | 文件 | 对应任务 | 当前内容状态 | 资产角色 | 后续判断 |
 |---|---:|---|---|---|
-| `01-map/README.md` | 目录说明 | 有效，但计划文件名示例较旧 | 目录导航 | 更新应晚于本轮盘点，暂不修改 |
-| `01-map/AI_Native_知识地图_V0.1.md` | D1 | 已有大量实际内容 | 起点认知与第一份地图证据 | 保留原始版本；不要用后续地图覆盖 |
-| `01-map/任务适用性判断_D2.md` | D2 | 空模板 | 8 个个人任务的机制选择证据 | D2 总结不能替代；需要补做或明确跳过理由 |
-| `01-map/四种机制边界草稿_D3.md` | D3 | 空模板 | 规则、Workflow、模型、Agent 边界证据 | 可基于 D3 总结闭卷回填，但不能直接复制总结 |
-| `01-map/系统结构与三条流草稿_D4.md` | D4 | 空模板 | 六层结构和三条流的实际归类练习 | 尚无完成证据 |
-| `01-map/AI_Native_知识地图_V0.2.md` | D5 | 空模板 | D1—D4 第一次整合地图 | 尚不能标记为当前有效地图 |
-| `01-map/AI_Native_知识地图_闭卷版.md` | D18 | 空模板 | 月末闭卷能力证据 | 必须保留为空，直到 D18 独立完成 |
-| `01-map/AI_Native_知识地图_V0.3.md` | D18/D20 | 空模板 | 依据案例、练习和真实任务修订的月末地图 | 是未来版本，不应提前填充 |
+| `content/knowledge/README.md` | 目录说明 | 有效，但计划文件名示例较旧 | 目录导航 | 更新应晚于本轮盘点，暂不修改 |
+| `content/knowledge/AI_Native_知识地图_V0.1.md` | D1 | 已有大量实际内容 | 起点认知与第一份地图证据 | 保留原始版本；不要用后续地图覆盖 |
+| `content/knowledge/任务适用性判断_D2.md` | D2 | 空模板 | 8 个个人任务的机制选择证据 | D2 总结不能替代；需要补做或明确跳过理由 |
+| `content/knowledge/四种机制边界草稿_D3.md` | D3 | 空模板 | 规则、Workflow、模型、Agent 边界证据 | 可基于 D3 总结闭卷回填，但不能直接复制总结 |
+| `content/knowledge/系统结构与三条流草稿_D4.md` | D4 | 空模板 | 六层结构和三条流的实际归类练习 | 尚无完成证据 |
+| `content/knowledge/AI_Native_知识地图_V0.2.md` | D5 | 空模板 | D1—D4 第一次整合地图 | 尚不能标记为当前有效地图 |
+| `content/knowledge/AI_Native_知识地图_闭卷版.md` | D18 | 空模板 | 月末闭卷能力证据 | 必须保留为空，直到 D18 独立完成 |
+| `content/knowledge/AI_Native_知识地图_V0.3.md` | D18/D20 | 空模板 | 依据案例、练习和真实任务修订的月末地图 | 是未来版本，不应提前填充 |
 
 ### 版本关系判断
 
@@ -236,9 +236,9 @@ V0.1 起点认知
 
 | 文件 | 内容覆盖 | 完成状态 | 与计划关系 | 主要判断 |
 |---|---|---|---|---|
-| `daily-task/AI_Native_D1.md` | LLM 训练/推理、Token、Embedding、Transformer、Prompt、Context、RAG、Tools、Agent、Multi-Agent | 内容完整 | 超出 D1 原定入门范围 | 高质量知识总结；不是 D1 最小任务本身 |
-| `daily-task/AI_Native_D2.md` | Fit for Purpose、Input/Transform/Output、六步构想框架、架构组件、RAI、控制责任 | 内容完整 | 对应 D2 主题，但未产生 8 个个人任务判断 | 说明理解已经形成，但应用判断证据缺失 |
-| `daily-task/AI_Native_D3.md` | Workflow/Agent、五种 Workflow、Agent Loop、ACI、复杂度升级与应用场景 | 内容完整 | 对应 D3 主题，但 D3 指定边界草稿仍空 | 已形成系统总结；需要转为闭卷边界能力证据 |
+| `content/sessions/AI_Native_D1.md` | LLM 训练/推理、Token、Embedding、Transformer、Prompt、Context、RAG、Tools、Agent、Multi-Agent | 内容完整 | 超出 D1 原定入门范围 | 高质量知识总结；不是 D1 最小任务本身 |
+| `content/sessions/AI_Native_D2.md` | Fit for Purpose、Input/Transform/Output、六步构想框架、架构组件、RAI、控制责任 | 内容完整 | 对应 D2 主题，但未产生 8 个个人任务判断 | 说明理解已经形成，但应用判断证据缺失 |
+| `content/sessions/AI_Native_D3.md` | Workflow/Agent、五种 Workflow、Agent Loop、ACI、复杂度升级与应用场景 | 内容完整 | 对应 D3 主题，但 D3 指定边界草稿仍空 | 已形成系统总结；需要转为闭卷边界能力证据 |
 
 ### 每日总结结论
 
@@ -258,12 +258,12 @@ V0.1 起点认知
 
 | 文件 | 对应任务 | 当前状态 | 资产角色 | 后续动作 |
 |---|---:|---|---|---|
-| `02-cases/README.md` | 目录说明 | 有效，部分示例名称与实际文件名不一致 | 目录导航 | 后续统一名称即可，非当前阻塞项 |
-| `02-cases/优秀案例_01_Deep_Research.md` | D6 | 空模板 | 多步研究、来源、工具和安全案例 | 等 D6 独立完成 |
-| `02-cases/优秀案例_02_Coding_Agent.md` | D7 | 空模板 | 工具反馈、测试、PR、权限和人工评审案例 | 等 D7 独立完成 |
-| `02-cases/优秀案例_03_Fin.md` | D8 | 空模板 | 客服 Agent 的知识、策略、接管和反馈案例 | 等 D8 独立完成 |
-| `02-cases/普通案例_01_FAQ聊天框.md` | D9 | 只有预设场景，作答为空 | 非 Agent 反例和复杂度边界 | 等 D9 独立完成 |
-| `02-cases/优秀成果关键规律清单_V1.0.md` | D10 | 空模板 | 3+1 案例的跨案例规律 | 必须在案例完成后填写，不能提前生成 |
+| `content/cases/README.md` | 目录说明 | 有效，部分示例名称与实际文件名不一致 | 目录导航 | 后续统一名称即可，非当前阻塞项 |
+| `content/cases/优秀案例_01_Deep_Research.md` | D6 | 空模板 | 多步研究、来源、工具和安全案例 | 等 D6 独立完成 |
+| `content/cases/优秀案例_02_Coding_Agent.md` | D7 | 空模板 | 工具反馈、测试、PR、权限和人工评审案例 | 等 D7 独立完成 |
+| `content/cases/优秀案例_03_Fin.md` | D8 | 空模板 | 客服 Agent 的知识、策略、接管和反馈案例 | 等 D8 独立完成 |
+| `content/cases/普通案例_01_FAQ聊天框.md` | D9 | 只有预设场景，作答为空 | 非 Agent 反例和复杂度边界 | 等 D9 独立完成 |
+| `content/cases/优秀成果关键规律清单_V1.0.md` | D10 | 空模板 | 3+1 案例的跨案例规律 | 必须在案例完成后填写，不能提前生成 |
 
 ### 案例类结论
 
@@ -275,15 +275,15 @@ V0.1 起点认知
 
 | 文件 | 对应任务 | 当前状态 | 资产角色 | 后续动作 |
 |---|---:|---|---|---|
-| `03-practice/README.md` | 目录说明 | 有效 | 练习闭环说明 | 保留 |
-| `03-practice/规则_工作流_模型_Agent_判定标准.md` | D11 | 空模板 | 分类前的个人判定标准 | 等 D11 独立完成 |
-| `03-practice/20题首测_答题记录.md` | D12 | 空答题表 | 首次闭卷测试证据 | 完成前必须隐藏参考答案 |
-| `03-practice/20题首测_参考答案.md` | D12/D13 | 已完成的系统脚手架 | 首测评分依据 | 不是学习者成果；必须受开放条件控制 |
-| `03-practice/20题首测_错因分析.md` | D13 | 空模板 | 错因分类和唯一弱点 | 首测后填写 |
-| `03-practice/专项练习记录.md` | D14 | 空模板 | 单一弱点练习闭环 | 错因确认后填写 |
-| `03-practice/10题复测_答题记录.md` | D14 | 空答题表 | 复测证据 | 完成前必须隐藏参考答案 |
-| `03-practice/10题复测_参考答案.md` | D14 | 已完成的系统脚手架 | 复测评分依据 | 不是学习者成果；必须受开放条件控制 |
-| `03-practice/首测与复测对比.md` | D14 | 空模板 | 能力变化证据 | 首测和复测完成后生成 |
+| `content/practice/README.md` | 目录说明 | 有效 | 练习闭环说明 | 保留 |
+| `content/practice/规则_工作流_模型_Agent_判定标准.md` | D11 | 空模板 | 分类前的个人判定标准 | 等 D11 独立完成 |
+| `content/practice/20题首测_答题记录.md` | D12 | 空答题表 | 首次闭卷测试证据 | 完成前必须隐藏参考答案 |
+| `content/practice/20题首测_参考答案.md` | D12/D13 | 已完成的系统脚手架 | 首测评分依据 | 不是学习者成果；必须受开放条件控制 |
+| `content/practice/20题首测_错因分析.md` | D13 | 空模板 | 错因分类和唯一弱点 | 首测后填写 |
+| `content/practice/专项练习记录.md` | D14 | 空模板 | 单一弱点练习闭环 | 错因确认后填写 |
+| `content/practice/10题复测_答题记录.md` | D14 | 空答题表 | 复测证据 | 完成前必须隐藏参考答案 |
+| `content/practice/10题复测_参考答案.md` | D14 | 已完成的系统脚手架 | 复测评分依据 | 不是学习者成果；必须受开放条件控制 |
+| `content/practice/首测与复测对比.md` | D14 | 空模板 | 能力变化证据 | 首测和复测完成后生成 |
 
 ### 已发现的指令冲突
 
@@ -306,11 +306,11 @@ V0.1 起点认知
 
 | 文件 | 对应任务 | 当前状态 | 资产角色 | 后续动作 |
 |---|---:|---|---|---|
-| `04-use/README.md` | 目录说明 | 有效 | 版本链和任务说明要求 | 保留 |
-| `04-use/真实任务候选评分.md` | D15 | 空模板 | 从 5 个候选中选择真实问题 | 等 D15 独立完成 |
-| `04-use/真实任务说明_V0.1.md` | D15 | 空模板 | 第一版独立任务说明 | 保留原始版本，不被后续覆盖 |
-| `04-use/真实任务说明_V0.2_闭卷重写.md` | D16 | 空模板 | 不看 V0.1 的闭卷重写证据 | 必须在 V0.1 后独立完成 |
-| `04-use/真实任务说明_V1.0.md` | D17 | 空模板 | 经过反馈后的可验收版本 | 必须保留 V0.1/V0.2 差异 |
+| `content/projects/README.md` | 目录说明 | 有效 | 版本链和任务说明要求 | 保留 |
+| `content/projects/真实任务候选评分.md` | D15 | 空模板 | 从 5 个候选中选择真实问题 | 等 D15 独立完成 |
+| `content/projects/真实任务说明_V0.1.md` | D15 | 空模板 | 第一版独立任务说明 | 保留原始版本，不被后续覆盖 |
+| `content/projects/真实任务说明_V0.2_闭卷重写.md` | D16 | 空模板 | 不看 V0.1 的闭卷重写证据 | 必须在 V0.1 后独立完成 |
+| `content/projects/真实任务说明_V1.0.md` | D17 | 空模板 | 经过反馈后的可验收版本 | 必须保留 V0.1/V0.2 差异 |
 
 ### 版本关系判断
 
@@ -330,11 +330,11 @@ Learning OS 必须保留三个版本并展示差异，不能只显示 V1.0。
 
 | 文件 | 对应任务 | 当前状态 | 资产角色 | 后续动作 |
 |---|---:|---|---|---|
-| `05-evidence/README.md` | 目录说明 | 有效 | 月末证据标准 | 保留 |
-| `05-evidence/闭卷讲解记录.md` | D18 | 空模板 | 脱离资料讲清楚的证据 | 等 D18 执行；最好关联录音/视频位置 |
-| `05-evidence/迁移题作答.md` | D19 | 空模板 | 对陌生场景迁移判断的证据 | 等 D19 闭卷完成 |
-| `05-evidence/第1月复盘.md` | D20 | 空模板 | 月度能力验收和执行数据 | 等 D20 基于真实证据填写 |
-| `05-evidence/下一弱点与第2月改进计划.md` | D20 | 空模板 | 第 2 月唯一弱点和首个练习 | 必须与月末复盘使用同一证据结论 |
+| `content/evidence/README.md` | 目录说明 | 有效 | 月末证据标准 | 保留 |
+| `content/evidence/闭卷讲解记录.md` | D18 | 空模板 | 脱离资料讲清楚的证据 | 等 D18 执行；最好关联录音/视频位置 |
+| `content/evidence/迁移题作答.md` | D19 | 空模板 | 对陌生场景迁移判断的证据 | 等 D19 闭卷完成 |
+| `content/evidence/第1月复盘.md` | D20 | 空模板 | 月度能力验收和执行数据 | 等 D20 基于真实证据填写 |
+| `content/evidence/下一弱点与第2月改进计划.md` | D20 | 空模板 | 第 2 月唯一弱点和首个练习 | 必须与月末复盘使用同一证据结论 |
 
 ### 证据类结论
 
@@ -354,10 +354,10 @@ Learning OS 必须保留三个版本并展示差异，不能只显示 V1.0。
 
 ```text
 README.md
-└── 第1月_开始这里.md
-    ├── 第1月_完整执行指导手册_V2.0.md
+└── content/plans/month-01/第1月_开始这里.md
+    ├── content/plans/month-01/第1月_完整执行指导手册_V2.0.md
     │   └── 正文版本 V2.1
-    └── 第1月_每日学习资源与产出路径.md
+    └── content/plans/month-01/第1月_每日学习资源与产出路径.md
         └── D1—D20 资源、成果、验收映射
 ```
 
@@ -394,12 +394,12 @@ README.md
 ### 2. 明确冲突或陈旧说明
 
 - 两份答题记录仍引用旧 Word 附录，和 V2.1 的 Markdown 参考答案规则冲突。
-- `02-cases/README.md` 使用泛化示例文件名，与实际命名不完全一致。
+- `content/cases/README.md` 使用泛化示例文件名，与实际命名不完全一致。
 - 执行手册文件名 V2.0、正文 V2.1，虽然正文已解释原因，但缺少机器可读版本字段。
 
 ### 3. 当前孤立资产
 
-`daily-task/AI_Native_D1.md`、`D2.md`、`D3.md` 内容完整，但没有进入：
+`content/sessions/AI_Native_D1.md`、`D2.md`、`D3.md` 内容完整，但没有进入：
 
 - 第一个月任务看板状态。
 - 每日验收结果。
@@ -507,13 +507,13 @@ updated: YYYY-MM-DD
 
 | 文件 | 类型 | 当前建议 |
 |---|---|---|
-| `个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md` | Learning OS 上位产品与学习共识 | 用户已确认，应纳入后续权威文档链 |
-| `个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md` | 本盘点文件 | 本轮新增，待审阅 |
+| `content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md` | Learning OS 上位产品与学习共识 | 用户已确认，应纳入后续权威文档链 |
+| `content/system/个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md` | 本盘点文件 | 本轮新增，待审阅 |
 | `archive/legacy-templates/AI_Native_节点学习卡模板.md` | 旧节点学习模板 | 已归档；正式入口为 `00-templates/02-learning/知识节点学习模板.md` |
-| `01-map/AI_Native_Learning_OS_数据与使用说明.md` | 界面数据说明 | 产品资产，不作为学习证据 |
-| `01-map/AI_Native_架构导航与学习卡.html` | 旧界面原型 | 保留用于对照，不进入学习资产统计 |
-| `01-map/AI_Native_Learning_OS_V2.html` | 旧界面原型 | 保留用于对照，不进入学习资产统计 |
-| `01-map/AI_Native_Learning_OS_V3.html` | 当前界面原型 | 在共识和映射完成前暂停修改 |
+| `archive/web-prototypes/AI_Native_Learning_OS_V2_数据与使用说明.md` | 界面数据说明 | 产品资产，不作为学习证据 |
+| `archive/web-prototypes/AI_Native_架构导航与学习卡.html` | 旧界面原型 | 保留用于对照，不进入学习资产统计 |
+| `archive/web-prototypes/AI_Native_Learning_OS_V2.html` | 旧界面原型 | 保留用于对照，不进入学习资产统计 |
+| `web/prototypes/AI_Native_Learning_OS_V3.html` | 当前界面原型 | 在共识和映射完成前暂停修改 |
 
 在 GitHub 仍是单一事实源的前提下，这些文件需要经过审阅、提交和推送后才能成为跨设备可依赖的正式资产。
 

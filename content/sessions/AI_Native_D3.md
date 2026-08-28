@@ -11,7 +11,7 @@ milestone: M01
 week: M01-W01
 task_id: M01-D03
 produces:
-  - 01-map/四种机制边界草稿_D3.md
+  - content/knowledge/四种机制边界草稿_D3.md
 ---
 
 # AI Native D3 学习总结：Workflow、Agent 与任务路径设计
