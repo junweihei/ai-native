@@ -8,34 +8,31 @@ fi
 repo_root="$(cd "$script_dir/.." && pwd)"
 cd "$repo_root"
 
-echo "Preparing worktree: $repo_root"
+echo "Preparing AI Native Learning OS worktree: $repo_root"
 
-if [[ -f pnpm-lock.yaml ]]; then
-  pnpm install --frozen-lockfile
-elif [[ -f yarn.lock ]]; then
-  yarn install --immutable
-elif [[ -f package-lock.json ]]; then
-  npm ci
-elif [[ -f package.json ]]; then
-  npm install
+if ! command -v node >/dev/null 2>&1; then
+  echo 'Node.js 24 LTS is required.' >&2
+  exit 1
 fi
 
-if [[ -f pyproject.toml ]]; then
-  if command -v poetry >/dev/null 2>&1; then
-    poetry install
-  elif command -v uv >/dev/null 2>&1; then
-    uv sync
-  else
-    echo 'pyproject.toml detected; configure Poetry/uv or add the exact install command.'
-  fi
-elif [[ -f requirements.txt ]]; then
-  python -m pip install -r requirements.txt
+node_version="$(node --version)"
+node_major="${node_version#v}"
+node_major="${node_major%%.*}"
+if [[ "$node_major" != '24' ]]; then
+  echo "Node.js 24 LTS is required; found $node_version." >&2
+  exit 1
 fi
 
-if [[ -x ./gradlew ]]; then
-  ./gradlew dependencies
-elif [[ -f pom.xml ]]; then
-  mvn dependency:go-offline
+if [[ ! -f package-lock.json ]]; then
+  echo 'package-lock.json is required for reproducible setup.' >&2
+  exit 1
 fi
 
-echo 'Setup complete.'
+npm ci
+if [[ -n "${LEARNING_OS_E2E_CHANNEL:-}" ]]; then
+  echo "Using installed Playwright browser channel: $LEARNING_OS_E2E_CHANNEL"
+else
+  npx playwright install chromium
+fi
+
+echo 'Setup complete. Run npm run dev or the repository check.'

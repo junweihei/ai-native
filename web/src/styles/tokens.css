@@ -1,0 +1,35 @@
+:root {
+  color-scheme: dark;
+  --color-workbench: #111318;
+  --color-workbench-raised: #191d24;
+  --color-paper: #f4f0e7;
+  --color-paper-muted: #e8e1d4;
+  --color-ink: #20242b;
+  --color-ink-muted: #616875;
+  --color-on-dark: #f3f5f7;
+  --color-on-dark-muted: #aeb5c0;
+  --color-accent: #7dd3c7;
+  --color-accent-strong: #2d8f83;
+  --color-danger: #d66767;
+  --color-warning: #d6a74f;
+  --color-success: #4fa77d;
+  --color-focus: #ffd166;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --shadow-paper: 0 1.25rem 3rem rgb(0 0 0 / 24%);
+  --font-ui: Inter, "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-reading: "Noto Serif SC", "Songti SC", Georgia, serif;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.75rem, 4vw, 2.5rem);
+  --line-reading: 1.75;
+  --content-max: 76rem;
+}

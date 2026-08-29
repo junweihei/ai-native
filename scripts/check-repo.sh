@@ -9,14 +9,11 @@ repo_root="$(cd "$script_dir/.." && pwd)"
 cd "$repo_root"
 
 required_files=(
-  README.md
-  AGENTS.md
-  .gitignore
-  .codex/README.md
-  docs/operations/multi-device-workflow.md
-  config/learning-content.json
-  00-templates/template-registry.yaml
-  tools/content_index/validate_learning_content.py
+  README.md AGENTS.md .gitignore .env.example package.json package-lock.json tsconfig.json
+  vite.config.ts playwright.config.ts .codex/README.md docs/operations/multi-device-workflow.md
+  docs/development.md config/learning-content.json 00-templates/template-registry.yaml
+  tools/content_index/validate_learning_content.py web/index.html web/shared/data-contract.ts
+  web/src/main.tsx web/server/index.ts
 )
 
 for file in "${required_files[@]}"; do
@@ -26,17 +23,11 @@ for file in "${required_files[@]}"; do
   fi
 done
 
-forbidden_pattern='(^|/)(\.env($|\.)|node_modules/|\.venv/|venv/|secrets/)|\.(pem|key|p12|pfx|db|sqlite|sqlite3)$'
-if ! tracked_files="$(git -c safe.directory="$repo_root" ls-files)"; then
-  echo 'Unable to inspect tracked files.' >&2
-  exit 1
-fi
-
+forbidden_pattern='(^|/)(\.env($|\.)|node_modules/|dist/|build/|coverage/|playwright-report/|test-results/|\.venv/|venv/|secrets/)|\.(pem|key|p12|pfx|db|sqlite|sqlite3)$'
+tracked_files="$(git -c safe.directory="$repo_root" ls-files)"
 while IFS= read -r file; do
   [[ -z "$file" ]] && continue
-  if [[ "$file" == '.env.example' || "$file" == */.env.example ]]; then
-    continue
-  fi
+  [[ "$file" == '.env.example' || "$file" == */.env.example ]] && continue
   if [[ "$file" =~ $forbidden_pattern ]]; then
     echo "Forbidden tracked file detected: $file" >&2
     exit 1
@@ -54,5 +45,6 @@ fi
 
 "${python_cmd[@]}" tools/content_index/validate_learning_content.py
 "${python_cmd[@]}" -m unittest discover -s tools/content_index/tests -v
+npm run check
 
-echo 'Repository baseline and Learning OS content checks passed.'
+echo 'Repository, content, application, accessibility, and build checks passed.'
