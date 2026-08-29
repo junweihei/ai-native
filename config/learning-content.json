@@ -56,6 +56,7 @@
     "archived"
   ],
   "template_registry": "00-templates/template-registry.yaml",
+  "controlled_materials_manifest": "config/controlled-materials.json",
   "generated_index": "web/public/data/learning-index.json",
   "link_check_paths": [
     "README.md",

@@ -3,14 +3,14 @@ import { expect, test } from "@playwright/test";
 
 test("app shell routes to the five primary entries", async ({ page }) => {
   await page.goto("/today");
-  await expect(page.getByRole("heading", { name: "今日" })).toBeVisible();
+  await expect(page.getByText("唯一可执行主任务 · M01-D02")).toBeVisible();
 
   await page.getByRole("link", { name: "复盘" }).click();
   await expect(page).toHaveURL(/\/review$/);
   await expect(page.getByRole("heading", { name: "复盘" })).toBeVisible();
 });
 
-test("today placeholder has no automatically detectable WCAG A/AA violations", async ({
+test("today workbench has no automatically detectable WCAG A/AA violations", async ({
   page,
 }) => {
   test.setTimeout(90_000);

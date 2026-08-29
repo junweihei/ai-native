@@ -45,6 +45,7 @@ fi
 
 "${python_cmd[@]}" tools/content_index/validate_learning_content.py
 "${python_cmd[@]}" -m unittest discover -s tools/content_index/tests -v
+"${python_cmd[@]}" tools/content_index/build_learning_index.py
 npm run check
 
 echo 'Repository, content, application, accessibility, and build checks passed.'

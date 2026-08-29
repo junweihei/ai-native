@@ -35,4 +35,13 @@ else
   npx playwright install chromium
 fi
 
+if command -v python3 >/dev/null 2>&1; then
+  python_cmd=(python3)
+elif command -v python >/dev/null 2>&1; then
+  python_cmd=(python)
+else
+  echo 'Python 3 is required to build the Learning OS index.' >&2
+  exit 1
+fi
+"${python_cmd[@]}" tools/content_index/build_learning_index.py
 echo 'Setup complete. Run npm run dev or the repository check.'

@@ -1,14 +1,15 @@
-import { Navigate, createBrowserRouter, useParams } from "react-router-dom";
+import {
+  Navigate,
+  createBrowserRouter,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { AppShell } from "./components/app-shell";
 import { PlaceholderPage } from "./pages/placeholder-page";
 import { RouteErrorPage } from "./pages/route-error-page";
+import { TodayPage } from "./pages/today-page";
 
 const primaryPages = [
-  {
-    path: "today",
-    title: "今日",
-    question: "今天最值得推进的学习任务是什么？",
-  },
   {
     path: "roadmap",
     title: "路线图",
@@ -33,12 +34,22 @@ const primaryPages = [
 
 function TaskWorkspacePlaceholder() {
   const { taskId } = useParams();
+  const [search] = useSearchParams();
+  const resume = search.get("resume");
+  const next = search.get("next");
+  const details = [
+    taskId ? `任务引用 ${taskId}` : "未提供任务引用",
+    resume ? `续接步骤 ${resume}` : null,
+    next ? `下一动作 ${next}` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
   return (
     <PlaceholderPage
       eyebrow="上下文页面"
       title="任务工作台"
       question="完成标准、过程和证据如何在同一上下文中推进？"
-      context={taskId ? `任务引用 ${taskId}` : "未提供任务引用"}
+      context={details}
     />
   );
 }
@@ -62,6 +73,7 @@ export const router = createBrowserRouter([
     errorElement: <RouteErrorPage />,
     children: [
       { index: true, element: <Navigate to="/today" replace /> },
+      { path: "today", element: <TodayPage /> },
       ...primaryPages.map((page) => ({
         path: page.path,
         element: (

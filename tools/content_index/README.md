@@ -20,6 +20,7 @@ python .\tools\content_index\build_learning_index.py
 ```
 
 默认输出为 `web/public/data/learning-index.json`。它是自动生成物，不是权威内容源。
+索引中的 `current_context` 仅投影运行映射已明确给出的当前任务、目标关系、成果、证据与续接信息；缺失字段保持缺失，不生成默认值。
 
 ## 测试
 

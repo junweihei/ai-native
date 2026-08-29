@@ -1,0 +1,41 @@
+{
+  "version": "V1.0",
+  "materials": [
+    {
+      "control_id": "ctl-7f9a2c16-5e41-4b83-a607-91d4c20e38b5",
+      "safe_category": "首测参考材料",
+      "task_id": "M01-D12",
+      "condition": "D12 的 20 题和理由全部完成，并保存首次独立版本",
+      "paths": ["content/practice/20题首测_参考答案.md"]
+    },
+    {
+      "control_id": "ctl-3b6d901e-8a2f-47c5-b149-62e73a0c5d84",
+      "safe_category": "复测参考材料",
+      "task_id": "M01-D14",
+      "condition": "D14 的复测答题全部完成，并保存首次独立版本",
+      "paths": ["content/practice/10题复测_参考答案.md"]
+    },
+    {
+      "control_id": "ctl-c81470a3-29de-45f7-936b-08a51d24e6cf",
+      "safe_category": "闭卷后对照材料组",
+      "task_id": "M01-D18",
+      "condition": "D18 闭卷图和讲解结束，并保存首次独立版本",
+      "paths": [
+        "content/knowledge/AI_Native_知识地图_V0.2.md",
+        "content/cases/*.md",
+        "content/projects/*.md"
+      ]
+    },
+    {
+      "control_id": "ctl-54e1b86f-7c30-4219-a5d2-39f04867c1ab",
+      "safe_category": "迁移题校验材料组",
+      "task_id": "M01-D19",
+      "condition": "D19 三个场景全部作答，并保存首次独立版本",
+      "paths": [
+        "content/practice/规则_工作流_模型_Agent_判定标准.md",
+        "content/knowledge/AI_Native_知识地图_V0.1.md",
+        "content/knowledge/AI_Native_知识地图_V0.2.md"
+      ]
+    }
+  ]
+}

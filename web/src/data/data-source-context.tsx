@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -9,11 +10,16 @@ import {
 import type {
   LearningIndexAdapter,
   LearningIndexAvailability,
+  TodayWorkspaceSnapshot,
 } from "../../shared/data-contract";
 import { HttpLearningIndexAdapter } from "./http-learning-index-adapter";
 
 interface DataSourceContextValue {
   status: LearningIndexAvailability | null;
+  today: TodayWorkspaceSnapshot | null;
+  loading: boolean;
+  error: boolean;
+  refresh: () => void;
 }
 
 const DataSourceContext = createContext<DataSourceContextValue | null>(null);
@@ -30,25 +36,40 @@ export function DataSourceProvider({
     [adapter],
   );
   const [status, setStatus] = useState<LearningIndexAvailability | null>(null);
+  const [today, setToday] = useState<TodayWorkspaceSnapshot | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [refreshToken, setRefreshToken] = useState(0);
+  const refresh = useCallback(() => setRefreshToken((value) => value + 1), []);
 
   useEffect(() => {
     let active = true;
-    source
-      .describe()
-      .then((nextStatus) => {
-        if (active) setStatus(nextStatus);
+    setLoading(true);
+    setError(false);
+    Promise.all([source.describe(), source.getToday()])
+      .then(([nextStatus, nextToday]) => {
+        if (!active) return;
+        setStatus(nextStatus);
+        setToday(nextToday);
       })
       .catch(() => {
-        if (active)
-          setStatus({ availability: "unavailable", reason: "unreachable" });
+        if (!active) return;
+        setStatus({ availability: "unavailable", reason: "unreachable" });
+        setToday(null);
+        setError(true);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, [source]);
+  }, [source, refreshToken]);
 
   return (
-    <DataSourceContext.Provider value={{ status }}>
+    <DataSourceContext.Provider
+      value={{ status, today, loading, error, refresh }}
+    >
       {children}
     </DataSourceContext.Provider>
   );

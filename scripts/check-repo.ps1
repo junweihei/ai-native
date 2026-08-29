@@ -49,6 +49,8 @@ if (-not $pythonCommand) { throw 'Python 3 is required to validate Learning OS c
 if ($LASTEXITCODE -ne 0) { throw 'Learning OS content validation failed.' }
 & $pythonCommand.Source @pythonPrefix '-m' 'unittest' 'discover' '-s' 'tools/content_index/tests' '-v'
 if ($LASTEXITCODE -ne 0) { throw 'Learning OS content tool tests failed.' }
+& $pythonCommand.Source @pythonPrefix 'tools/content_index/build_learning_index.py'
+if ($LASTEXITCODE -ne 0) { throw 'Learning OS index generation failed.' }
 
 & node $npmCli run check
 if ($LASTEXITCODE -ne 0) { throw 'Application checks failed.' }

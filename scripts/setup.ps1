@@ -39,4 +39,11 @@ if ($env:LEARNING_OS_E2E_CHANNEL) {
     if ($LASTEXITCODE -ne 0) { throw 'Playwright Chromium installation failed.' }
 }
 
+$pythonCommand = Get-Command py -ErrorAction SilentlyContinue
+$pythonPrefix = @()
+if ($pythonCommand) { $pythonPrefix = @('-3') } else { $pythonCommand = Get-Command python -ErrorAction SilentlyContinue }
+if (-not $pythonCommand) { throw 'Python 3 is required to build the Learning OS index.' }
+& $pythonCommand.Source @pythonPrefix 'tools/content_index/build_learning_index.py'
+if ($LASTEXITCODE -ne 0) { throw 'Learning OS index generation failed.' }
+
 Write-Host 'Setup complete. Run npm run dev or the repository check.'
