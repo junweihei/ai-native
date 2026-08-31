@@ -1,10 +1,11 @@
-import { readFile } from "node:fs/promises";
+import { glob, readFile } from "node:fs/promises";
 import { isAbsolute, relative, resolve } from "node:path";
 import type {
   LearningIndexAdapter,
   LearningIndexAvailability,
   TodayContext,
   TodayWorkspaceSnapshot,
+  RoadmapSnapshot,
 } from "../../shared/data-contract.js";
 
 interface GeneratedIndex {
@@ -14,6 +15,10 @@ interface GeneratedIndex {
   source_revision?: unknown;
   freshness?: { status?: unknown; reason?: unknown };
   current_context?: unknown;
+  roadmap?: unknown;
+  knowledge?: unknown;
+  documents?: unknown;
+  archive_documents?: unknown;
 }
 
 export class GeneratedIndexLearningAdapter implements LearningIndexAdapter {
@@ -36,6 +41,32 @@ export class GeneratedIndexLearningAdapter implements LearningIndexAdapter {
       raw: JSON.parse(await readFile(indexPath, "utf8")) as GeneratedIndex,
       indexPath: config.generated_index.replaceAll("\\", "/"),
     };
+  }
+
+  private async protectedPaths(): Promise<Set<string>> {
+    const config = JSON.parse(
+      await readFile(
+        resolve(this.repoRoot, "config/learning-content.json"),
+        "utf8",
+      ),
+    ) as { controlled_materials_manifest?: unknown };
+    if (typeof config.controlled_materials_manifest !== "string")
+      return new Set();
+    const manifest = JSON.parse(
+      await readFile(
+        resolve(this.repoRoot, config.controlled_materials_manifest),
+        "utf8",
+      ),
+    ) as { materials?: Array<{ paths?: string[] }> };
+    const protectedPaths = new Set<string>();
+    for (const material of manifest.materials ?? []) {
+      for (const pattern of material.paths ?? []) {
+        for await (const match of glob(pattern, { cwd: this.repoRoot })) {
+          protectedPaths.add(match.replaceAll("\\", "/"));
+        }
+      }
+    }
+    return protectedPaths;
   }
 
   async describe(): Promise<LearningIndexAvailability> {
@@ -97,14 +128,86 @@ export class GeneratedIndexLearningAdapter implements LearningIndexAdapter {
             : null,
       },
       access: {
-        mode: "read-only",
-        reason: "安全写回契约尚未实施，当前只读取生成索引。",
-        recovery: "完成安全写回评审与实现后，才可启用状态写回。",
+        mode: "read-write",
+        reason: "写回需先生成差异预览并经用户确认。",
+        recovery: "发生冲突或失败时保留草稿，并重新加载后预览。",
       },
       context:
         raw.current_context && typeof raw.current_context === "object"
           ? (raw.current_context as TodayContext)
           : null,
+    };
+  }
+
+  async getRoadmap(): Promise<RoadmapSnapshot> {
+    const { raw } = await this.load();
+    if (!raw.roadmap || typeof raw.roadmap !== "object")
+      throw new Error("roadmap_not_generated");
+    return {
+      ...(raw.roadmap as Omit<RoadmapSnapshot, "sourceRevision" | "freshness">),
+      sourceRevision:
+        typeof raw.source_revision === "string" ? raw.source_revision : null,
+      freshness: {
+        status:
+          raw.freshness?.status === "fresh" || raw.freshness?.status === "stale"
+            ? raw.freshness.status
+            : "unknown",
+        reason:
+          typeof raw.freshness?.reason === "string"
+            ? raw.freshness.reason
+            : null,
+      },
+    };
+  }
+
+  async getKnowledge(): Promise<unknown> {
+    const { raw } = await this.load();
+    if (!raw.knowledge || typeof raw.knowledge !== "object")
+      throw new Error("knowledge_not_generated");
+    return raw.knowledge;
+  }
+
+  async getArchive(): Promise<unknown> {
+    const { raw } = await this.load();
+    if (!Array.isArray(raw.documents)) throw new Error("archive_not_generated");
+    const protectedPaths = await this.protectedPaths();
+    const candidates = [
+      ...raw.documents,
+      ...(Array.isArray(raw.archive_documents) ? raw.archive_documents : []),
+    ];
+    const documents = candidates
+      .filter(
+        (item): item is Record<string, unknown> =>
+          Boolean(item) &&
+          typeof item === "object" &&
+          typeof (item as Record<string, unknown>).path === "string" &&
+          !protectedPaths.has((item as Record<string, unknown>).path as string),
+      )
+      .map((item) => ({
+        id: item.id,
+        path: item.path,
+        title: item.title,
+        type: item.type,
+        status: item.status,
+        updated: item.updated,
+        task_id: item.task_id,
+        week: item.week,
+        milestone: item.milestone,
+        nodes: item.nodes,
+        evidence_for: item.evidence_for,
+        category: item.category,
+        capability_level: item.capability_level,
+      }));
+    return {
+      documents,
+      currentTaskId:
+        raw.current_context && typeof raw.current_context === "object"
+          ? ((raw.current_context as Record<string, unknown>).task_id ?? null)
+          : null,
+      generatedAt: raw.generated_at,
+      sourceRevision:
+        typeof raw.source_revision === "string" ? raw.source_revision : null,
+      freshness: raw.freshness ?? { status: "unknown", reason: null },
     };
   }
 }

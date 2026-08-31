@@ -12,6 +12,8 @@ milestone: M01
 task_id: M01-D01
 evidence_for:
   - M01-C01
+nodes:
+  - ai-native-foundation
 ---
 
 # AI Native 知识地图 V0.1：起点认知图

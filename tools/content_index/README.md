@@ -21,6 +21,7 @@ python .\tools\content_index\build_learning_index.py
 
 默认输出为 `web/public/data/learning-index.json`。它是自动生成物，不是权威内容源。
 索引中的 `current_context` 仅投影运行映射已明确给出的当前任务、目标关系、成果、证据与续接信息；缺失字段保持缺失，不生成默认值。
+`knowledge` 从 `content/knowledge/AI_Native_知识节点注册表_V1.0.md` 投影六层定义、节点四问、计划任务及成果/证据关系；未通过独立验证的证据不能生成能力等级。`archive_documents` 与活动文档同批生成，归档记录不参与当前任务或进度。
 
 ## 测试
 

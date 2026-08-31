@@ -3,7 +3,7 @@
 }
 
 html {
-  min-width: 320px;
+  min-width: 0;
   background: var(--color-workbench);
   font-family: var(--font-ui);
 }
@@ -15,8 +15,71 @@ body {
 }
 
 button,
-a {
+a,
+input,
+select,
+textarea {
   font: inherit;
+}
+
+.secondary-action {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent-strong);
+  font-weight: 700;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.2em;
+}
+button.secondary-action {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-accent-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+
+button.secondary-action:disabled {
+  cursor: not-allowed;
+  color: #454b55;
+  border-color: #737985;
+  background: var(--color-paper-muted);
+  opacity: 1;
+}
+
+label {
+  display: grid;
+  gap: var(--space-2);
+  margin-block: var(--space-2);
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+  min-height: 2.75rem;
+}
+
+select {
+  width: 100%;
+  min-width: 0;
+}
+
+textarea {
+  width: 100%;
+  padding: var(--space-3);
+  line-height: 1.5;
+}
+
+fieldset {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  border: 1px solid rgb(32 36 43 / 20%);
+}
+
+fieldset > * {
+  min-width: 0;
 }
 
 a:focus-visible,
@@ -122,6 +185,12 @@ button:focus-visible,
   color: var(--color-ink);
   background: var(--color-paper);
   box-shadow: var(--shadow-paper);
+  overflow-wrap: anywhere;
+}
+
+.paper a:not(.primary-action):not(.button-link),
+.paper a:not(.primary-action):not(.button-link):visited {
+  color: var(--color-accent-strong);
 }
 
 .page-header {

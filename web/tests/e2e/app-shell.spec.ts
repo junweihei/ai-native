@@ -16,6 +16,8 @@ test("today workbench has no automatically detectable WCAG A/AA violations", asy
   test.setTimeout(90_000);
 
   await page.goto("/today");
+  await expect(page.getByText("唯一可执行主任务 · M01-D02")).toBeVisible();
+  await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();

@@ -30,20 +30,16 @@
     "content/plans/month-01/第1月_每日学习资源与产出路径.md",
     "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md",
     "content/knowledge/AI_Native_知识地图_V0.1.md",
+    "content/knowledge/AI_Native_知识节点注册表_V1.0.md",
     "content/knowledge/任务适用性判断_D2.md",
     "content/knowledge/四种机制边界草稿_D3.md",
     "content/knowledge/系统结构与三条流草稿_D4.md",
     "content/sessions/AI_Native_D1.md",
     "content/sessions/AI_Native_D2.md",
-    "content/sessions/AI_Native_D3.md"
+    "content/sessions/AI_Native_D3.md",
+    "content/evidence/迁移题作答.md"
   ],
-  "required_frontmatter_fields": [
-    "id",
-    "title",
-    "type",
-    "status",
-    "updated"
-  ],
+  "required_frontmatter_fields": ["id", "title", "type", "status", "updated"],
   "allowed_statuses": [
     "draft",
     "active",
@@ -56,8 +52,8 @@
     "archived"
   ],
   "template_registry": "00-templates/template-registry.yaml",
-  "controlled_materials_manifest": "config/controlled-materials.json",
   "generated_index": "web/public/data/learning-index.json",
+  "controlled_materials_manifest": "config/controlled-materials.json",
   "link_check_paths": [
     "README.md",
     "content/README.md",
@@ -66,9 +62,7 @@
     "tools/content_index/README.md",
     "docs/operations/content-directory-migration-v1.0.md"
   ],
-  "excluded_filenames": [
-    "README.md"
-  ],
+  "excluded_filenames": ["README.md"],
   "excluded_directories": [
     ".git",
     ".codex",
@@ -80,4 +74,3 @@
     "__pycache__"
   ]
 }
-

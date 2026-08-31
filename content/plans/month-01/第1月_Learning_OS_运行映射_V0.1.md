@@ -391,17 +391,6 @@ capabilities:
 nodes:
   - task-fit
   - deterministic-vs-llm-vs-agent
-step_protocol:
-  - locate
-  - closed_book_first_pass
-  - specified_input
-  - active_processing
-  - artifact
-  - self_check
-  - single_issue_revision
-  - close
-current_step: closed_book_first_pass
-not_applicable_steps: []
 resources:
   - R1
   - R2

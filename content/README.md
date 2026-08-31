@@ -23,6 +23,7 @@
 5. 创建交付件时使用 `00-templates/template-registry.yaml`，不要自行发明平行模板。
 6. Word 发布版进入 `exports/word/`，历史资料进入 `archive/`。
 7. 网站只读取生成索引，不直接维护第二套学习状态。
+8. `knowledge/AI_Native_知识节点注册表_V1.0.md` 只定义知识结构、四问、关系和证明规则；目标等级不等于当前能力，当前能力必须由独立证据支持。
 
 ## 当前执行入口
 

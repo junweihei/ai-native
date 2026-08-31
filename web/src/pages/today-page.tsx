@@ -59,7 +59,7 @@ export function TodayWorkbenchView({
       >
         <p className="eyebrow">今日工作台</p>
         <h1 id="page-title">正在读取今日任务</h1>
-        <div className="loading-lines" aria-label="加载中">
+        <div className="loading-lines" aria-hidden="true">
           <span />
           <span />
           <span />
@@ -191,6 +191,10 @@ export function TodayWorkbenchView({
         {actionEnabled && href ? (
           <Link className="primary-action today-primary" to={href}>
             {todayActionLabel(snapshot)}
+          </Link>
+        ) : task.gate.status === "blocked" && href ? (
+          <Link className="primary-action today-primary" to={href}>
+            查看阻塞与解除条件
           </Link>
         ) : (
           <button
