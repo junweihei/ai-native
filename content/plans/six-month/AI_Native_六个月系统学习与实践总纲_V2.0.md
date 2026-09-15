@@ -2,11 +2,14 @@
 id: ai-native-six-month-master-plan-v2
 title: AI Native 六个月系统学习与实践总纲
 version: V2.0
-status: active
-canonical: true
+status: archived
+canonical: false
+historical_reference: true
+superseded_by:
+  - content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 source_of_truth: markdown
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-09-14
 type: goal-and-roadmap
 duration: 6-months
 owner: personal-ai-native-learning
@@ -24,9 +27,11 @@ supersedes_as_canonical:
 
 # AI Native 六个月系统学习与实践总纲 V2.0
 
-> 本文件是个人 AI Native 六个月学习项目的权威战略总纲。
+> **历史参考（historical reference）**：本文件已由
+> `content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md` 取代，
+> 不再是当前权威战略总纲。
 >
-> 它定义六个月最终目标、能力路线、主项目演进、每月主题、阶段门禁和证据标准；不替代月度执行手册，也不提前制作僵硬的 24 周每日计划。
+> 本文件继续保留，用于版本历史、决策追溯和方法来源。其原始六个月目标、能力路线、主项目演进、每月主题、阶段门禁和证据标准仅按历史语境阅读。
 
 ---
 
@@ -902,4 +907,3 @@ V2.0 不是将三份旧规划直接拼接，而是按职责吸收。
 > 第一个月建立整体判断并选择问题；第二个月把模型能力做成可评测功能；第三个月让系统获得可信且受权限约束的 Context；第四个月建立可控的 Workflow、Agent 和 Tool；第五个月完成企业集成、MCP、治理和可观测；第六个月把所有能力整合成可演示、可验证、可迁移的端到端成果与个人方法论。
 
 > 学习进度不由文件数量和页面状态证明，而由能否解释、判断、实践、验证和迁移的证据证明。
-

@@ -7,10 +7,10 @@ type: guide
 canonical_scope: learning-execution-protocol
 source_of_truth: markdown
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-09-15
 governed_by:
   - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
-  - content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md
+  - content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 validated_against:
   - content/plans/month-01/第1月_完整执行指导手册_V2.0.md
   - content/plans/month-01/第1月_每日学习资源与产出路径.md
@@ -21,6 +21,8 @@ implemented_by:
 ---
 
 # AI Native Learning OS 学习执行规则 V0.1
+
+> V3.0 基线说明：本规则继续作为 Learning OS 的运行协议；战略方向、S1～S7 阶段依赖、统一成长树实践和阶段门禁以 `content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md` 为准。正文中的“六个月”旧称仅表示原有 Goal → 月 → 周 → 日层级，不构成独立战略总纲。
 
 > 本文件是个人 AI Native Learning OS 的统一学习执行协议。
 >
@@ -531,4 +533,3 @@ sources:
 - [ ] 只记录一个最大差距。
 - [ ] 状态有成果或证据路径支持。
 - [ ] 已确定下一次续接点。
-

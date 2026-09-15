@@ -38,10 +38,11 @@ export function RoadmapPage() {
     );
   return (
     <article className="paper today-paper" aria-labelledby="page-title">
-      <p className="eyebrow">六个月路线图 · Markdown 权威计划</p>
+      <p className="eyebrow">S1～S7 能力路线 · Markdown 权威计划</p>
       <h1 id="page-title">当前路径与阶段门禁</h1>
       <p>
-        顺序、依赖和状态均来自六个月总纲及月度运行映射；不会根据知识树、最近浏览或本机偏好重新排序。
+        顺序、依赖和状态均来自 V3.0
+        战略总纲及当前阶段运行映射；不会根据知识树、最近浏览或本机偏好重新排序。
       </p>
       {snapshot.freshness.status !== "fresh" ? (
         <div className="notice notice-warning" role="alert">
@@ -56,7 +57,7 @@ export function RoadmapPage() {
           ))}
         </section>
       ) : null}
-      <ol className="roadmap-list" aria-label="六个月阶段到每日任务">
+      <ol className="roadmap-list" aria-label="能力阶段到每日任务">
         {snapshot.months.map((month) => (
           <li key={month.id}>
             <section id={month.id}>
@@ -77,11 +78,11 @@ export function RoadmapPage() {
               </p>
               {month.partial ? (
                 <p className="missing-value">
-                  该月尚未提供周/日权威执行计划；系统不补造任务。
+                  该阶段尚未提供周/日权威执行计划；系统不补造任务。
                 </p>
               ) : null}
               {month.weeks.map((week) => (
-                <details key={week.id} open={month.id === "M01"}>
+                <details key={week.id} open={month.id === "S1"}>
                   <summary>
                     <strong>
                       {week.id} · {week.title}

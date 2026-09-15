@@ -7,15 +7,16 @@ type: plan
 canonical_scope: month-01-runtime-mapping
 source_of_truth: markdown
 created: 2026-08-28
-updated: 2026-08-28
-goal: ai-native-six-month-master-plan-v2
+updated: 2026-09-15
+goal: ai-native-learning-growth-tree-roadmap-v3
+stage: S1
 milestone: M01
 current_task: M01-D02
 current_status: learning
 next_action: 闭卷补齐 D2 的 8 个个人任务机制与复杂度判断
 governed_by:
   - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
-  - content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md
+  - content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 execution_guide:
   - content/plans/month-01/第1月_完整执行指导手册_V2.0.md
 execution_protocol:
@@ -49,7 +50,7 @@ entrypoint:
 7. 练习、测试和复盘产生的反馈怎样改变后续计划？
 
 ```text
-六个月总纲
+V3.0 战略总纲
 → 第1月里程碑
 → 四个周阶段
 → D1—D20 每日任务
@@ -66,7 +67,7 @@ entrypoint:
 | 文件 | 系统职责 | 决定什么 | 不决定什么 |
 |---|---|---|---|
 | `content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md` | 上位运行共识 | 学习对象、运行流、成果证据原则 | 第一个月每天学什么 |
-| `content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md` | 六个月战略总纲 | 最终目标、月份依赖、主项目演进、阶段门禁 | D1—D20 具体动作 |
+| `content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md` | 当前 canonical 战略总纲 | 最终目标、S1～S7 依赖、统一成长树实践和阶段门禁 | D1—D20 具体动作 |
 | `content/plans/month-01/第1月_完整执行指导手册_V2.0.md` | 第一个月权威执行规则，正文 V2.1 | 本月目标、每日动作、通过标准、月末验收 | 当前状态和界面展示 |
 | `content/plans/month-01/第1月_每日学习资源与产出路径.md` | 每日资源与产出映射 | R1—R13 阅读范围、资源到成果的转换 | 是否已经真实完成 |
 | `content/plans/month-01/第1月_开始这里.md` | 人工执行入口 | 快速查看 D1—D20 | 能力是否已经形成 |
@@ -75,14 +76,14 @@ entrypoint:
 出现冲突时：
 
 1. 学习原则以 Learning OS 上位共识为准。
-2. 六个月方向以六个月总纲为准。
+2. 能力方向、阶段依赖和升级条件以 V3.0 战略总纲为准。
 3. 第一个月具体动作与验收以 V2.1 执行手册为准。
 4. 每日阅读范围以每日资源文件为准。
 5. 当前状态以实际成果和证据为准，本映射负责汇总呈现。
 
 ---
 
-## 三、第一个月在六个月路线中的位置
+## 三、第一个月在 S1 路线中的位置
 
 ### 1. 月度里程碑
 
@@ -100,7 +101,7 @@ entrypoint:
 | M01-C04 | 从真实问题形成有边界、可验收的一页任务说明 | L3 | D15—D17 | D17、D20 |
 | M01-C05 | 用测试、闭卷、迁移和复盘判断能力并选择下一弱点 | L2 | D12—D14 | D18—D20 |
 
-能力等级沿用六个月总纲：L0 未进入、L1 能解释、L2 能判断、L3 能实践、L4 能验证并改进。
+能力等级沿用 V3.0 战略总纲：L0 未进入、L1 能解释、L2 能判断、L3 能实践、L4 能验证并改进。
 
 ### 3. 本月明确不做
 
@@ -167,7 +168,7 @@ D16 → D17 → D18 → D19 → D20
 
 ## 六、当前运行快照
 
-快照日期：**2026-08-28**。
+快照核验日期：**2026-09-15**。本表已按仓库中的成果文件与会话元数据复核，并归入 V3.0 的 S1；没有用规划切换推定任务完成。
 
 | 任务 | 当前状态 | 已有成果 | 仍缺什么 | 判断 |
 |---|---|---|---|---|
@@ -434,4 +435,3 @@ V0.1 阶段不要求立即给全部旧文件增加元数据。先以本映射作
 > 打开 `content/knowledge/任务适用性判断_D2.md`，关闭已有 D2 总结和外部资料，先完成 8 个自己的任务判断。
 
 完成并通过 D2 后，再进行 D3 闭卷证据补链；D2、D3 都完成后才进入 D4。这个顺序用于修复“知识已经学到 D3，但正式证据只稳定落到 D1”的断点。
-

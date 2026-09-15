@@ -7,8 +7,9 @@ from tools.content_index.build_learning_index import _knowledge_projection, _roa
 class RoadmapProjectionTests(unittest.TestCase):
     def test_preserves_plan_order_and_reports_cycles_missing_parents_and_statuses(self):
         master = SimpleNamespace(
-            relative_path="content/plans/six-month/master.md",
-            body="| 月份 | 核心主题 | 主要能力等级 | 主项目增量 | 月末关键证据 |\n| 第1月 | 基础 | L1—L2 | V0 | 证据 |\n| 第2月 | 后续 | L2 | V1 | 证据 |",
+            relative_path="content/plans/master-v3.md",
+            metadata={"canonical": True, "type": "goal-capability-and-practice-roadmap"},
+            body="| 阶段 | 核心问题 | 主要目标等级 | 统一成长树主要增量 | 核心证据 |\n| S1 基础 | 问题一 | L1—L2 | V0 | 证据 |\n| S2 后续 | 问题二 | L2 | V1 | 证据 |",
         )
         mapping = SimpleNamespace(
             relative_path="content/plans/month-01/map.md",
@@ -28,6 +29,7 @@ class RoadmapProjectionTests(unittest.TestCase):
         self.assertTrue(any(issue["code"] == "cycle" for issue in roadmap["relationIssues"]))
         self.assertTrue(any(issue["code"] == "missing_parent" for issue in roadmap["relationIssues"]))
         self.assertTrue(roadmap["months"][1]["partial"])
+        self.assertEqual(roadmap["months"][0]["id"], "S1")
 
 
 

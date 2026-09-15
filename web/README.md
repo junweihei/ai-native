@@ -18,7 +18,7 @@ The application obtains learning data from the generated-index boundary. It does
 | Route                | Purpose in this skeleton                                         |
 | -------------------- | ---------------------------------------------------------------- |
 | `/today`             | Current authority-projected task and resume context              |
-| `/roadmap`           | Six-month → month → week → task authority-projected roadmap      |
+| `/roadmap`           | S1–S7 → current plan → week → task authority-projected roadmap   |
 | `/knowledge`         | Six layers, three flows, safeguards, and knowledge-node map      |
 | `/archive`           | Same-source artifact, evidence, timeline, and archive projection |
 | `/review`            | Session close, daily/weekly/monthly review, and resume drafts    |

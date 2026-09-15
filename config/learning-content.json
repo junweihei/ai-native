@@ -9,6 +9,7 @@
     "content/sessions"
   ],
   "root_documents": [
+    "content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md",
     "content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md",
     "content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
     "content/system/个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",
@@ -20,6 +21,7 @@
     "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md"
   ],
   "required_frontmatter_paths": [
+    "content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md",
     "content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md",
     "content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md",
     "content/system/个人_AI_Native_Learning_OS_文档资产盘点_V0.1.md",

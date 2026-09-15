@@ -7,6 +7,7 @@ task_status_at_end: completed
 created: 2026-08-25
 updated: 2026-08-28
 goal: G6M
+stage: S1
 milestone: M01
 week: M01-W01
 task_id: M01-D01

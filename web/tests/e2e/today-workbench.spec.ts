@@ -283,7 +283,7 @@ test("shows the authoritative roadmap as a keyboard-accessible responsive hierar
         ],
         months: [
           {
-            id: "M01",
+            id: "S1",
             title: "整体认知",
             capabilityRange: "L1—L2",
             projectIncrement: "V0",
@@ -314,7 +314,7 @@ test("shows the authoritative roadmap as a keyboard-accessible responsive hierar
             ],
           },
           {
-            id: "M02",
+            id: "S2",
             title: "模型应用",
             capabilityRange: "L2",
             projectIncrement: "V1",
@@ -334,7 +334,7 @@ test("shows the authoritative roadmap as a keyboard-accessible responsive hierar
   ).toBeVisible();
   await expect(page.getByText("M01-D03 依赖不存在任务。")).toBeVisible();
   await expect(
-    page.getByText("该月尚未提供周/日权威执行计划；系统不补造任务。"),
+    page.getByText("该阶段尚未提供周/日权威执行计划；系统不补造任务。"),
   ).toBeVisible();
   const detail = page.getByRole("link", { name: "进入任务详情" });
   await detail.focus();
