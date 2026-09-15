@@ -182,7 +182,7 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
         issues.append(
             {
                 "code": "goal_relation_missing",
-                "message": "关系缺失：六个月目标无法解析。",
+                "message": "关系缺失：战略目标无法解析。",
                 "impact": "任务仍可查看，但目标追溯不完整。",
             }
         )
@@ -190,7 +190,7 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
         issues.append(
             {
                 "code": "goal_acceptance_relation_missing",
-                "message": "关系缺失：六个月目标的验收关系未结构化。",
+                "message": "关系缺失：战略目标的验收关系未结构化。",
                 "impact": "目标仍可追溯，但无法展示其验收关系。",
             }
         )
@@ -279,21 +279,30 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
 
 
 def _roadmap(parsed_documents: list, mapping) -> dict:
-    master = next((item for item in parsed_documents if "six-month" in item.relative_path), None)
+    master = next(
+        (
+            item
+            for item in parsed_documents
+            if item.metadata.get("canonical") is True
+            and item.metadata.get("type") == "goal-capability-and-practice-roadmap"
+        ),
+        None,
+    )
     if not master or not mapping:
-        return {"currentTaskId": None, "relationIssues": [{"code": "roadmap_source_missing", "message": "缺少六个月总纲或运行映射。"}], "months": []}
+        return {"currentTaskId": None, "relationIssues": [{"code": "roadmap_source_missing", "message": "缺少 canonical 战略总纲或运行映射。"}], "months": []}
 
     months = []
     for raw_line in master.body.splitlines():
         if not raw_line.lstrip().startswith("|"):
             continue
         cells = [cell.strip() for cell in raw_line.strip().strip("|").split("|")]
-        if len(cells) != 5 or not re.fullmatch(r"第[1-6]月", cells[0]):
+        stage_match = re.fullmatch(r"S([1-7])\s+(.+)", cells[0]) if len(cells) == 5 else None
+        if not stage_match:
             continue
-        number = int(re.search(r"\d", cells[0]).group())
+        number = int(stage_match.group(1))
         months.append({
-            "id": f"M{number:02d}",
-            "title": cells[1],
+            "id": f"S{number}",
+            "title": stage_match.group(2),
             "capabilityRange": cells[2],
             "projectIncrement": cells[3],
             "acceptance": cells[4],
@@ -368,11 +377,11 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
         visit(task_id)
 
     if months:
-        month = months[0]
+        stage = months[0]
         for number in range(1, 5):
             title = week_titles.get(number, f"第{number}周（关系缺失）")
             gate_match = re.search(rf"第{number}周门禁：([^\n]+)", mapping.body)
-            month["weeks"].append({
+            stage["weeks"].append({
                 "id": f"M01-W{number:02d}",
                 "title": title,
                 "gate": gate_match.group(1).strip() if gate_match else None,

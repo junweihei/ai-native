@@ -1,19 +1,19 @@
 # 个人 AI Native Learning OS
 
-本仓库服务于一个明确目标：在六个月内系统掌握 AI Native，并通过知识地图、案例、练习、真实任务和验证证据证明能力已经形成。Markdown 是唯一权威内容源；Word 用于阅读和发布；未来网页只投影这些数据，不反向维护另一套内容。
+本仓库服务于一个明确目标：按能力门禁形成企业级 AI Native 解决方案架构能力，并通过知识地图、案例、练习、统一成长树实践和验证证据证明能力已经形成。Markdown 是唯一权威编辑源；Word / PDF 用于阅读和发布；学习界面只投影这些数据，不反向维护另一套内容。
 
 ## 当前学习状态
 
-- 第 1 月正在执行。
-- D1 已完成。
-- D2、D3 学习中。
-- 当前阶段只稳定学习数据、目录契约和校验机制，不重做网页。
+- 当前能力阶段：S1（整体认知与机制判断）。
+- D1 已完成：知识地图与学习会话均有仓库证据。
+- D2、D3 已完成学习总结，但指定成果仍为 `learning` 且未填写，任务待补证。
+- 当前执行入口仍为第 1 月既定 S1 路径；本次基线切换不扩建 Learning OS 网站。
 
 ## 权威入口
 
-1. [六个月系统学习与实践总纲 V2.0](content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md)：六个月目标、能力路线和阶段门禁。
-2. [Learning OS 产品与学习运行模型 V0.1](content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：整个学习系统如何运行。
-3. [第 1 月开始这里](content/plans/month-01/第1月_开始这里.md)：当前执行入口。
+1. [Learning OS 产品与学习运行模型](content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：上位运行原则与长期共识。
+2. [AI Native 系统学习与统一成长树实践路线 V3.0](content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md)：唯一 canonical 战略总纲，定义 S1～S7、统一成长树和阶段门禁。
+3. [第 1 月开始这里](content/plans/month-01/第1月_开始这里.md)：当前 S1 执行入口。
 4. [第 1 月 Learning OS 运行映射 V0.1](content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md)：计划、任务、成果和证据的对应关系。
 5. [学习执行规则 V0.1](content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
 6. [统一模板规范 V0.1](content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
@@ -50,7 +50,8 @@ Markdown 学习资产
 ├─ content/
 │  ├─ system/              # Learning OS 上位共识、规则、规范与资产盘点
 │  ├─ plans/
-│  │  ├─ six-month/       # 六个月权威总纲
+│  │  ├─ V3.0 总纲       # 当前唯一 canonical 战略总纲（位于 plans/ 根）
+│  │  ├─ six-month/       # V2.0 历史参考
 │  │  └─ month-01/        # 第一个月入口、手册、资源与运行映射
 │  ├─ knowledge/           # 知识地图和节点成果
 │  ├─ cases/               # 案例拆解
@@ -109,6 +110,6 @@ bash ./scripts/check-repo.sh
 
 应用生成的项目环境配置应保存在根目录 `.codex` 中并提交到 GitHub。配置说明见 [.codex/README.md](.codex/README.md)。
 
-## 下一阶段
+## 当前开发边界
 
-目录和内容契约稳定后，下一阶段进入 Learning OS 网站设计与实现。网站必须从 `web/public/data/learning-index.json` 读取内容；选择技术栈时，再同步更新 `AGENTS.md`、`scripts/setup.*`、测试、构建命令和环境变量示例。
+Learning OS 网站继续通过 `web/public/data/learning-index.json` 投影 Markdown 权威数据；知识承载网站的继续开发目前暂停。恢复开发须另行审查，不因 V3.0 基线切换自动进入下一阶段或新增功能。

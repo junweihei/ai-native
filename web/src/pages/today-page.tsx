@@ -157,7 +157,7 @@ export function TodayWorkbenchView({
         </div>
       ) : null}
       <ol className="trace" aria-label="月周日与上层目标位置">
-        <TraceItem label="六个月目标" node={trace.goal} />
+        <TraceItem label="战略目标" node={trace.goal} />
         <TraceItem label="月" node={trace.month} />
         <TraceItem label="周" node={trace.week} />
         <TraceItem label="日" node={trace.day} />

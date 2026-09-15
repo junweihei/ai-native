@@ -5,8 +5,9 @@
 ## 目录职责
 
 - `system/`：上位共识、执行规则、模板规范和资产盘点。
-- `plans/six-month/`：六个月目标、路线和阶段门禁。
-- `plans/month-01/`：第一个月入口、执行手册、资源与运行映射。
+- `plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md`：当前唯一 canonical 战略总纲。
+- `plans/six-month/`：V2.0 历史规划，保留用于追溯，不作为当前入口。
+- `plans/month-01/`：当前 S1 的第一个月入口、执行手册、资源与运行映射。
 - `knowledge/`：知识地图、结构草稿和节点学习成果。
 - `cases/`：案例拆解。
 - `practice/`：测试、练习、错因分析和复测。
@@ -27,7 +28,8 @@
 
 ## 当前执行入口
 
-- 六个月总纲：`plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md`
-- 第一个月入口：`plans/month-01/第1月_开始这里.md`
 - Learning OS 上位共识：`system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md`
+- V3.0 战略总纲：`plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md`
+- 当前 S1 执行入口：`plans/month-01/第1月_开始这里.md`
 
+权威链为：Learning OS 上位运行原则 → V3.0 战略总纲 → 当前能力阶段执行计划 → 周 / 日任务 → 成果与证据。

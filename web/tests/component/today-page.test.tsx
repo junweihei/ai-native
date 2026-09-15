@@ -69,7 +69,7 @@ describe("TodayWorkbenchView", () => {
     stale.context!.issues = [
       {
         code: "goal_relation_missing",
-        message: "关系缺失：六个月目标",
+        message: "关系缺失：战略目标",
         impact: "目标追溯不完整。",
       },
     ];
@@ -79,7 +79,7 @@ describe("TodayWorkbenchView", () => {
       </MemoryRouter>,
     );
     expect(screen.getByRole("alert")).toHaveTextContent("索引已过期");
-    expect(screen.getByText("关系缺失：六个月目标")).toBeInTheDocument();
+    expect(screen.getByText("关系缺失：战略目标")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "继续当前任务" })).toBeDisabled();
     rerender(
       <MemoryRouter>

@@ -8,6 +8,7 @@ status: completed
 created: 2026-08-19
 updated: 2026-08-28
 goal: G6M
+stage: S1
 milestone: M01
 task_id: M01-D01
 evidence_for:

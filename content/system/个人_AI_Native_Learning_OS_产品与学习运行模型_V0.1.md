@@ -5,13 +5,15 @@ version: V0.1
 status: active
 approval_state: 共识已拉齐
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-09-15
 owner: 个人 AI Native 学习项目
 type: product-learning-operating-model
 ---
 
 # 个人 AI Native Learning OS 产品与学习运行模型 V0.1
 
+> V3.0 基线说明：本文件只保留为 Learning OS 上位运行原则与长期共识；当前目标、S1～S7 能力阶段、统一成长树实践和阶段门禁由 `content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md` 唯一决定。正文中沿用的“六个月”表述是 V2.0 时期的运行层级名称，不再构成时长承诺或战略权威。
+>
 > 本文档是六个月 AI Native 学习项目的上位共识。
 >
 > 它不替代六个月规划、月度计划、执行指导手册、知识地图和每日学习总结，而是规定这些内容如何共同组成一个可以持续运行、形成成果并验证能力的个人学习系统。
@@ -953,4 +955,3 @@ V0.1 尚未完成：
 ## 二十、最终共识句
 
 > **个人 AI Native Learning OS 的目的，是让六个月目标每天都能被执行，让每天的学习都能形成成果，让成果都能成为证据，让证据持续修正计划，最终证明学习者已经具备独立设计、实现、验证和改进 AI Native 系统的能力。**
-

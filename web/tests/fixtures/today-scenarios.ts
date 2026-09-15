@@ -75,7 +75,7 @@ export function todayScenario(
       trace: {
         goal: {
           id: "GOAL-AI-NATIVE-6M",
-          title: "六个月能力目标",
+          title: "V3.0 战略能力目标",
           status: "active",
           acceptance_relation: "以月末证据验收",
         },
