@@ -16,7 +16,7 @@ reference_duration: 7-10-months
 governed_by:
   - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
 supersedes:
-  - content/plans/six-month/AI_Native_六个月系统学习与实践总纲_V2.0.md
+  - archive/legacy-plans/AI_Native_六个月系统学习与实践总纲_V2.0.md
 migration_sources:
   - content/plans/month-01/第1月_开始这里.md
   - content/plans/month-01/第1月_完整执行指导手册_V2.0.md

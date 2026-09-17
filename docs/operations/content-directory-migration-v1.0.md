@@ -14,8 +14,8 @@
 | `04-use/` | `content/projects/` |
 | `05-evidence/` | `content/evidence/` |
 | `daily-task/` | `content/sessions/` |
-| 根目录六个月总纲 | `content/plans/six-month/` |
-| 根目录第一个月文件 | `content/plans/month-01/` |
+| 根目录六个月总纲 | `archive/legacy-plans/`（原 `content/plans/six-month/`，已归档） |
+| 根目录第一个月文件 | `archive/legacy-plans/s1-month-01-v2/`（其 active 职责已由 `content/plans/S1/` 接替） |
 | 根目录 Learning OS 共识和规则 | `content/system/` |
 | 当前 Word 发布版 | `exports/word/` |
 | 被替代规划 Word | `archive/legacy-plans/` |
@@ -38,4 +38,3 @@
 - 内容索引从 V1.0 路径重新生成。
 - Windows 和 GitHub 仓库检查继续通过。
 - 旧正式内容目录不再存在。
-

@@ -70,7 +70,7 @@ export function todayScenario(
       resolution: "resolved",
       task_id: id,
       candidates: [],
-      source_path: "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md",
+      source_path: "content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md",
       issues: [],
       trace: {
         goal: {
@@ -105,7 +105,7 @@ export const ambiguousToday: TodayWorkspaceSnapshot = {
     candidates: [task("M01-D02"), task("M01-D04")].map(
       ({ id, title, status }) => ({ id, title, status }),
     ),
-    source_path: "content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md",
+    source_path: "content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md",
     issues: [
       {
         code: "multiple_current_tasks",

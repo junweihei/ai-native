@@ -33,6 +33,47 @@
 - Production build/start smoke path: `npm run build`, then `npm start`
 - When the stack changes, update these commands, setup/check scripts, dependency files, `.env.example`, and development documentation in the same change.
 
+## AI Coding Agent execution protocol
+
+This repository uses a three-layer protocol for AI-assisted development. Any AI
+Coding Agent (Qwen Code, Codex, or other) follows these rules when operating
+on this project.
+
+### Layer 1: Long-term rules — AGENTS.md
+
+This file. Defines project boundaries, approved stack, engineering constraints,
+testing requirements, Git safety rules, and AI Agent execution rules. Stable
+across tasks.
+
+### Layer 2: Task boundary — TASK.md
+
+Created per task from `00-templates/TASK_TEMPLATE.md`. Defines the current
+task goal, allowed modification scope, explicitly forbidden scope, acceptance
+criteria, and output requirements. Discarded or archived after the task
+concludes. `TASK.md` defines a single task; long-term project rules remain
+in `AGENTS.md`.
+
+### Layer 3: Execution result — EXECUTION_REPORT.md
+
+Created or updated per execution round. Records modified files, execution
+process, tests run, unresolved issues, and final result (PASS / PARTIAL PASS /
+FAIL).
+
+### Execution rules
+
+- Before starting, the Agent reads `AGENTS.md`, then `TASK.md` if present.
+- The Agent works within the scope authorized by `TASK.md`. If no `TASK.md`
+  exists, the Agent requires explicit task scope from the user before making
+  changes.
+- After completing work, the Agent writes or updates `EXECUTION_REPORT.md`
+  with the results.
+- The Agent must not modify files outside the authorized scope without
+  explicit approval.
+- Silent fallback to a different execution mode is forbidden. If the planned
+  approach is blocked, stop and report.
+- Questions, explanations, read-only reviews, and status reports that do not
+  request implementation or code changes may be handled directly.
+
 ## Change boundaries
 
 - Never commit `.env`, credentials, tokens, private keys, local databases, dependency folders, build output, browser reports, coverage, or editor state.

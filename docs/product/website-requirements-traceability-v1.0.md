@@ -38,7 +38,7 @@
 - `tools/content_index/README.md`
 - `web/public/data/learning-index.json`
 - `00-templates/template-registry.yaml`
-- `content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md`
+- `content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md`
 
 ### 1.2 权威优先级
 

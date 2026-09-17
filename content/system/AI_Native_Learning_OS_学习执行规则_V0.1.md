@@ -7,14 +7,12 @@ type: guide
 canonical_scope: learning-execution-protocol
 source_of_truth: markdown
 created: 2026-08-28
-updated: 2026-09-15
+updated: 2026-09-17
 governed_by:
   - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
   - content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 validated_against:
-  - content/plans/month-01/第1月_完整执行指导手册_V2.0.md
-  - content/plans/month-01/第1月_每日学习资源与产出路径.md
-  - content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md
+  - content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md
 implemented_by:
   - content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md
   - 00-templates/template-registry.yaml
@@ -26,7 +24,7 @@ implemented_by:
 
 > 本文件是个人 AI Native Learning OS 的统一学习执行协议。
 >
-> 它从第一个月 V2.1 手册、Learning OS 运行模型和运行映射中提取稳定规则，使后续月份、任务、成果和界面使用同一套“开始—执行—验证—沉淀—复盘”标准。
+> 它从 S1 执行计划、Learning OS 运行模型和既有运行经验中提取稳定规则，使后续阶段、任务、成果和界面使用同一套“开始—执行—验证—沉淀—复盘”标准。
 
 ---
 

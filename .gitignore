@@ -8,7 +8,7 @@
 *.pfx
 secrets/
 
-# Codex/task-local scratch data
+# Task-local scratch data
 .codex-work/
 .codex-log/
 AGENTS.override.md
@@ -63,6 +63,18 @@ logs/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Editor workspace configuration
+.obsidian/
+
+# Tool verification fixtures (rebuildable)
+.codex-provider-verify/
+.orchestrator-phase2-fixture/
+.orchestrator-phase3-fixture/
+.qwen37-smoke-fixture/
+
+# Runtime cost tracking
+cost/
 
 # Office temporary lock files
 ~$*.docx

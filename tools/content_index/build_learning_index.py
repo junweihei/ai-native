@@ -60,18 +60,83 @@ def _table_row(body: str, identifier: str, id_column: int = 0) -> list[str] | No
     return None
 
 
+def _task_section(body: str, task_id: str) -> tuple[str | None, str] | None:
+    short_id = re.sub(r"^D0+", "D", task_id.split("-")[-1])
+    match = re.search(
+        rf"^###\s+{re.escape(short_id)}(?:[：:]\s*([^\n]*))?\s*$\n(.*?)(?=^###\s+(?:D\d+|P\d+\s+门禁)|^##\s|\Z)",
+        body,
+        re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        return None
+    return (match.group(1).strip() if match.group(1) else None, match.group(2))
+
+
+def _task_field(section: str, label: str) -> str | None:
+    match = re.search(
+        rf"^\*\*{re.escape(label)}\*\*\s*$\n+(.*?)(?=^\*\*[^*]+\*\*\s*$|^###\s|^##\s|\Z)",
+        section,
+        re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        return None
+    value = " ".join(line.strip() for line in match.group(1).splitlines() if line.strip())
+    return value or None
+
+
+def _normalized_status(value: str | None) -> str | None:
+    if not value:
+        return None
+    normalized = value.strip().lower()
+    for status in ("not_started", "learning", "review_pending", "completed", "verified", "blocked"):
+        if normalized.startswith(status):
+            return status
+    return next((status for label, status in STATUS_LABELS.items() if label in value), None)
+
+
+def _task_details(body: str, task_id: str) -> dict | None:
+    task = _task_section(body, task_id)
+    if not task:
+        return None
+    title, section = task
+    dependency_text = _task_field(section, "依赖关系") or ""
+    dependencies = [f"M01-D{int(value):02d}" for value in re.findall(r"D(\d{1,2})", dependency_text)]
+    return {
+        "title": title,
+        "status": _normalized_status(_task_field(section, "状态")),
+        "objective": _task_field(section, "目标 / 结果"),
+        "duration": _task_field(section, "预计时间"),
+        "dependencies": dependencies,
+        "acceptance": _task_field(section, "通过标准"),
+        "first_action": _task_field(section, "先做"),
+    }
+
+
+def _phase_details(body: str, task_id: str) -> tuple[int, str | None, str | None]:
+    number = int(re.search(r"D(\d{1,2})$", task_id).group(1))
+    phase = min(4, ((number - 1) // 5) + 1)
+    heading = re.search(rf"^##\s+[^\n]*S1-P{phase}\s+(.+)$", body, re.MULTILINE)
+    gate = re.search(
+        rf"^###\s+P{phase}\s+门禁\s*$\n+(.*?)(?=^###\s|^##\s|\Z)",
+        body,
+        re.MULTILINE | re.DOTALL,
+    )
+    gate_text = " ".join(line.strip() for line in gate.group(1).splitlines() if line.strip()) if gate else None
+    return phase, (heading.group(1).strip() if heading else None), gate_text
+
+
 def _task_status(body: str, task_id: str) -> str | None:
     row = _table_row(body, task_id)
-    if not row:
-        return None
-    for label, status in STATUS_LABELS.items():
-        if label in row[-1]:
-            return status
-    return None
+    if row:
+        for label, status in STATUS_LABELS.items():
+            if label in row[-1]:
+                return status
+    details = _task_details(body, task_id)
+    return details.get("status") if details else None
 
 
 def _current_task_fields(body: str) -> dict:
-    marker = "## 十二、供 Learning OS 界面读取的最小字段"
+    marker = "供 Learning OS 界面读取的最小字段"
     section_start = body.find(marker)
     if section_start < 0:
         return {}
@@ -89,12 +154,22 @@ def _evidence_steps(body: str, task_id: str) -> list[str]:
         body,
         re.MULTILINE | re.DOTALL,
     )
-    if not match:
+    if match:
+        return [
+            item.strip()
+            for item in re.findall(r"^\d+\.\s+(.+)$", match.group(1), re.MULTILINE)
+            if item.strip()
+        ]
+    details = _task_details(body, task_id)
+    if not details:
         return []
     return [
-        item.strip()
-        for item in re.findall(r"^\d+\.\s+(.+)$", match.group(1), re.MULTILINE)
-        if item.strip()
+        value
+        for value in (
+            details.get("first_action"),
+            f"按通过标准自检：{details['acceptance']}" if details.get("acceptance") else None,
+        )
+        if value
     ]
 
 
@@ -106,8 +181,9 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
 
     fields = _current_task_fields(mapping.body)
     task_row = _table_row(mapping.body, task_id)
+    task_details = _task_details(mapping.body, task_id)
     snapshot_row = _table_row(mapping.body, task_id.split("-")[-1])
-    if not task_row or fields.get("id") != task_id:
+    if (not task_row and not task_details) or fields.get("id") != task_id:
         return {
             "resolution": "partial",
             "task_id": task_id,
@@ -125,6 +201,9 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
     issues: list[dict] = []
     week_id = fields.get("week")
     week_row = _table_row(mapping.body, week_id, 1) if isinstance(week_id, str) else None
+    if not week_row and task_details:
+        _, phase_title, phase_gate = _phase_details(mapping.body, task_id)
+        week_row = [phase_title, None, None, None, None, phase_gate]
     capabilities = fields.get("capabilities") if isinstance(fields.get("capabilities"), list) else []
     capability_targets = []
     for capability_id in capabilities:
@@ -153,8 +232,13 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
     ]
 
     title_match = re.search(rf"现在：\s*{re.escape(task_id)}\s+([^\n]+)", mapping.body)
-    task_title = title_match.group(1).strip() if title_match else None
-    objective = task_row[2].split("；", 1)[1].strip() if len(task_row) > 2 and "；" in task_row[2] else None
+    task_title = task_details.get("title") if task_details else (title_match.group(1).strip() if title_match else None)
+    objective = (
+        task_details.get("objective")
+        if task_details
+        else (task_row[2].split("；", 1)[1].strip() if len(task_row) > 2 and "；" in task_row[2] else None)
+    )
+    duration = task_details.get("duration") if task_details else (task_row[1] if len(task_row) > 1 else None)
     primary_artifacts = fields.get("primary_artifacts") if isinstance(fields.get("primary_artifacts"), list) else []
     supporting_artifacts = fields.get("supporting_artifacts") if isinstance(fields.get("supporting_artifacts"), list) else []
     completion_rule = fields.get("completion_rule")
@@ -163,7 +247,7 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
         "task title": task_title,
         "month": fields.get("month"),
         "week": week_id,
-        "duration": task_row[1] if len(task_row) > 1 else None,
+        "duration": duration,
         "objective": objective,
         "primary artifact": primary_artifacts,
         "completion rule": completion_rule,
@@ -235,7 +319,7 @@ def _current_context(mapping, documents: list[dict], controlled_materials: list[
             "id": task_id,
             "title": task_title,
             "status": metadata.get("current_status"),
-            "duration_text": task_row[1] if len(task_row) > 1 else None,
+            "duration_text": duration,
             "objective": objective,
             "capability_targets": capability_targets,
             "primary_artifacts": primary_artifacts,
@@ -343,6 +427,30 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
             "week": week_number,
         }
 
+    if not tasks:
+        for phase in range(1, 5):
+            heading = re.search(rf"^##\s+[^\n]*S1-P{phase}\s+(.+)$", mapping.body, re.MULTILINE)
+            week_titles[phase] = f"S1-P{phase} {heading.group(1).strip()}" if heading else f"S1-P{phase}"
+            for number in range(((phase - 1) * 5) + 1, (phase * 5) + 1):
+                task_id = f"M01-D{number:02d}"
+                details = _task_details(mapping.body, task_id)
+                if not details:
+                    continue
+                tasks[task_id] = {
+                    "id": task_id,
+                    "title": details.get("title"),
+                    "timeRange": details.get("duration"),
+                    "status": details.get("status"),
+                    "dependencies": details.get("dependencies", []),
+                    "gate": None,
+                    "acceptance": details.get("acceptance"),
+                    "blockedReason": None,
+                    "unlockCondition": None,
+                    "current": task_id == mapping.metadata.get("current_task"),
+                    "relationIssues": [],
+                    "week": phase,
+                }
+
     relation_issues = []
     for task in tasks.values():
         missing = [item for item in task["dependencies"] if item not in tasks]
@@ -381,6 +489,12 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
         for number in range(1, 5):
             title = week_titles.get(number, f"第{number}周（关系缺失）")
             gate_match = re.search(rf"第{number}周门禁：([^\n]+)", mapping.body)
+            if not gate_match:
+                gate_match = re.search(
+                    rf"^###\s+P{number}\s+门禁\s*$\n+([^\n]+)",
+                    mapping.body,
+                    re.MULTILINE,
+                )
             stage["weeks"].append({
                 "id": f"M01-W{number:02d}",
                 "title": title,

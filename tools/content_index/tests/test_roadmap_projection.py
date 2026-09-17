@@ -96,5 +96,72 @@ class RoadmapProjectionTests(unittest.TestCase):
         self.assertTrue(any(item["code"] == "cycle" for item in projection["issues"]))
         self.assertTrue(any("独立验证" in issue for issue in node["relationIssues"]))
 
+    def test_projects_s1_phase_sections_without_a_duplicate_task_table(self):
+        master = SimpleNamespace(
+            relative_path="content/plans/master-v3.md",
+            metadata={"canonical": True, "type": "goal-capability-and-practice-roadmap"},
+            body="| 阶段 | 核心问题 | 主要目标等级 | 统一成长树主要增量 | 核心证据 |\n| S1 整体认知 | 问题 | L1—L2 | V0 | 证据 |",
+        )
+        mapping = SimpleNamespace(
+            relative_path="content/plans/S1/plan.md",
+            metadata={"current_task": "M01-D02"},
+            body="""## 七、S1-P1 图
+### D1：起点
+**状态**
+
+completed
+
+**目标 / 结果**
+
+留下起点。
+
+**预计时间**
+
+60 分钟
+
+**依赖关系**
+
+无
+
+**通过标准**
+
+有证据。
+
+### D2：当前任务
+**状态**
+
+learning
+
+**目标 / 结果**
+
+完成判断。
+
+**预计时间**
+
+30 分钟
+
+**依赖关系**
+
+D1 completed
+
+**通过标准**
+
+八项有理由。
+
+### P1 门禁
+
+闭卷说明边界。
+""",
+        )
+
+        roadmap = _roadmap([master, mapping], mapping)
+        phase = roadmap["months"][0]["weeks"][0]
+
+        self.assertEqual(phase["title"], "S1-P1 图")
+        self.assertEqual([task["id"] for task in phase["tasks"]], ["M01-D01", "M01-D02"])
+        self.assertEqual(phase["tasks"][1]["dependencies"], ["M01-D01"])
+        self.assertEqual(phase["tasks"][1]["status"], "learning")
+        self.assertEqual(phase["gate"], "闭卷说明边界。")
+
 if __name__ == "__main__":
     unittest.main()

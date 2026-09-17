@@ -7,14 +7,14 @@
 - 当前能力阶段：S1（整体认知与机制判断）。
 - D1 已完成：知识地图与学习会话均有仓库证据。
 - D2、D3 已完成学习总结，但指定成果仍为 `learning` 且未填写，任务待补证。
-- 当前执行入口仍为第 1 月既定 S1 路径；本次基线切换不扩建 Learning OS 网站。
+- 当前执行入口为 S1 极简入口；本次计划收敛不扩建 Learning OS 网站。
 
 ## 权威入口
 
 1. [Learning OS 产品与学习运行模型](content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：上位运行原则与长期共识。
 2. [AI Native 系统学习与统一成长树实践路线 V3.0](content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md)：唯一 canonical 战略总纲，定义 S1～S7、统一成长树和阶段门禁。
-3. [第 1 月开始这里](content/plans/month-01/第1月_开始这里.md)：当前 S1 执行入口。
-4. [第 1 月 Learning OS 运行映射 V0.1](content/plans/month-01/第1月_Learning_OS_运行映射_V0.1.md)：计划、任务、成果和证据的对应关系。
+3. [S1 开始这里](content/plans/S1/开始这里.md)：当前马上做什么。
+4. [S1 整体认知与机制判断执行计划 V1.0](content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md)：S1 唯一阶段执行源，包含任务、资源、门禁、状态与证据关系。
 5. [学习执行规则 V0.1](content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
 6. [统一模板规范 V0.1](content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
 
@@ -51,8 +51,7 @@ Markdown 学习资产
 │  ├─ system/              # Learning OS 上位共识、规则、规范与资产盘点
 │  ├─ plans/
 │  │  ├─ V3.0 总纲       # 当前唯一 canonical 战略总纲（位于 plans/ 根）
-│  │  ├─ six-month/       # V2.0 历史参考
-│  │  └─ month-01/        # 第一个月入口、手册、资源与运行映射
+│  │  └─ S1/              # S1 唯一执行计划与极简入口
 │  ├─ knowledge/           # 知识地图和节点成果
 │  ├─ cases/               # 案例拆解
 │  ├─ practice/            # 练习、首测、复测和错因
@@ -92,23 +91,23 @@ bash ./scripts/check-repo.sh
 
 1. 开始前执行 `git status` 和 `git fetch origin`。
 2. 每个任务使用独立分支：`feature/*`、`fix/*`、`refactor/*`、`test/*` 或 `cloud/*`。
-3. 同机并行任务选择 Codex **Worktree**，不要让多个任务同时修改 Local。
+3. 同机并行任务选择独立 **Worktree**，不要让多个任务同时修改 Local。
 4. 跨设备继续前先提交并推送；另一台设备先执行 `git fetch origin`，再切换分支并 `git pull --ff-only`。
 5. Cloud 只从已推送的分支或提交启动，完成后创建 PR，不直接合并 `main`。
 6. 需要本机浏览器、桌面软件、内网或设备时，使用 Handoff 回到 Local 验证。
 
 详细操作与验收清单见 [多端协同工作流](docs/operations/multi-device-workflow.md)。
 
-## Codex 桌面应用设置
+## AI Coding Agent 设置
 
-打开项目后，在 Codex 的 Local environment 设置中配置：
+在 AI 编码助手中打开项目后，配置以下命令用于环境初始化和检查：
 
 - Windows setup：`powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1`
 - macOS/Linux setup：`bash ./scripts/setup.sh`
-- Check action（Windows）：`powershell -ExecutionPolicy Bypass -File .\scripts\check-repo.ps1`
+- Check action（Windows）`powershell -ExecutionPolicy Bypass -File .\scripts\check-repo.ps1`
 - Check action（macOS/Linux）：`bash ./scripts/check-repo.sh`
 
-应用生成的项目环境配置应保存在根目录 `.codex` 中并提交到 GitHub。配置说明见 [.codex/README.md](.codex/README.md)。
+具体 AI 工具的项目配置方式请参考对应工具的文档。
 
 ## 当前开发边界
 
