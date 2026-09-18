@@ -12,18 +12,18 @@ class RoadmapProjectionTests(unittest.TestCase):
             body="| 阶段 | 核心问题 | 主要目标等级 | 统一成长树主要增量 | 核心证据 |\n| S1 基础 | 问题一 | L1—L2 | V0 | 证据 |\n| S2 后续 | 问题二 | L2 | V1 | 证据 |",
         )
         mapping = SimpleNamespace(
-            relative_path="content/plans/month-01/map.md",
-            metadata={"current_task": "M01-D01"},
+            relative_path="content/plans/S1/plan.md",
+            metadata={"current_task": "S1-D01"},
             body="""### 第1周：图
 | ID | 时间 | 目标 | 动作 | 成果 | 通过证据 | 依赖/状态 |
-| M01-D01 | 60 分钟 | 第一项 | 动作 | 成果 | 标准 | D2；**已完成** |
-| M01-D02 | 60 分钟 | 第二项 | 动作 | 成果 | 标准 | D1、D99；**已验证** |
+| S1-D01 | 60 分钟 | 第一项 | 动作 | 成果 | 标准 | D2；**已完成** |
+| S1-D02 | 60 分钟 | 第二项 | 动作 | 成果 | 标准 | D1、D99；**已验证** |
 第1周门禁：口头关卡
 """,
         )
         roadmap = _roadmap([master, mapping], mapping)
         week = roadmap["months"][0]["weeks"][0]
-        self.assertEqual([task["id"] for task in week["tasks"]], ["M01-D01", "M01-D02"])
+        self.assertEqual([task["id"] for task in week["tasks"]], ["S1-D01", "S1-D02"])
         self.assertEqual(week["tasks"][0]["status"], "completed")
         self.assertEqual(week["tasks"][1]["status"], "verified")
         self.assertTrue(any(issue["code"] == "cycle" for issue in roadmap["relationIssues"]))
@@ -52,8 +52,8 @@ class RoadmapProjectionTests(unittest.TestCase):
 """,
         )
         mapping = SimpleNamespace(
-            relative_path="content/plans/month-01/map.md",
-            metadata={"current_task": "M01-D01"},
+            relative_path="content/plans/S1/plan.md",
+            metadata={"current_task": "S1-D01"},
             body="",
         )
         documents = [
@@ -63,7 +63,7 @@ class RoadmapProjectionTests(unittest.TestCase):
                 "title": "成果甲",
                 "type": "artifact",
                 "status": "completed",
-                "task_id": "M01-D01",
+                "task_id": "S1-D01",
                 "milestone": "M01",
                 "nodes": ["node-a"],
             },
@@ -73,7 +73,7 @@ class RoadmapProjectionTests(unittest.TestCase):
                 "title": "证据甲",
                 "type": "evidence",
                 "status": "not_started",
-                "task_id": "M01-D01",
+                "task_id": "S1-D01",
                 "milestone": "M01",
                 "capability_level": None,
                 "nodes": ["node-a"],
@@ -91,7 +91,7 @@ class RoadmapProjectionTests(unittest.TestCase):
         self.assertEqual(node["runtimeStatus"], "partial")
         self.assertIsNone(node["assessedLevel"])
         self.assertEqual(node["evidenceRecords"][0]["status"], "not_started")
-        self.assertEqual(projection["currentTaskId"], "M01-D01")
+        self.assertEqual(projection["currentTaskId"], "S1-D01")
         self.assertTrue(any("不存在" in issue for issue in node["relationIssues"]))
         self.assertTrue(any(item["code"] == "cycle" for item in projection["issues"]))
         self.assertTrue(any("独立验证" in issue for issue in node["relationIssues"]))
@@ -158,8 +158,8 @@ D1 completed
         phase = roadmap["months"][0]["weeks"][0]
 
         self.assertEqual(phase["title"], "S1-P1 图")
-        self.assertEqual([task["id"] for task in phase["tasks"]], ["M01-D01", "M01-D02"])
-        self.assertEqual(phase["tasks"][1]["dependencies"], ["M01-D01"])
+        self.assertEqual([task["id"] for task in phase["tasks"]], ["S1-D01", "S1-D02"])
+        self.assertEqual(phase["tasks"][1]["dependencies"], ["S1-D01"])
         self.assertEqual(phase["tasks"][1]["status"], "learning")
         self.assertEqual(phase["gate"], "闭卷说明边界。")
 

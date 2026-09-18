@@ -100,7 +100,10 @@ def _task_details(body: str, task_id: str) -> dict | None:
         return None
     title, section = task
     dependency_text = _task_field(section, "依赖关系") or ""
-    dependencies = [f"M01-D{int(value):02d}" for value in re.findall(r"D(\d{1,2})", dependency_text)]
+    # Extract stage prefix from task_id (e.g., "S1-D01" -> "S1", "M01-D01" -> "M01")
+    prefix_match = re.match(r"^(.+)-D\d{2}$", task_id)
+    stage_prefix = prefix_match.group(1) if prefix_match else "S1"
+    dependencies = [f"{stage_prefix}-D{int(value):02d}" for value in re.findall(r"D(\d{1,2})", dependency_text)]
     return {
         "title": title,
         "status": _normalized_status(_task_field(section, "状态")),
@@ -398,6 +401,19 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
     tasks: dict[str, dict] = {}
     week_number = None
     week_titles: dict[int, str] = {}
+    # Detect task ID format from mapping metadata or first table row
+    stage_prefix = "S1"  # Default to S1-D format
+    for raw_line in mapping.body.splitlines():
+        if not raw_line.lstrip().startswith("|"):
+            continue
+        cells = [cell.strip().replace("**", "") for cell in raw_line.strip().strip("|").split("|")]
+        if len(cells) >= 7:
+            if re.fullmatch(r"S1-D\d{2}", cells[0]):
+                stage_prefix = "S1"
+                break
+            elif re.fullmatch(r"M01-D\d{2}", cells[0]):
+                stage_prefix = "M01"
+                break
     for raw_line in mapping.body.splitlines():
         heading = re.match(r"^###\s+第([1-4])周：?\s*(.+)$", raw_line)
         if heading:
@@ -407,11 +423,12 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
         if not raw_line.lstrip().startswith("|") or week_number is None:
             continue
         cells = [cell.strip().replace("**", "") for cell in raw_line.strip().strip("|").split("|")]
-        if len(cells) < 7 or not re.fullmatch(r"M01-D\d{2}", cells[0]):
+        # Support both M01-D and S1-D formats
+        if len(cells) < 7 or not (re.fullmatch(r"M01-D\d{2}", cells[0]) or re.fullmatch(r"S1-D\d{2}", cells[0])):
             continue
         task_id = cells[0]
         status = next((value for label, value in STATUS_LABELS.items() if label in cells[-1]), None)
-        dependencies = [f"M01-D{int(value):02d}" for value in re.findall(r"D(\d{1,2})", cells[-1])]
+        dependencies = [f"{stage_prefix}-D{int(value):02d}" for value in re.findall(r"D(\d{1,2})", cells[-1])]
         tasks[task_id] = {
             "id": task_id,
             "title": cells[2],
@@ -428,11 +445,14 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
         }
 
     if not tasks:
+        # Extract stage prefix from phase headings (e.g., "S1-P1" -> "S1")
+        phase_prefix_match = re.search(r"^##\s+[^\n]*([A-Z]\d+)-P\d+", mapping.body, re.MULTILINE)
+        fallback_prefix = phase_prefix_match.group(1) if phase_prefix_match else "M01"
         for phase in range(1, 5):
-            heading = re.search(rf"^##\s+[^\n]*S1-P{phase}\s+(.+)$", mapping.body, re.MULTILINE)
-            week_titles[phase] = f"S1-P{phase} {heading.group(1).strip()}" if heading else f"S1-P{phase}"
+            heading = re.search(rf"^##\s+[^\n]*{fallback_prefix}-P{phase}\s+(.+)$", mapping.body, re.MULTILINE)
+            week_titles[phase] = f"{fallback_prefix}-P{phase} {heading.group(1).strip()}" if heading else f"{fallback_prefix}-P{phase}"
             for number in range(((phase - 1) * 5) + 1, (phase * 5) + 1):
-                task_id = f"M01-D{number:02d}"
+                task_id = f"{fallback_prefix}-D{number:02d}"
                 details = _task_details(mapping.body, task_id)
                 if not details:
                     continue
@@ -486,6 +506,13 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
 
     if months:
         stage = months[0]
+        # Extract stage prefix from first task ID
+        first_task_id = next(iter(tasks), None)
+        stage_prefix = "S1"
+        if first_task_id:
+            prefix_match = re.match(r"^(.+)-D\d{2}$", first_task_id)
+            if prefix_match:
+                stage_prefix = prefix_match.group(1)
         for number in range(1, 5):
             title = week_titles.get(number, f"第{number}周（关系缺失）")
             gate_match = re.search(rf"第{number}周门禁：([^\n]+)", mapping.body)
@@ -496,7 +523,7 @@ def _roadmap(parsed_documents: list, mapping) -> dict:
                     re.MULTILINE,
                 )
             stage["weeks"].append({
-                "id": f"M01-W{number:02d}",
+                "id": f"{stage_prefix}-W{number:02d}",
                 "title": title,
                 "gate": gate_match.group(1).strip() if gate_match else None,
                 "tasks": [task for task in tasks.values() if task["week"] == number],
