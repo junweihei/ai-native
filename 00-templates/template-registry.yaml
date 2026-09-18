@@ -45,7 +45,8 @@ templates:
     category: task
     type: task
     path: 01-task/每日任务卡模板.md
-    use_when: 新的每日任务进入正式执行队列
+    use_when: 仅限临时/计划外/补强任务（如 S1-R01），已在 S1 执行计划中定义的 S1-Dxx 任务不得使用本模板
+    scope: ad-hoc-or-unplanned-task-only
     default_output_dir: content/sessions
     filename_pattern: "{{task_id}}_{{title}}.md"
 
@@ -63,7 +64,7 @@ templates:
     category: learning
     type: session
     path: 02-learning/每日学习会话模板.md
-    use_when: 记录一次真实学习过程和续接点
+    use_when: 记录一次真实学习过程、执行结果、日收尾信息和续接点（合并了原日收尾模板的所有字段）
     default_output_dir: content/sessions
     filename_pattern: "AI_Native_{{task_id}}_{{date}}.md"
 
@@ -135,7 +136,11 @@ templates:
     category: review
     type: review
     path: 04-review/日收尾模板.md
-    use_when: 每次学习结束时记录结果、状态和续接点
+    status: deprecated
+    deprecated_since: "2026-09-18"
+    deprecated_reason: "已合并到每日学习会话模板"
+    replacement: "tpl-session-daily-v0.1"
+    use_when: 已废弃，不再需要单独创建日收尾文件
     default_output_dir: append_to_session
     filename_pattern: append_to_session
 
