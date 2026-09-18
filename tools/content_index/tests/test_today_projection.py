@@ -13,9 +13,9 @@ class TodayProjectionTests(unittest.TestCase):
         context = index["current_context"]
 
         self.assertEqual(context["resolution"], "resolved")
-        self.assertEqual(context["task_id"], "M01-D02")
+        self.assertEqual(context["task_id"], "S1-D02")
         self.assertTrue(context["task"]["evidence_requirements"])
-        self.assertEqual(context["task"]["dependencies"], [{"id": "M01-D01", "status": "completed"}])
+        self.assertEqual(context["task"]["dependencies"], [{"id": "S1-D01", "status": "completed"}])
         self.assertTrue(context["task"]["executable"])
         self.assertIsNone(context["trace"]["goal"]["acceptance_relation"])
         self.assertIn("goal_acceptance_relation_missing", {issue["code"] for issue in context["issues"]})
