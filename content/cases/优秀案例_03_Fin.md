@@ -1,3 +1,10 @@
+---
+document_status: active
+task_state: not_started
+verification_state: unverified
+capability_level: L0
+---
+
 # 优秀案例 03：Fin
 
 日期：____  用时：____

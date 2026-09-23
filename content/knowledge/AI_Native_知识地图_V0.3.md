@@ -1,3 +1,10 @@
+---
+document_status: active
+task_state: not_started
+verification_state: unverified
+capability_level: L0
+---
+
 # AI Native 知识地图 V0.3
 
 日期：____  本版是月末修订版，只保留已经能够解释或有证据支持的内容。

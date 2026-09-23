@@ -36,6 +36,10 @@ def collect_issues(repo_root: Path, config: dict[str, Any]) -> list[Issue]:
     required_paths = set(config.get("required_frontmatter_paths", []))
     required_fields = config.get("required_frontmatter_fields", [])
     allowed_statuses = set(config.get("allowed_statuses", []))
+    document_statuses = set(config.get("document_statuses", []))
+    task_states = set(config.get("task_states", []))
+    verification_states = set(config.get("verification_states", []))
+    capability_levels = set(config.get("capability_levels", []))
     ids: list[tuple[str, str]] = []
 
     content_paths = discover_markdown(repo_root, config)
@@ -75,6 +79,51 @@ def collect_issues(repo_root: Path, config: dict[str, Any]) -> list[Issue]:
                         "invalid-status",
                         document.relative_path,
                         f"未知状态: {status}",
+                    )
+                )
+
+            # R3: Validate four-field metadata model
+            document_status = metadata.get("document_status")
+            if document_status and document_status not in document_statuses:
+                issues.append(
+                    Issue(
+                        "error",
+                        "invalid-document-status",
+                        document.relative_path,
+                        f"未知的 document_status: {document_status}",
+                    )
+                )
+
+            task_state = metadata.get("task_state")
+            if task_state and task_state not in task_states:
+                issues.append(
+                    Issue(
+                        "error",
+                        "invalid-task-state",
+                        document.relative_path,
+                        f"未知的 task_state: {task_state}",
+                    )
+                )
+
+            verification_state = metadata.get("verification_state")
+            if verification_state and verification_state not in verification_states:
+                issues.append(
+                    Issue(
+                        "error",
+                        "invalid-verification-state",
+                        document.relative_path,
+                        f"未知的 verification_state: {verification_state}",
+                    )
+                )
+
+            capability_level = metadata.get("capability_level")
+            if capability_level and capability_level not in capability_levels:
+                issues.append(
+                    Issue(
+                        "error",
+                        "invalid-capability-level",
+                        document.relative_path,
+                        f"未知的 capability_level: {capability_level}",
                     )
                 )
 
@@ -207,4 +256,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

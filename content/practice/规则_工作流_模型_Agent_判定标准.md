@@ -1,3 +1,10 @@
+---
+document_status: active
+task_state: not_started
+verification_state: unverified
+capability_level: L0
+---
+
 # 规则、工作流、模型、Agent 判定标准
 
 日期：____  先闭卷填写，再用每日路径中的 R2、R3、R5 校正。

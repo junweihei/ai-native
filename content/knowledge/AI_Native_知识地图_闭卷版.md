@@ -1,3 +1,10 @@
+---
+document_status: active
+task_state: not_started
+verification_state: unverified
+capability_level: L0
+---
+
 # AI Native 知识地图：闭卷版
 
 开始时间：____  结束时间：____  用时上限：15 分钟

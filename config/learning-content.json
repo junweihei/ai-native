@@ -1,5 +1,6 @@
 {
   "schema_version": "V0.1",
+  "metadata_model_version": "R3",
   "content_roots": [
     "content/knowledge",
     "content/cases",
@@ -46,6 +47,29 @@
     "verified",
     "blocked",
     "archived"
+  ],
+  "document_statuses": [
+    "draft",
+    "active",
+    "archived",
+    "deprecated"
+  ],
+  "task_states": [
+    "not_started",
+    "learning",
+    "completed",
+    "blocked"
+  ],
+  "verification_states": [
+    "unverified",
+    "verified"
+  ],
+  "capability_levels": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4"
   ],
   "template_registry": "00-templates/template-registry.yaml",
   "generated_index": "web/public/data/learning-index.json",

@@ -1,3 +1,10 @@
+---
+document_status: active
+task_state: not_started
+verification_state: unverified
+capability_level: L0
+---
+
 # 普通案例 01：简单但合格的 FAQ 聊天框
 
 场景：用户输入问题，系统从经过维护的帮助文章中检索相关内容，再由模型直接生成回答并标出来源；它不执行外部动作。系统有基本评测，并在无可靠内容或高风险问题时提示无法回答或转人工。
