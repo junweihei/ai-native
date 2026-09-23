@@ -5,6 +5,10 @@ version: V0.1
 type: artifact
 artifact_type: knowledge_map
 status: completed
+document_status: active
+task_state: completed
+verification_state: unverified
+capability_level: L2
 created: 2026-08-19
 updated: 2026-08-28
 goal: G6M
