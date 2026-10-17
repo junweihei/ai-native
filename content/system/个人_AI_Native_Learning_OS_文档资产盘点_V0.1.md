@@ -5,7 +5,7 @@ version: V0.1
 status: completed
 inventory_state: 盘点完成，权威关系已确认
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-09-24
 type: learning-asset-inventory
 source_repository: junweihei/ai-native
 source_ref: main
@@ -66,6 +66,7 @@ S1 当前运行链已收敛为：
 README.md
 → content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 → content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md
+→ content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md
 → content/plans/S1/开始这里.md
 → D1—D20 每日任务
 → content 下各类学习成果目录
@@ -77,7 +78,8 @@ README.md
 - 每天 60—90 分钟。
 - “图—拆—练—用—证—迭代”路径。
 - 每日固定闭环。
-- 每天对应的资源、成果文件和验收标准。
+- 执行计划中的任务、依赖、成果文件和验收标准。
+- 独立资源文档中的来源等级、精确阅读范围、限制、降级规则和 D1—D20 映射。
 - S1 最终门禁所需的能画、能讲、能判断、能做、能迁移、能迭代证据标准。
 
 因此，当前不应再维护平行的 S1 任务定义。
@@ -108,7 +110,7 @@ README.md
 
 - D1 总结扩展到 Tokenization、Embedding、Transformer、RAG、Tools、Agent、Multi-Agent 等大量内容，明显超过执行手册给 D1 规定的入门范围。
 - D2 总结形成了完整的适用性、Input/Transform/Output、六步构想框架和架构组件知识，但没有完成当天要求的 8 个个人任务判断表。
-- D3 总结对 Workflow、Agent、五种 Workflow Pattern、控制循环、ACI 和复杂度升级路径的整理已经较系统，但没有同步完成 D3 指定的四种机制边界草稿。
+- D3 总结对 Workflow、Agent、五种 Workflow Pattern、控制循环、ACI 和复杂度升级路径的整理已经较系统，但没有同步完成 D3 指定的控制结构与能力组件边界草稿。
 
 这些文件适合保留为高质量知识总结，但不能自动替代计划指定成果，因为两者证明的能力不同。
 
@@ -128,6 +130,7 @@ GitHub `main` 同时存在三份六个月规划：
 
 - 当前权威入口：`content/plans/S1/开始这里.md`。
 - 当前唯一阶段执行源：`content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md`。
+- 当前唯一阶段资源源：`content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md`。
 - 原月度手册、资源路径、运行映射与开始页已归档到 `archive/legacy-plans/s1-month-01-v2/`。
 - `archive/legacy-plans/AI_Native_第1月可落地任务包_V1.2.docx` 更像前序规划资产，是否正式归档仍需确认。
 - `exports/word/AI_Native_第1月完整执行指导手册_V2.0.docx` 应视为 Word 发布版或导出版；Markdown 版更适合作为 Learning OS 的机器可读权威来源。
@@ -181,7 +184,8 @@ GitHub `main` 同时存在三份六个月规划：
 | `archive/legacy-plans/AI_Native_学习方向_图拆练用证迭代六个月学习规划_V1.0.docx` | “图拆练用证迭代”六个月路线候选 | 正文待提取 | 与当前第一个月执行方法最相似，但尚无权威声明 | 不删除；进入权威版本确认 |
 | `archive/legacy-plans/AI_Native_第1月可落地任务包_V1.2.docx` | 第一个月前序任务包 | 可能为历史规划资产 | 现有 V2.1 Markdown 手册已经提供更完整执行链 | 对比后决定标记为历史版本或附录 |
 | `exports/word/AI_Native_第1月完整执行指导手册_V2.0.docx` | 第一个月 Word 发布版 | 正文待与 Markdown 对比 | 很可能与 Markdown 手册同源 | 明确“Markdown 为源、Word 为导出”或反向关系 |
-| `content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md` | S1 唯一阶段执行源 | active | 合并原手册、资源路径与运行映射；保留 D1—D20 ID 兼容 | 人工只维护这一份正式任务定义 |
+| `content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md` | S1 唯一阶段执行源 | active | 只维护任务、依赖、成果、门禁、状态和资源引用；保留 D1—D20 ID 兼容 | 人工只在此维护正式任务定义与 checkbox |
+| `content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md` | S1 唯一阶段资源源 | active | 只维护来源等级、精确范围、限制、降级路径和任务映射 | 资源变更只在此审查与维护 |
 | `content/plans/S1/开始这里.md` | 当前执行入口 | active | 只显示当前任务、通过条件、成果位置与下一步 | 每次开始学习先打开 |
 | `archive/legacy-plans/s1-month-01-v2/` | 原四份月度执行文档 | archived | 已被 S1 两文件结构替代 | 仅用于历史追溯 |
 
@@ -356,6 +360,7 @@ Learning OS 必须保留三个版本并展示差异，不能只显示 V1.0。
 README.md
 └── content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
     └── content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md
+        ├── content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md
         └── content/plans/S1/开始这里.md
             └── 当前任务成果与证据
 ```

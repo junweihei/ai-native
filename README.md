@@ -14,9 +14,10 @@
 1. [Learning OS 产品与学习运行模型](content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md)：上位运行原则与长期共识。
 2. [AI Native 系统学习与统一成长树实践路线 V3.0](content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md)：唯一 canonical 战略总纲，定义 S1～S7、统一成长树和阶段门禁。
 3. [S1 开始这里](content/plans/S1/开始这里.md)：当前马上做什么。
-4. [S1 整体认知与机制判断执行计划 V1.0](content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md)：S1 唯一阶段执行源，包含任务、资源、门禁、状态与证据关系。
-5. [学习执行规则 V0.1](content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
-6. [统一模板规范 V0.1](content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
+4. [S1 整体认知与机制判断执行计划 V1.0](content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md)：S1 唯一阶段执行源，包含任务、依赖、门禁、状态与证据关系。
+5. [S1 整体认知与机制判断学习资源 V1.0](content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md)：S1 唯一资源源，包含来源等级、精确范围、限制、降级路径和 D1—D20 映射。
+6. [学习执行规则 V0.1](content/system/AI_Native_Learning_OS_学习执行规则_V0.1.md)：状态、提交和验收规则。
+7. [统一模板规范 V0.1](content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md) 与 [模板库说明](00-templates/README.md)：每天怎样形成标准交付件。
 
 ## 数据与网页关系
 
@@ -51,7 +52,7 @@ Markdown 学习资产
 │  ├─ system/              # Learning OS 上位共识、规则、规范与资产盘点
 │  ├─ plans/
 │  │  ├─ V3.0 总纲       # 当前唯一 canonical 战略总纲（位于 plans/ 根）
-│  │  └─ S1/              # S1 唯一执行计划与极简入口
+│  │  └─ S1/              # S1 执行计划、学习资源与极简入口
 │  ├─ knowledge/           # 知识地图和节点成果
 │  ├─ cases/               # 案例拆解
 │  ├─ practice/            # 练习、首测、复测和错因

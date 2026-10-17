@@ -61,7 +61,7 @@ class TodayProjectionTests(unittest.TestCase):
         self.assertEqual(len(knowledge["layers"]), 6)
         self.assertTrue(all(item["problem"] != "____" for item in knowledge["layers"]))
         task_fit = next(item for item in knowledge["nodes"] if item["id"] == "task-fit")
-        self.assertEqual(task_fit["summary"], "根据任务确定性、输入结构、路径是否固定和是否需要中间证据选择下一步，选择足够简单的实现机制。")
+        self.assertEqual(task_fit["summary"], "根据结果确定性、路径可预写性和中间证据，先选择最低充分控制结构，再选择最小必要能力组件，并检查横向约束。")
         self.assertEqual(task_fit["runtimeStatus"], "partial")
         self.assertIsNone(task_fit["assessedLevel"])
         self.assertEqual(task_fit["evidenceRecords"][0]["status"], "not_started")

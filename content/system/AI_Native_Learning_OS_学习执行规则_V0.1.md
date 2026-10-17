@@ -7,12 +7,13 @@ type: guide
 canonical_scope: learning-execution-protocol
 source_of_truth: markdown
 created: 2026-08-28
-updated: 2026-09-17
+updated: 2026-09-24
 governed_by:
   - content/system/个人_AI_Native_Learning_OS_产品与学习运行模型_V0.1.md
   - content/plans/AI_Native_系统学习与统一成长树实践路线_V3.0.md
 validated_against:
   - content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md
+  - content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md
 implemented_by:
   - content/system/AI_Native_Learning_OS_统一模板规范_V0.1.md
   - 00-templates/template-registry.yaml
@@ -46,7 +47,7 @@ implemented_by:
 ### 2. 它不负责什么
 
 - 不决定六个月学习方向。
-- 不替代月度执行手册和每日资源表。
+- 不替代阶段执行计划和配套学习资源文档。
 - 不规定所有任务必须填写相同长度的表格。
 - 不把知识地图变成学习顺序。
 - 不追求一次性改写所有历史文件。
@@ -296,6 +297,14 @@ implemented_by:
 - 总结、聊天记录和资料摘录通常是支持成果。
 - 支持成果再完整，也不能自动替代主要成果的通过条件。
 
+### A-02A：一任务一主提交件
+
+- 每个正式日任务只能指定一个当天主提交件；过程记录、题目记录、讲解记录和后续计划可以作为支撑件。
+- 已有专业成果文件能承载当天结果时，直接把它作为主提交件，不另建“每日完成总结”。
+- 执行计划必须提供主提交件的可点击入口；多文件任务必须明确“主提交件 / 支撑件”。
+- 主提交件至少包含：任务身份、今日必须回答、专业成果正文、提交前验收、提交结论。
+- “提交结论”只记录成果自检结果和最大差距，不是权威任务状态；任务 checkbox 与状态仍只在阶段执行计划维护。
+
 ### A-03：证据必须可追溯
 
 证据至少指明：
@@ -408,6 +417,8 @@ implemented_by:
 ### R-01：日复盘只为无摩擦续接
 
 最小输出：今日结果、成果/证据路径、一个未解决问题、当前状态、下一动作。
+
+若当天主提交件已经包含提交结论与下一动作，日复盘直接复用该部分，不重复创建日总结。
 
 ### R-02：周复盘检查能力推进
 
