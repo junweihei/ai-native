@@ -14,6 +14,8 @@ source_commit: a29f4252481d181d954a3d8d51abec0e746774fb
 
 # 个人 AI Native Learning OS 文档资产盘点 V0.1
 
+> **历史快照说明（2026-11-07 校正）**：本文记录 2026-09-24 的盘点基线，其中 `content/cases/`、`content/projects/` 及旧的知识/练习/证据路径只描述当时结构，不再是当前执行入口。现行 S1 以 `content/practice/S1/` 的 D01–D20 作为每日唯一提交、`content/evidence/S1/` 作为正式考核、`content/knowledge/` 作为稳定知识资产；`content/sessions/` 保留为可选学习过程笔记，不替代前三者。旧重复成果和被替代的会话副本已迁入 `archive/legacy-s1-artifacts/`，不得依据下文历史路径重建第二套任务状态或提交件。
+>
 > 本文档对当前 AI Native 学习工程中的计划、手册、知识地图、每日总结、案例、练习、真实任务和学习证据进行只读盘点。
 >
 > 盘点目标不是整理文件夹，而是判断每份资产在六个月学习运行模型中的职责、完成状态、版本关系、关联缺口和后续处理方式。

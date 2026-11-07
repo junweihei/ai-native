@@ -3,9 +3,7 @@
   "metadata_model_version": "R3",
   "content_roots": [
     "content/knowledge",
-    "content/cases",
     "content/practice",
-    "content/projects",
     "content/evidence",
     "content/sessions"
   ],
@@ -28,15 +26,16 @@
     "content/plans/S1/S1_整体认知与机制判断_执行计划_V1.0.md",
     "content/plans/S1/S1_整体认知与机制判断_学习资源_V1.0.md",
     "content/plans/S1/开始这里.md",
-    "content/knowledge/AI_Native_知识地图_V0.1.md",
     "content/knowledge/AI_Native_知识节点注册表_V1.0.md",
-    "content/knowledge/任务适用性判断_D2.md",
-    "content/knowledge/四种机制边界草稿_D3.md",
-    "content/knowledge/系统结构与三条流草稿_D4.md",
-    "content/sessions/AI_Native_D1.md",
-    "content/sessions/AI_Native_D2.md",
-    "content/sessions/AI_Native_D3.md",
-    "content/evidence/迁移题作答.md"
+    "content/practice/S1/D01_起点认知.md",
+    "content/practice/S1/D02_任务适用性判断.md",
+    "content/practice/S1/D03_控制结构与能力组件.md",
+    "content/practice/S1/D04_系统结构与三条流.md",
+    "content/practice/S1/D19_未见场景迁移.md",
+    "content/evidence/S1/P1_整体认知考核.md",
+    "content/evidence/S1/P2_案例拆解考核.md",
+    "content/evidence/S1/P3_机制判断与真实任务考核.md",
+    "content/evidence/S1/FINAL_S1阶段考核.md"
   ],
   "required_frontmatter_fields": ["id", "title", "type", "status", "updated"],
   "allowed_statuses": [

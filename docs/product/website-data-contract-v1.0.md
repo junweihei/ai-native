@@ -195,7 +195,7 @@ missing 保留源对象并标影响；ambiguous 不任意选目标；forbidden �
 | `evidence_for` | IdList | 是 | 空时不能支持能力判断 |
 | `completion_check` | {result,rule_results,checked_at}/null | 是 | null 时不能 completed |
 
-`artifact_id` 是 V0.x 兼容别名；V1.0 只要求通用 `id`。示例：`ART-M01-D02-task-fit`、path=`content/knowledge/任务适用性判断_D2.md`、status=learning、evidence_for=M01-C02。
+`artifact_id` 是 V0.x 兼容别名；V1.0 只要求通用 `id`。示例：`ART-M01-D02-task-fit`、path=`content/practice/S1/D02_任务适用性判断.md`、status=learning、evidence_for=M01-C02。
 
 ### 5.6 Evidence
 

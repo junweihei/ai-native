@@ -543,7 +543,7 @@ def _registry_values(value: str) -> list[str]:
 
 def _knowledge_projection(parsed_documents: list, documents: list[dict]) -> dict:
     structure_source = next(
-        (item for item in parsed_documents if item.relative_path.endswith("AI_Native_知识地图_V0.2.md")),
+        (item for item in parsed_documents if item.relative_path.endswith("practice/S1/D05_知识地图整合.md")),
         None,
     )
     registry = next(

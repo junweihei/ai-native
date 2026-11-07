@@ -234,7 +234,7 @@ test("knowledge details use authority-backed four questions and preserve bidirec
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/archive\/EV-M01-D19-transfer$/);
   await expect(
-    page.getByText("权威相对路径：content/evidence/迁移题作答.md"),
+    page.getByText("权威相对路径：content/practice/S1/D19_未见场景迁移.md"),
   ).toBeVisible();
   await expect(page.getByText(/只显示索引允许的元数据/)).toBeVisible();
 

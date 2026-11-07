@@ -6,6 +6,8 @@
 
 ## 路径映射
 
+> 2026-11-07 S1 职责校正：当前 S1 的正式提交路径为 `content/practice/S1/`（D01–D20 每日唯一练习）和 `content/evidence/S1/`（P1/P2/P3/Final 与受控答案）；`content/sessions/` 是可选学习过程笔记，`content/knowledge/` 是稳定知识资产。`content/cases/`、`content/projects/` 不再是活动 S1 目录，其旧文件已进入 `archive/legacy-s1-artifacts/`。
+
 | 旧路径 | V1.0 路径 |
 |---|---|
 | `01-map/` | `content/knowledge/` |
@@ -29,6 +31,8 @@
 3. 同目录 Markdown 链接使用相对文件名。
 4. 历史网页和历史原始资料不进入正式内容索引。
 5. `web/public/data/learning-index.json` 是生成物，不是权威内容源。
+6. S1 每日只允许一个主提交文档；首次独立作答、资源对照、修订、总结和检查在同一练习文件完成。
+7. `content/sessions/` 可以保存学习资料带来的额外理解、感悟和疑问，但不得维护任务状态、替代主练习或直接充当长期知识资产。
 
 ## 验收标准
 

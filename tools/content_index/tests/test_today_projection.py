@@ -39,12 +39,12 @@ class TodayProjectionTests(unittest.TestCase):
         paths = {item["path"] for item in index["documents"]}
         serialized = str(index["documents"])
 
-        self.assertNotIn("content/practice/20题首测_参考答案.md", paths)
-        self.assertNotIn("content/practice/10题复测_参考答案.md", paths)
+        self.assertNotIn("content/evidence/S1/D12_20题首测参考答案.md", paths)
+        self.assertNotIn("content/evidence/S1/D14_10题复测参考答案.md", paths)
         self.assertNotIn("核心判定依据", serialized)
         task = index["current_context"]["task"]
         self.assertEqual(len(task["step_protocol"]), 8)
-        self.assertEqual([item["id"] for item in task["resources"]], ["R1", "R2"])
+        self.assertEqual([item["id"] for item in task["resources"]], ["R2"])
         self.assertEqual(
             [item["id"] for item in task["knowledge_nodes"]],
             ["task-fit", "deterministic-vs-llm-vs-agent"],

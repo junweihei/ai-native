@@ -47,7 +47,7 @@ templates:
     path: 01-task/每日任务卡模板.md
     use_when: 仅限临时/计划外/补强任务（如 S1-R01），已在 S1 执行计划中定义的 S1-Dxx 任务不得使用本模板
     scope: ad-hoc-or-unplanned-task-only
-    default_output_dir: content/sessions
+    default_output_dir: content/practice
     filename_pattern: "{{task_id}}_{{title}}.md"
 
   - template_id: tpl-task-remediation-v0.1
@@ -56,17 +56,17 @@ templates:
     type: task
     path: 01-task/补强任务卡模板.md
     use_when: 周门禁、测试或复盘触发一个短时补强任务
-    default_output_dir: content/sessions
+    default_output_dir: content/practice
     filename_pattern: "{{remediation_id}}_补强_{{title}}.md"
 
   - template_id: tpl-session-daily-v0.1
-    name: 每日学习会话
+    name: 学习过程笔记
     category: learning
     type: session
     path: 02-learning/每日学习会话模板.md
-    use_when: 记录一次真实学习过程、执行结果、日收尾信息和续接点（合并了原日收尾模板的所有字段）
+    use_when: 学习视频或文档时形成了值得保留的理解、感悟、疑问或认知变化；可选，不替代主练习
     default_output_dir: content/sessions
-    filename_pattern: "AI_Native_{{task_id}}_{{date}}.md"
+    filename_pattern: "{{date}}_{{task_id}}_学习笔记.md"
 
   - template_id: tpl-learning-node-v0.1
     name: 知识节点学习
@@ -83,7 +83,7 @@ templates:
     type: artifact
     path: 02-learning/案例拆解模板.md
     use_when: 拆解优秀案例、普通案例或反例
-    default_output_dir: content/cases
+    default_output_dir: content/practice
     filename_pattern: "{{case_type}}_{{case_name}}.md"
 
   - template_id: tpl-learning-practice-v0.1
@@ -101,7 +101,7 @@ templates:
     type: artifact
     path: 02-learning/真实任务应用模板.md
     use_when: 把知识应用到真实问题并形成可验收方案
-    default_output_dir: content/projects
+    default_output_dir: content/practice
     filename_pattern: "{{task_name}}_V{{artifact_version}}.md"
 
   - template_id: tpl-evidence-artifact-v0.1
@@ -114,11 +114,11 @@ templates:
     filename_pattern: append_to_artifact
 
   - template_id: tpl-evidence-closed-book-v0.1
-    name: 闭卷验证
+    name: 独立验证
     category: evidence
     type: evidence
     path: 03-evidence/闭卷验证模板.md
-    use_when: 验证离开资料是否仍能画、讲、判断或重写
+    use_when: 正式考核中验证离开资料是否仍能画、讲、判断或重写；独立条件写在考核内部，不另建开卷版/闭卷版
     default_output_dir: content/evidence
     filename_pattern: "闭卷验证_{{task_id}}_{{date}}.md"
 
